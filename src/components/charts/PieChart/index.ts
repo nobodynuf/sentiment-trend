@@ -33,6 +33,9 @@ export default class PieChart extends Vue {
                 },
             },
         },
+        credits: {
+            enabled: false
+        },
         series: [{
             name: 'Brands',
             data: [{
