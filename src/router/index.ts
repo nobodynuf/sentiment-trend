@@ -14,6 +14,18 @@ const routes: Array<RouteConfig> = [
     path: '/other',
     name: 'Other',
     component: () => import('../views/Other.vue')
+  }, {
+    path: '/facebook',
+    name: 'facebook',
+    component: () => import('../views/SocialNetworks/Facebook.vue')
+  }, {
+    path: '/twitter',
+    name: 'Twitter',
+    component: () => import('../views/SocialNetworks/Twitter.vue')
+  }, {
+    path: '/reddit',
+    name: 'Reddit',
+    component: () => import('../views/SocialNetworks/Reddit.vue')
   }
 ]
 
