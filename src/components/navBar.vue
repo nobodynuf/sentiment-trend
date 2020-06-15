@@ -38,7 +38,7 @@
     <v-app-bar app dense >    
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>
-            Sentiment Trend
+            Analizador de Factores Emocionales 
         </v-toolbar-title>
     </v-app-bar>
     <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">

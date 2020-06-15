@@ -1,6 +1,7 @@
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Chart } from 'highcharts-vue'
 import { Options, SeriesPieOptions } from 'highcharts'
+import { $debug } from '@/utils'
 
 @Component({
     components: {
@@ -8,19 +9,22 @@ import { Options, SeriesPieOptions } from 'highcharts'
     }
 })
 export default class PieChart extends Vue {
-    options: Options = {
+    options: any = {
         chart: {
             type: 'pie',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
         },
         title: {
-            text: 'Market shares'
+            text: 'Distribución de factores emocionales'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         accessibility: {
             point: {
-                valueDescriptionFormat: "%"
+                valueSuffix: '%'
             }
         },
         plotOptions: {
@@ -28,17 +32,32 @@ export default class PieChart extends Vue {
                 allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    enabled: false
                 },
-            },
+                showInLegend: true
+            }
         },
+
         credits: {
             enabled: false
         },
-        series: [{
-            name: 'Brands',
-            data: [{
+        series: [] as Array<SeriesPieOptions>
+    }
+
+    @Prop({ default: () => [] })
+    data !: { name: string, y: number, value: number }[]
+
+    @Prop({default: false})
+    loading !: boolean;
+
+    @Watch('data')
+    onChangeData() {
+        $debug('log', this.data);
+        Vue.set(this.options.series, 0, { name: "Data", data: this.data })
+    }
+
+    /**
+     * data: [{
                 name: 'Chrome',
                 y: 61.41,
                 sliced: true,
@@ -69,5 +88,6 @@ export default class PieChart extends Vue {
                 y: 2.61
             }]
         }] as Array<SeriesPieOptions>
-    }
+     */
+
 }
