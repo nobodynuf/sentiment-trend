@@ -47,7 +47,7 @@ export default class SubredditsAnalyzer extends Vue {
             let div = this.analysis[key]/this.subreddits.length;
             this.$set(this.analysis, key, div);
             this.pie_analysis.push({
-                name: key,
+                name: key.replace(/[_]/gi," "),
                 value: this.analysis[key],
                 y: this.analysis[key]*100/total,
                 type: "pie"

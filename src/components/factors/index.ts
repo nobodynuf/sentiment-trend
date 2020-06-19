@@ -29,7 +29,7 @@ export default class FactorEmo extends Vue {
         this.table.data = []
         this.$set(this.table, 'data', Object.keys(this.analysis).map(key => {
             return {
-                factor: key,
+                factor: key.replace(/[_]/gi," "),
                 value: this.analysis[key]
             }
         }))
@@ -41,7 +41,7 @@ export default class FactorEmo extends Vue {
         this.table.data = []
         this.$set(this.table, 'data', Object.keys(this.analysis).map(key => {
             return {
-                factor: key,
+                factor: key.replace(/[_]/gi," "),
                 value: this.analysis[key]
             }
         }))

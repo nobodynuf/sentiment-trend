@@ -73,7 +73,7 @@ export default class SubredditAnalyzer extends Vue {
         Object.keys(this.subreddit.analysis).map(key => {
             if(this.subreddit){
                 this.pie_analysis.push({
-                    name:key,
+                    name:key.replace(/[_]/gi," "),
                     y: this.subreddit.analysis[key]
                 })
             }

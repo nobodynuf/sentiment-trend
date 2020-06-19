@@ -13,6 +13,13 @@ export interface RedditSub {
     n_comments: number
     text: string
 }
+
+export interface RedditUser {
+    analysis: {[key: string] : number}
+    id: string
+    name: string
+    icon_img: string
+}
 export interface DataTableHeader<T> {
     text: string,
     align?: 'left' | 'center' | 'right',
