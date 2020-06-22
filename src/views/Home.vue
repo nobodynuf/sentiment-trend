@@ -1,18 +1,33 @@
 <template>
-  <v-container class="home">
-    <h1>Main Page</h1>
-    <v-row>
-      <v-col cols=6>
-        <pie-chart></pie-chart>
-      </v-col> 
-      <v-col cols="6">
-        <line-chart></line-chart>
-      </v-col > 
-      <v-col cols="12">
-        <column-chart></column-chart>
-      </v-col> 
-    </v-row>
-   
+ <v-container class="home" >
+    <v-layout wrap>
+      <v-flex xs12>
+        <v-card elevation="4">
+          <v-layout wrap pa-4 justify-center>
+            <v-flex xs12 >
+              <h1 class="text-center">Main Page</h1>
+            </v-flex>
+            <v-row>
+              <v-col cols="6">
+                 <v-card outlined>
+                <pie-chart></pie-chart>
+                 </v-card>
+              </v-col> 
+              <v-col cols="6">
+                <v-card outlined>
+                  <line-chart></line-chart>
+                </v-card>
+              </v-col > 
+              <v-col cols="12">
+                <v-card outlined>
+                  <column-chart></column-chart>
+                </v-card>
+              </v-col> 
+            </v-row>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 <script src='./Home.ts' lang='ts'/>

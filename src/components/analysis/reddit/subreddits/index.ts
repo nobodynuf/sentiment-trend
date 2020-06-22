@@ -22,8 +22,9 @@ export default class SubredditsAnalyzer extends Vue {
     loading = false;
     data_title = "Sin datos...";
 
-    mounted(){
-        this.init();
+
+    mounted() {
+        this.init()
     }
 
     async init(){

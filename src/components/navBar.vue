@@ -2,8 +2,9 @@
     <v-container class="navBar">   
         
         <v-navigation-drawer v-model="drawer" clipped app>
-            <v-list shaped nav dense>
+            <v-list shaped nav dense >
                 <v-list-item
+                    color="teal darken-4"
                     flat
                     v-for="link in mainLinks"
                     :key="link.route"
@@ -20,6 +21,7 @@
                 <v-divider></v-divider>
                 <v-subheader>Social Networks</v-subheader>
                 <v-list-item
+                    color="teal darken-4"
                     flat
                     v-for="link in socialMediaLinks"
                     :key="link.route"

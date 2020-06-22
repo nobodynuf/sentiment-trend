@@ -20,7 +20,8 @@ export default class PieChart extends Vue {
             text: 'Distribución de factores emocionales'
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            borderRadius: 18
         },
         accessibility: {
             point: {

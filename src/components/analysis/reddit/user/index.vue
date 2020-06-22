@@ -52,8 +52,7 @@
         </v-card-text>
       </v-card>
     </v-flex>
-
-  
+    <SubTable :submissions="submissions"></SubTable>
   </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

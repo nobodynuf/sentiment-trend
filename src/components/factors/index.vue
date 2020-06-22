@@ -1,6 +1,12 @@
 <template>
   <v-layout wrap>
-    <v-flex xs12>
+    <v-flex class="text-center"> 
+      <v-chip small tile label text-color="white" color="amber darken-1">0% - 25%</v-chip>
+      <v-chip small tile label text-color="white" color="orange darken-1">26% - 50%</v-chip>
+      <v-chip small tile label text-color="white" color="orange darken-4">51% - 75%</v-chip>
+      <v-chip small tile label text-color="white" color="red darken-3">76% - 100%</v-chip>
+      </v-flex>
+    <v-flex xs12>      
       <v-data-table
         :items="table.data"
         :headers="table.headers"
@@ -11,7 +17,7 @@
         :no-data-text="table.noDataText"
       >
         <template v-slot:item.value="{item}">
-          <v-chip label color="primary">{{Math.ceil(item.value)}}%</v-chip>
+          <v-chip label :color="getColor(item.value)" text-color="white">{{Math.ceil(item.value)}}%</v-chip>
         </template>
       </v-data-table>
     </v-flex>

@@ -2,9 +2,12 @@
 export interface Subreddit {
     analysis: {[key: string] : number}
     id: string
+    description: string
     name: string
     over18: boolean
     subscribers: number
+    n_entries: number
+    submissions: RedditSub[]
 };
 
 export interface RedditSub {
@@ -19,6 +22,12 @@ export interface RedditUser {
     id: string
     name: string
     icon_img: string
+    n_entries: number
+    submissions: RedditSub[]
+}
+
+export interface Analysis {
+    [key:string]: number
 }
 export interface DataTableHeader<T> {
     text: string,

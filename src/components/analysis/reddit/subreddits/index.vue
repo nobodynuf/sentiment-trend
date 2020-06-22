@@ -10,7 +10,7 @@
               <span class="subtitle-2 text--grey" v-if="!loading">No hay registros inválidos</span>
           </v-flex>
           <v-flex xs12>
-            <v-carousel :show-arrows="false">
+            <v-carousel show-arrows-on-hover>
               <v-carousel-item>
                 <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
               </v-carousel-item>
@@ -24,8 +24,11 @@
     </v-flex>
     <v-flex xs5>
       <v-card outlined>
-        <v-card-title>Factores</v-card-title>
-        <v-card-text>
+        <v-card-title>Factores 
+          <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
+          </v-progress-circular>
+        </v-card-title> 
+        <v-card-text v-if="!loading"> 
           <factor-emo :analysis="analysis"></factor-emo>
         </v-card-text>
       </v-card>
