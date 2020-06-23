@@ -23,14 +23,16 @@ export default class SubredditAnalyzer extends Vue {
     pie_analysis : {name: string, y: number}[] = []
     iconImg :string = ""
     loading = false;
-    user :RedditUser | undefined
+    user! :RedditUser
     analysis : {[key: string] : number} = {}
     submissions:RedditSub[] | undefined
+    enabledSub = false
 
     async findUser(){
         this.loading = true;
         const name = this.search_input;
-        this.user = await this.getUser(name);
+        const res = await this.getUser(name);
+        this.user = res;
         this.submissions = this.user.submissions
         this.analysis = this.user.analysis
         this.iconImg = this.user.icon_img
@@ -44,7 +46,9 @@ export default class SubredditAnalyzer extends Vue {
             }
         })
         this.$set(this.user, "analysis", this.user.analysis);
+        this.$set(this.user, "submissions", this.user.submissions);
         this.loading = false;
+        this.enabledSub = true
     }
 
     async getUser(name: string){

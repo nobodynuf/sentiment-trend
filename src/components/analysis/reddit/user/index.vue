@@ -47,12 +47,18 @@
     <v-flex xs6>
       <v-card outlined>
         <v-card-title>Factores</v-card-title>
-        <v-card-text v-if="analysis">
+        <v-card-text v-if="enabledSub">
           <factor-emo :analysis="analysis"></factor-emo>
         </v-card-text>
       </v-card>
     </v-flex>
-    <SubTable :submissions="submissions"></SubTable>
+    <v-card outlined>
+        <v-card-title>Publicaciones</v-card-title>
+        <v-card-text v-if="enabledSub">
+          <SubTable :submissions="user.submissions"></SubTable>
+        </v-card-text>
+      </v-card>
+    
   </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

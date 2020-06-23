@@ -4,7 +4,7 @@ import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
 import SubTable from '@/components/tables/SubTable/index.vue'
-import { Subreddit, RedditSub, DataTable, factor_emoji } from '@/types';
+import { Subreddit, RedditSub, DataTable, factor_emoji, newFile } from '@/types';
 import { AxiosResponse } from 'axios';
 import VMarkdown from 'vue-markdown'
 import axios from '@/axios'
@@ -23,19 +23,36 @@ const neutral = require('@/assets/emojis/neutral.png')
     }
 })
 export default class SubredditAnalyzer extends Vue {
-    
+    subTable = new DataTable({
+        headers: [
+            {
+                text: "Nombre",
+                value: "name"
+            },
+            {
+                text: "",
+                value: "_actions"
+            }
+        ]
+    });
     search_input = "golang";
 
-    subreddit : Subreddit | null = null
-    n_entries : number = 0;
+    //file Input
+    file: newFile | null = null
+    fileInputDisabled : boolean = true
+    fileSet : newFile[] =[]
+    rules = [
+        (value: { name: string }) => !value || value.name.split('.').pop() =="xlsx" || 'La extension del archivo deber ser .xlsx'
+    ]
     
-    submission !: RedditSub[]
+    subreddit! : Subreddit
+    n_entries : number = 0;
+    enabledSub = false
     sub_analysis : {[key: string] : number} = {}
 
     emojis = factor_emoji
     emoji = angry
 
-    detail_modal = false;
     pie_analysis : {name: string, y: number}[] = []
     loading = false;
 
@@ -46,12 +63,36 @@ export default class SubredditAnalyzer extends Vue {
     menu_body = false;
     translated_body = "";
 
+    onFileChange() {
+        if(this.file){
+            if(this.file.name.split('.').pop()=="xlsx"){
+                this.fileInputDisabled = false
+            }else{
+                this.fileInputDisabled = true
+            }
+        }
+    }
+
+    onUpload() {
+        if(this.file){
+            this.fileSet.push({ 
+                name: this.file.name,
+                webkitRelativePath: this.file.webkitRelativePath
+            })
+            this.file = null
+        }
+    }
+
+    deleteFile(file: newFile  ){
+            let index = this.fileSet.indexOf( file );
+            this.fileSet.splice( index, 1 );
+    }
+
     async findSubreddit(){
         this.loading = true;
         const name = this.search_input;
         const res = await this.getSubreddit(name);
         this.subreddit = res;
-        this.submission = res.submissions;
         this.n_entries = res.n_entries;
         this.pie_analysis = [];
         Object.keys(this.subreddit.analysis).map(key => {
@@ -63,7 +104,9 @@ export default class SubredditAnalyzer extends Vue {
             }
         })
         this.$set(this.subreddit, "analysis", this.subreddit.analysis);
+        this.$set(this.subreddit, "submissions", this.subreddit.submissions);
         this.loading = false;
+        this.enabledSub = true
     }
 
     async getSubreddit(name: string){

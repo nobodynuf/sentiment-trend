@@ -17,7 +17,8 @@ const neutral = require('@/assets/emojis/neutral.png')
 })
 export default class PieChart extends Vue {
 
-    @Prop() submissions: RedditSub[]=[] 
+    @Prop({default : {}})
+     submissions!: RedditSub
     
     submission : RedditSub | undefined
     sub_analysis : {[key: string] : number} = {}
@@ -54,11 +55,18 @@ export default class PieChart extends Vue {
 
     loading = false;
     
-    async checkDetail(sub_id : string){    
+    mounted(){
+         this.subTable.data = []
+         this.$set(this.subTable, "data", this.submissions);
+    }
+
+    async checkDetail(sub_id : string){   
+
         const res = await this.getRedditSub(sub_id);
         this.sub_analysis = res.analysis
-        const sub = this.submissions.find(val=> val.id===sub_id);
+        const sub = this.subTable.data.find(val=> val.id===sub_id);
         this.submission = sub;
+        this.$set(this, "submission", this.submission);
         this.$set(this, "sub_analysis", this.sub_analysis);
         const positivismo: number = this.sub_analysis["empatia"]
         if(positivismo > 15 && positivismo < 26){

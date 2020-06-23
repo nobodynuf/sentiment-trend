@@ -7,7 +7,7 @@ export interface Subreddit {
     over18: boolean
     subscribers: number
     n_entries: number
-    submissions: RedditSub[]
+    submissions: RedditSub
 };
 
 export interface RedditSub {
@@ -24,6 +24,11 @@ export interface RedditUser {
     icon_img: string
     n_entries: number
     submissions: RedditSub[]
+}
+
+export interface newFile {
+    name: string
+    webkitRelativePath : string
 }
 
 export interface Analysis {
