@@ -7,7 +7,7 @@ export interface Subreddit {
     over18: boolean
     subscribers: number
     n_entries: number
-    submissions: RedditSub
+    submissions: RedditSub[]
 };
 
 export interface RedditSub {
@@ -25,6 +25,31 @@ export interface RedditUser {
     n_entries: number
     submissions: RedditSub[]
 }
+
+export interface TwitterUser {
+    id: string
+    name: string
+    location: string
+    description: string
+    url: string
+    verified: string
+    tweets_counts: number
+    tweets: Tweet[]
+}
+
+export interface Hashtag {
+    name: string
+    tweets: Tweet[]
+}
+
+export interface Tweet {
+    id: string
+    retweeted: boolean
+    possibly_sensitive: boolean
+    retweet_count: number
+    text: string
+}
+
 
 export interface newFile {
     name: string
