@@ -7,7 +7,7 @@ export interface Subreddit {
     over18: boolean
     subscribers: number
     n_entries: number
-    submissions: RedditSub
+    submissions: RedditSub[]
 };
 
 export interface RedditSub {

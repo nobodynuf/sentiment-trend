@@ -1,5 +1,45 @@
 <template>
   <v-layout wrap>
+     <v-flex mt-3 xs12>
+      <v-layout wrap align-center>
+        <v-flex xs1></v-flex>
+        <v-flex xs3>
+          <v-file-input @change="onFileChange" :rules="rules" v-model="file"  accept=".xlsx*" label="entrada de archivo excel"  dense></v-file-input>
+        </v-flex> 
+        <v-flex xs1 class="mb-2">
+          <v-btn :disabled="fileInputDisabled" @click="onUpload" small color="primary">Subir
+            <v-icon right dark>mdi-cloud-upload</v-icon>
+          </v-btn>
+        </v-flex>
+        <v-flex xs7></v-flex>
+        <v-flex xs12>   
+          <v-layout wrap align-center>
+            <v-flex xs7>
+              <v-card outlined v-if="fileSet.length > 0" class="mx-auto">
+                <v-card-title>Lista de archivos subidos</v-card-title>
+                  <v-data-table
+                  hide-default-header
+                  hide-default-footer
+                  :items="tableFileSet"
+                  :headers="subTable.headers"
+                  >
+                  <template v-slot:item._actions="{item}">
+                    <v-icon  class="mr-2">
+                      mdi-eye
+                    </v-icon>
+                    <v-icon @click="deleteFile(item)">
+                      mdi-delete
+                    </v-icon>
+                  </template>
+                </v-data-table>
+              </v-card>
+            </v-flex>
+            <v-flex xs5>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-flex>
     <v-flex xs7>
       <v-card outlined>
         <v-layout wrap pa-2>
@@ -28,15 +68,16 @@
           <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
           </v-progress-circular>
         </v-card-title> 
-        <v-card-text v-if="!loading"> 
+        <v-card-text> 
           <factor-emo :analysis="analysis"></factor-emo>
         </v-card-text>
       </v-card>
     </v-flex>
     <v-flex xs12>
-      <v-card outlined>
-        <v-card-text>
-          <v-data-table></v-data-table>
+       <v-card outlined>
+        <v-card-title>Subreddits</v-card-title>
+        <v-card-text v-if="!loading">
+           <r-table :subreddits="subreddits"></r-table>
         </v-card-text>
       </v-card>
     </v-flex>

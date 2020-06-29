@@ -4,7 +4,7 @@ import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
 import SubTable from '@/components/tables/SubTable/index.vue'
-import { Subreddit, RedditSub, DataTable, factor_emoji, newFile } from '@/types';
+import { Subreddit, RedditSub, DataTable, factor_emoji } from '@/types';
 import { AxiosResponse } from 'axios';
 import VMarkdown from 'vue-markdown'
 import axios from '@/axios'
@@ -23,27 +23,9 @@ const neutral = require('@/assets/emojis/neutral.png')
     }
 })
 export default class SubredditAnalyzer extends Vue {
-    subTable = new DataTable({
-        headers: [
-            {
-                text: "Nombre",
-                value: "name"
-            },
-            {
-                text: "",
-                value: "_actions"
-            }
-        ]
-    });
     search_input = "golang";
 
-    //file Input
-    file: newFile | null = null
-    fileInputDisabled : boolean = true
-    fileSet : newFile[] =[]
-    rules = [
-        (value: { name: string }) => !value || value.name.split('.').pop() =="xlsx" || 'La extension del archivo deber ser .xlsx'
-    ]
+    voidTextFiel = false
     
     subreddit! : Subreddit
     n_entries : number = 0;
@@ -63,29 +45,12 @@ export default class SubredditAnalyzer extends Vue {
     menu_body = false;
     translated_body = "";
 
-    onFileChange() {
-        if(this.file){
-            if(this.file.name.split('.').pop()=="xlsx"){
-                this.fileInputDisabled = false
-            }else{
-                this.fileInputDisabled = true
-            }
+    onSearchChange() {
+        if(this.search_input == "" || this.loading == true){
+            this.voidTextFiel = true
+        }else{
+            this.voidTextFiel = false
         }
-    }
-
-    onUpload() {
-        if(this.file){
-            this.fileSet.push({ 
-                name: this.file.name,
-                webkitRelativePath: this.file.webkitRelativePath
-            })
-            this.file = null
-        }
-    }
-
-    deleteFile(file: newFile  ){
-            let index = this.fileSet.indexOf( file );
-            this.fileSet.splice( index, 1 );
     }
 
     async findSubreddit(){

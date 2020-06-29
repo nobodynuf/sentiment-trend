@@ -3,15 +3,17 @@ import { $debug } from '@/utils'
 import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
+import RTable from '@/components/tables/RTable/index.vue'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
-import { Subreddit } from '@/types'
+import { Subreddit, DataTable } from '@/types'
 
 @Component({
     components:{
         PieChart,
         LineChart,
-        FactorEmo
+        FactorEmo,
+        RTable
     }
 })
 export default class SubredditsAnalyzer extends Vue {
@@ -22,9 +24,56 @@ export default class SubredditsAnalyzer extends Vue {
     loading = false;
     data_title = "Sin datos...";
 
+    //file Input
+    file: File | null = null
+    fileSet : File[] =[]
+    
+    fileInputDisabled : boolean = true
+
+    tableFileSet : Array<{name : String}> = []
+    rules = [
+        (value: { name: string }) => !value || value.name.split('.').pop() =="xlsx" || 'La extension del archivo deber ser .xlsx'
+    ]
+     subTable = new DataTable({
+        headers: [
+            {
+                text: "Nombre",
+                value: "name"
+            },
+            {
+                text: "",
+                value: "_actions"
+            }
+        ]
+    });
 
     mounted() {
         this.init()
+    }
+
+    onFileChange() {
+        if(this.file){
+            if(this.file.name.split('.').pop()=="xlsx"){
+                this.fileInputDisabled = false
+            }else{
+                this.fileInputDisabled = true
+            }
+        }
+    }
+
+    onUpload() {
+        if(this.file){
+            this.fileSet.push(this.file)
+            this.tableFileSet.push({name: this.file.name})
+            this.file = null
+            this.fileInputDisabled = true
+        }
+    }
+
+    deleteFile( file: File ){
+        let index = this.tableFileSet.indexOf( file );
+        index !== -1 && this.fileSet.splice( index, 1 );
+        index !== -1 && this.tableFileSet.splice( index, 1 );
     }
 
     async init(){
@@ -53,6 +102,7 @@ export default class SubredditsAnalyzer extends Vue {
                 type: "pie"
             })
         });
+        this.$set(this.subreddits, "subreddit", this.subreddits)
         this.data_title = "X Registros";
         this.loading = false;
     }

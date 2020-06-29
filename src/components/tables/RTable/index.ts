@@ -2,7 +2,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import FactorEmo from '@/components/factors/index.vue'
 import VMarkdown from 'vue-markdown'
-import { RedditSub, DataTable, factor_emoji, Analysis } from '@/types';
+import { Subreddit, DataTable, factor_emoji, Analysis } from '@/types';
 import axios from '@/axios'
 import { AxiosResponse } from 'axios';
 
@@ -15,32 +15,27 @@ const neutral = require('@/assets/emojis/neutral.png')
         VMarkdown
     }
 })
-export default class PieChart extends Vue {
+export default class Rtab extends Vue {
 
     @Prop({default : {}})
-     submissions!: RedditSub
+    subreddits!: Subreddit
     
-    submission : RedditSub | undefined
+    submission : Subreddit | undefined
     sub_analysis : {[key: string] : number} = {}
     
-    page = 1
-    pageCount = 0
-    itemsPerPage = 12
-
     emojis = factor_emoji
     emoji = angry
     
-    toggle_exclusive = 0
     detail_modal = false;
-    subTable = new DataTable<RedditSub>({
+    subTable = new DataTable<Subreddit>({
         headers: [
             {
                 text: "Nombre",
                 value: "name"
             },
             {
-                text: "Comentarios",
-                value: "n_comments",
+                text: "Descripción",
+                value: "description",
                 align:"center"
             },
             {
@@ -55,40 +50,30 @@ export default class PieChart extends Vue {
     menu_title = false;
     translated_title = ""
 
+    toggle_exclusive = 0
+
     menu_body = false;
     translated_body = "";
 
     loading = false;
-    
+
+    page = 1
+    pageCount = 0
+    itemsPerPage = 12
+
     mounted(){
         this.subTable.data = []
-        this.$set(this.subTable, "data", this.submissions);
+        this.$set(this.subTable, "data", this.subreddits);
         this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
     }
 
-    async checkDetail(sub_id : string){   
-
-        const res = await this.getRedditSub(sub_id);
-        this.sub_analysis = res.analysis
-        const sub = this.subTable.data.find(val=> val.id===sub_id);
+    async checkDetail(id : string){   
+        const sub = this.subTable.data.find(val=> val.id===id);
         this.submission = sub;
-        this.$set(this, "submission", this.submission);
-        this.$set(this, "sub_analysis", this.sub_analysis);
-        const positivismo: number = this.sub_analysis["empatia"]
-        if(positivismo > 15 && positivismo < 26){
-            this.emoji = neutral
-        } else if(positivismo >=75){
-            this.emoji = smile
-        } else {
-            this.emoji = angry
-        }
+        this.$set(this.sub_analysis, "sub_analysis", this.submission?.analysis);
         this.detail_modal = true;
     }
 
-    async getRedditSub(sub_id : string){
-        const res: AxiosResponse<{analysis: Analysis}> = await axios.post("/reddit/analyze-sub", {sub_id});
-        return res.data
-    }
 
     async translate_title(text: string){
         this.menu_title = true;
@@ -99,8 +84,6 @@ export default class PieChart extends Vue {
         this.menu_body = true;
         this.translated_body = await this.getTranslation(text)
     }
-
-    
 
     async getTranslation(text: string){
         const res: AxiosResponse<{translation: string}> = await axios.post("/translate", {text});

@@ -9,6 +9,7 @@
             v-model="search_input"
             label="Ingrese nombre de subreddit: "
             :disabled="loading"
+            @keyup="onSearchChange"
           ></v-text-field>
         </v-flex>
         <v-flex xs2>
@@ -25,40 +26,6 @@
           </v-btn>
         </v-flex>
         <v-flex xs1></v-flex>
-        <v-flex xs3>
-          <v-file-input @change="onFileChange" :rules="rules" v-model="file"  accept=".xlsx*" label="entrada de archivo excel"  dense></v-file-input>
-        </v-flex> 
-        <v-flex xs1 class="mb-2">
-          <v-btn :disabled="fileInputDisabled" @click="onUpload" small color="primary">Subir
-            <v-icon right dark>mdi-cloud-upload</v-icon>
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-    <v-flex xs12>   
-      <v-layout wrap align-center>
-        <v-flex xs7>
-        </v-flex>
-        <v-flex xs5>
-          <v-card outlined v-if="fileSet.length > 0" class="mx-auto">
-            <v-card-title>Lista de archivos subidos</v-card-title>
-              <v-data-table
-              hide-default-header
-              hide-default-footer
-              :items="fileSet"
-              :headers="subTable.headers"
-              >
-              <template v-slot:item._actions="{item}">
-                <v-icon  class="mr-2">
-                  mdi-eye
-                </v-icon>
-                <v-icon @click="deleteFile(item)">
-                  mdi-delete
-                </v-icon>
-              </template>
-            </v-data-table>
-          </v-card>
-        </v-flex>
       </v-layout>
     </v-flex>
     <v-flex xs7>
