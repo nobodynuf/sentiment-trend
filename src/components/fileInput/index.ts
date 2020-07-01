@@ -9,8 +9,8 @@ import { RedditUser, DataTable } from '@/types'
     }
 })
 export default class FileInput extends Vue {
-    //file Input
-    file!: File
+
+    file : File | null = null
     fileSet : File[] =[]
 
     fileInputDisabled : boolean = true
@@ -48,17 +48,19 @@ export default class FileInput extends Vue {
     
     async submitFile() {
         let formData = new FormData();
-        formData.append('plantilla', this.file);
-  
+        if(this.file){
+            formData.append('plantilla', this.file);
+        }
         let res = await axios.post('/reddit/user',
         formData,  {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
-              }
-          )
+            }
+        )
+        this.onUpload()
         console.log(res.data)
-      }
+    }
 
     onFileChange() {
         if(this.file){
@@ -69,7 +71,7 @@ export default class FileInput extends Vue {
             }
         }
     }
-/*
+
     onUpload() {
         if(this.file){
             this.fileSet.push(this.file)
@@ -77,7 +79,7 @@ export default class FileInput extends Vue {
             this.file = null
             this.fileInputDisabled = true
         }
-    }*/
+    }
 
     deleteFile( file: File ){
         let index = this.tableFileSet.indexOf( file );
