@@ -13,19 +13,19 @@
               <v-tabs background-color="#00acee" grow dark>
                 <v-tab href="#tab-1">Análisis total</v-tab>
                 <v-tab-item value="tab-1">
-                  <r-subr></r-subr>
+                  <t-hasht></t-hasht>
                 </v-tab-item>
-                <v-tab href="#tab-2">Analizar xxx</v-tab>
+                <v-tab href="#tab-2">Analizar Hashtag</v-tab>
                 <v-tab-item value="tab-2">
-                  <r-sub></r-sub>
+                  <t-hash></t-hash>
                 </v-tab-item>
-                <v-tab href="#tab-3">Análisis xxx</v-tab>
+                <v-tab href="#tab-3">Análisis Usuarios</v-tab>
                 <v-tab-item value="tab-3">
-                  <r-users></r-users>
+                  <t-users></t-users>
                 </v-tab-item>
-                <v-tab href="#tab-4">Analizar xxx</v-tab>
+                <v-tab href="#tab-4">Analizar Usuario</v-tab>
                 <v-tab-item value="tab-4">
-                  <r-user></r-user>
+                  <t-user></t-user>
                 </v-tab-item>
               </v-tabs>
             </v-flex>
