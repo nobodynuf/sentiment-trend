@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <h1>Users Analyzer</h1>
-    </div>
+    <v-layout wrap>
+     <v-flex xs7>
+        <file-input></file-input>
+     </v-flex>
+    </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

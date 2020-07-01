@@ -50,12 +50,6 @@ export interface Tweet {
     text: string
 }
 
-
-export interface newFile {
-    name: string
-    webkitRelativePath : string
-}
-
 export interface Analysis {
     [key:string]: number
 }

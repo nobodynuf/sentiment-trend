@@ -17,7 +17,7 @@ import axios from '@/axios'
         SubTable
     }
 })
-export default class SubredditAnalyzer extends Vue {
+export default class UserAnalyzer extends Vue {
     
     search_input = "natefinch";
     pie_analysis : {name: string, y: number}[] = []
