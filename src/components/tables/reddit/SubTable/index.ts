@@ -15,7 +15,7 @@ const neutral = require('@/assets/emojis/neutral.png')
         VMarkdown
     }
 })
-export default class SubTab extends Vue {
+export default class SubTable extends Vue {
 
     @Prop({default : {}})
      submissions!: RedditSub

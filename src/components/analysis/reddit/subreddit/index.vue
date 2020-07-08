@@ -17,7 +17,7 @@
             depressed
             small
             color="primary"
-            :disabled="loading"
+            :disabled="voidTextFiel"
             :loading="loading"
             @click="findSubreddit"
           >

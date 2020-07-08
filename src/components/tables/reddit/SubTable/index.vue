@@ -24,39 +24,23 @@
           <v-btn outlined color="indigo" small @click="checkDetail(item.id)">revisar</v-btn>
         </template>
       </v-data-table>
-    </v-flex>
     <v-container v-if="toggle_exclusive == 1">
-      <v-row>
-        <v-col cols="4">
-        </v-col>
-        <v-col  cols="4">
-          <v-pagination  v-model="page" :length="pageCount" :total-visible="7"></v-pagination>
-        </v-col>
-        <v-col cols="4">
-          <v-list-item class="text-right">
-            <v-list-item-subtitle>{{itemsPerPage}} Post por pagina</v-list-item-subtitle>
-            <v-list-item-subtitle v-if="page != pageCount">
-              {{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle v-else>
-              {{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}
-            </v-list-item-subtitle>
-          </v-list-item>
-        </v-col>
-      </v-row>
-      <v-row >
-        <v-col class="py-0" v-for="(item, index) in subTable.data"
+    <v-row >
+        <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
           :key="index" cols="4">
           <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
-            class="pt-0 pb-2">
+            class="pt-0 pb-3 px-2">
             <v-hover  v-slot:default="{ hover }">
-              <v-card :key="itemsPerPage" 
+              <v-card class="pa-1 pb-0" outlined 
                 @click="checkDetail(item.id)"
                 :class="{ 'on-hover': hover }"
               >
-                <div class="text-center pt-2 pb-0"><strong class="pr-2"> {{item.n_comments}}</strong>
-                  <v-icon>mdi-comment-multiple-outline</v-icon></div>
-                  <h5 class="text-center pt-2 pb-0">{{item.name}}</h5>     
+              <h5 class="text-center text--secondary">{{item.name}}</h5> 
+                  <v-divider></v-divider>
+                  <div class="text-center pa-0">
+                  <h5 v-if="item.n_comments !=1">{{item.n_comments}} Comentarios</h5>
+                  <h5 v-else>{{item.n_comments}} Comentario</h5>
+                </div>
                     <v-fade-transition>
                       <v-overlay
                         opacity="0.7"
@@ -80,7 +64,7 @@
         </v-col>
         <v-col cols="4">
           <v-list-item class="text-right">
-            <v-list-item-subtitle>{{itemsPerPage}} Post por pagina</v-list-item-subtitle>
+            <v-list-item-subtitle>{{itemsPerPage}} Post por página</v-list-item-subtitle>
           <v-list-item-subtitle
             v-if="page != pageCount"
           >{{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}</v-list-item-subtitle>
@@ -91,6 +75,7 @@
         </v-col>
       </v-row>
     </v-container>
+    </v-flex>
       <v-dialog v-model="detail_modal" width="1140px">
         <v-layout wrap v-if="detail_modal">
           <v-flex xs12>

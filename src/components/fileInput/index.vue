@@ -12,9 +12,8 @@
         </v-flex>
         <v-flex xs2></v-flex>
         <v-flex xs7> 
-            <v-btn @click="getTemplate" outlined color="green darken-4">
-                Descargar Plantilla Excel
-                <v-icon class="pb-1" right dark>mdi-cloud-download</v-icon>
+            <v-btn color="green" @click="getTemplate" text >
+                Descargar Plantilla
             </v-btn>
         </v-flex>
         <v-flex xs12>

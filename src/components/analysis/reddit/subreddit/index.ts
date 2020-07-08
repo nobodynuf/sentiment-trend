@@ -3,7 +3,7 @@ import { $debug } from '@/utils'
 import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
-import SubTable from '@/components/tables/SubTable/index.vue'
+import SubTable from '@/components/tables/reddit/SubTable/index.vue'
 import { Subreddit, RedditSub, DataTable, factor_emoji } from '@/types';
 import { AxiosResponse } from 'axios';
 import VMarkdown from 'vue-markdown'
@@ -24,7 +24,6 @@ const neutral = require('@/assets/emojis/neutral.png')
 })
 export default class SubredditAnalyzer extends Vue {
     search_input = "golang";
-
     voidTextFiel = false
     
     subreddit! : Subreddit
@@ -44,20 +43,43 @@ export default class SubredditAnalyzer extends Vue {
 
     menu_body = false;
     translated_body = "";
+    
+    
+    mounted() {
+        this.loadSubreddit()
+    }
 
-    onSearchChange() {
-        if(this.search_input == "" || this.loading == true){
-            this.voidTextFiel = true
-        }else{
-            this.voidTextFiel = false
+    loadSubreddit(){
+        let dataSubreddit = this.$store.state.reddit.fetched_subreddit.subreddit
+        if(dataSubreddit != undefined){
+            this.subreddit = dataSubreddit
+            this.n_entries = this.subreddit.n_entries;
+            this.pie_analysis = [];
+            Object.keys(this.subreddit.analysis).map(key => {
+                if(this.subreddit){
+                    this.pie_analysis.push({
+                        name:key.replace(/[_]/gi," "),
+                        y: this.subreddit.analysis[key]
+                    })
+                }
+            })
+            this.$set(this.subreddit, "analysis", this.subreddit.analysis);
+            this.$set(this.subreddit, "submissions", this.subreddit.submissions);
+            this.enabledSub = true
         }
     }
 
     async findSubreddit(){
+        this.voidTextFiel = true
         this.loading = true;
         const name = this.search_input;
         const res = await this.getSubreddit(name);
         this.subreddit = res;
+        const payload = {
+            n_entries: res.n_entries,
+            subreddit: res
+        }
+        this.$store.commit("set_reddit_subreddit" ,payload)
         this.n_entries = res.n_entries;
         this.pie_analysis = [];
         Object.keys(this.subreddit.analysis).map(key => {
@@ -72,6 +94,7 @@ export default class SubredditAnalyzer extends Vue {
         this.$set(this.subreddit, "submissions", this.subreddit.submissions);
         this.loading = false;
         this.enabledSub = true
+        this.search_input = ""
     }
 
     async getSubreddit(name: string){
@@ -92,5 +115,13 @@ export default class SubredditAnalyzer extends Vue {
     async getTranslation(text: string){
         const res: AxiosResponse<{translation: string}> = await axios.post("/translate", {text});
         return res.data.translation
+    }
+
+    onSearchChange() {
+        if(this.search_input == "" || this.loading == true){
+            this.voidTextFiel = true
+        }else{
+            this.voidTextFiel = false
+        }
     }
 }

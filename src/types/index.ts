@@ -27,6 +27,7 @@ export interface RedditUser {
 }
 
 export interface TwitterUser {
+    analysis: {[key: string] : number}
     id: string
     name: string
     location: string
@@ -38,6 +39,7 @@ export interface TwitterUser {
 }
 
 export interface Hashtag {
+    analysis: {[key: string] : number}
     name: string
     tweets: Tweet[]
 }

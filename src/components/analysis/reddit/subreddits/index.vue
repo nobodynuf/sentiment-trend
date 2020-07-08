@@ -49,7 +49,7 @@
     </v-flex>
     <v-flex xs12>
        <v-card outlined>
-        <v-card-title>Subreddits</v-card-title>
+        <v-card-title>Subreddits <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular></v-card-title>
         <v-card-text v-if="!loading">
            <r-table :subreddits="subreddits"></r-table>
         </v-card-text>

@@ -8,6 +8,7 @@
             v-model="search_input"
             label="Ingrese nombre de Usuario: "
             :disabled="loading"
+            @keyup="onSearchChange"
           ></v-text-field>
         </v-flex>
         <v-flex xs2>
@@ -15,7 +16,7 @@
             depressed
             small
             color="primary"
-            :disabled="loading"
+            :disabled="voidTextFiel"
             :loading="loading"
             @click="findUser"
           >

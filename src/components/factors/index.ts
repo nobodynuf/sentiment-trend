@@ -37,10 +37,10 @@ export default class FactorEmo extends Vue {
     }
 
     getColor (value: number) {
-        if (value > 75) return 'red darken-3'
-        else if (value > 50) return 'orange darken-4'
-        else if (value > 25) return 'orange darken-1'
-        else return 'amber darken-1'
+        if (value > 75) return 'green'
+        else if (value > 50) return 'green'
+        else if (value > 25) return 'green'
+        else return 'green'
       }
     @Watch("analysis", {deep: true})
     async onChange(){

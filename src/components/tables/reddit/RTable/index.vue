@@ -25,35 +25,16 @@
       </v-data-table>
       <v-container v-if="toggle_exclusive == 1">
         <v-row>
-          <v-col cols="4">
-          </v-col>
-          <v-col  cols="4">
-            <v-pagination  v-model="page" :length="pageCount" :total-visible="7"></v-pagination>
-          </v-col>
-          <v-col cols="4">
-            <v-list-item class="text-right">
-              <v-list-item-subtitle>{{itemsPerPage}} Post por pagina</v-list-item-subtitle>
-              <v-list-item-subtitle v-if="page != pageCount">
-                {{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}
-              </v-list-item-subtitle>
-              <v-list-item-subtitle v-else>
-                {{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}
-              </v-list-item-subtitle>
-            </v-list-item>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="py-0" v-for="(item, index) in subTable.data"
+          <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
           :key="index" cols="12">
             <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
-                class="pt-0 pb-2">
+                class="pt-0 pb-3 px-2">
               <v-hover v-slot:default="{ hover }">
-                <v-card 
+                <v-card class="pa-1 pb-0" outlined
                   @click="checkDetail(item.id)"
-                  :elevation="hover ? 12 : 2"
                   :class="{ 'on-hover': hover }"
                 >
-                  <h4 class="text-center pt-2 pb-0">{{item.name}}</h4>  
+                  <h4 class="px-2 pt-2 pb-0">{{item.name}}</h4>  
                   <v-card-text class="caption py-0 px-2">{{item.description}}</v-card-text>      
                   <v-fade-transition>
                     <v-overlay
@@ -78,7 +59,7 @@
           </v-col>
           <v-col cols="4">
             <v-list-item class="text-right">
-              <v-list-item-subtitle>{{itemsPerPage}} Post por pagina</v-list-item-subtitle>
+              <v-list-item-subtitle>{{itemsPerPage}} Entradas por página</v-list-item-subtitle>
               <v-list-item-subtitle v-if="page != pageCount">
                 {{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}
               </v-list-item-subtitle>
