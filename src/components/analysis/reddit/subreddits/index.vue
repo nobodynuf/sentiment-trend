@@ -1,8 +1,7 @@
 <template>
   <v-layout wrap>
-     <v-flex mt-3 xs12>
+     <v-flex xs12>
       <v-layout wrap align-center>
-        <v-flex xs7></v-flex>
         <v-flex xs12>   
           <v-layout wrap align-center>
             <v-flex xs7>

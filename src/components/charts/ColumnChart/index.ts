@@ -1,20 +1,27 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Chart } from 'highcharts-vue'
 import { Options, SeriesColumnOptions} from 'highcharts'
-
+import '@/plugins/vuetify'
 @Component({
     components: {
         'hc-chart': Chart
     }
 })
 export default class ColumnChart extends Vue {
-    options: Options = {
+    options: any = {
         chart: {
             type: 'column',
         },
         title: {
             text: 'Solar Employment Growth by Sector, 2010-2016'
         },    
+        colors: [
+            this.$vuetify.theme.themes.light.chart1,
+            this.$vuetify.theme.themes.light.chart2,
+            this.$vuetify.theme.themes.light.chart3,
+            this.$vuetify.theme.themes.light.chart4,
+            this.$vuetify.theme.themes.light.chart5
+        ],
         tooltip: {
             valueSuffix: ' m/s'
         },

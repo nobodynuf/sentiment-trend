@@ -1,20 +1,16 @@
 <template>
     <v-layout wrap align-center fill-height justify-center>
-        <v-flex xs1></v-flex>
-        <v-flex xs7 mt-3>
-            <v-file-input @change="onFileChange" :rules="rules" v-model="file"  accept=".xlsx*" label="entrada de archivo excel"  dense></v-file-input>
+        <v-flex xs7 pb-0>
+            <v-file-input class="text-left" @change="onFileChange" :rules="rules" v-model="file"  accept=".xlsx*" label="entrada de archivo excel"  dense></v-file-input>
         </v-flex>
-        <v-flex xs2>
+        <v-flex xs5 pb-0>
             <v-btn  @click="submitFile" :disabled="fileInputDisabled" 
              small color="primary">Subir
                 <v-icon right dark>mdi-cloud-upload</v-icon>
             </v-btn>
         </v-flex>
-        <v-flex xs2></v-flex>
-        <v-flex xs7> 
-            <v-btn color="green" @click="getTemplate" text >
-                Descargar Plantilla
-            </v-btn>
+        <v-flex xs12 pt-0 ml-1 text-left> 
+                <div @click="getTemplate" class="body-2 underline">Descargar plantilla</div>
         </v-flex>
         <v-flex xs12>
             <v-card outlined v-if="fileSet.length > 0" class="mx-auto">
@@ -39,3 +35,10 @@
     </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>
+<style scoped>
+.underline {
+  text-decoration: underline;
+  color: green;
+  cursor: pointer;
+}
+</style>

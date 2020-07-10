@@ -8,13 +8,20 @@ import { Options, SeriesLineOptions } from 'highcharts'
     }
 })
 export default class LineChart extends Vue {
-    options: Options = {
+    options: any = {
         chart: {
             type: 'line',
         },
         title: {
             text: 'Monthly Average Temperature'
         },
+        colors: [
+            this.$vuetify.theme.themes.light.chart1,
+            this.$vuetify.theme.themes.light.chart2,
+            this.$vuetify.theme.themes.light.chart3,
+            this.$vuetify.theme.themes.light.chart4,
+            this.$vuetify.theme.themes.light.chart5
+        ],
         tooltip: {
             valueSuffix: ' m/s'
         },

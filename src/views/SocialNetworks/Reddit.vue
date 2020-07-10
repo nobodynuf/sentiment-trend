@@ -9,7 +9,7 @@
                 <img src="@/assets/redditIcon.png" width="150" >  </h1>
             </v-flex>
             <v-flex xs12>
-              <v-tabs app background-color="#FF4301" grow dark>
+              <v-tabs app background-color="redditTab" grow dark>
                 <v-tab href="#tab-1">Análisis total</v-tab>
                 <v-tab-item value="tab-1">
                   <r-subr></r-subr>
