@@ -27,7 +27,6 @@ export interface RedditUser {
 }
 
 export interface TwitterUser {
-    analysis: {[key: string] : number}
     id: string
     name: string
     location: string
@@ -36,12 +35,13 @@ export interface TwitterUser {
     verified: string
     tweets_counts: number
     tweets: Tweet[]
+    analysis: Analysis
 }
 
 export interface Hashtag {
-    analysis: {[key: string] : number}
     name: string
     tweets: Tweet[]
+    analysis: Analysis
 }
 
 export interface Tweet {
@@ -92,4 +92,27 @@ export const factor_emoji = {
     "positive" : "😀",
     "neutral": "😐",
     "negative": "😡"
+}
+
+export const tfactor: {[key:string] : string} = {
+    asertividad : "Asertividad",
+    autoconciencia_emocional : "Autoconciencia Emocional",
+    //autocontrol_emocional: "Autocontrol Emocional",
+    autoestima: "Autoestima",
+    colaboracion_cooperacion: "Colaboración y Cooperación",
+    comprension_organizativa: "Comprensión Organizativa",
+    //comunicacion_asertiva: "Comunicación Asertiva",
+    conciencia_critica: "Conciencia Crítica",
+    //desarrollar_estimular_otros: "Desarrollar a los demás",
+    desarrollo_relaciones: "Desarrollo de relaciones",
+    empatia: "Empatía",
+    influencia: "Influencia",
+    liderazgo : "Liderazgo",
+    manejo_conflictos: "Manejo de Conflictos",
+    motivacion_logro: "Motivación de Logro",
+    optimismo: "Optimismo",
+    percepcion_comprension_emocional: "Percepción/Comprensión Emocional",
+    relacion_social: "Relación social",
+    tolerancia_frustracion: "Tolerancia a la frustración",
+    violencia: "Violencia",
 }

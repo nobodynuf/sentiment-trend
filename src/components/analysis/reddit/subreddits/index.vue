@@ -21,7 +21,7 @@
             <h3>{{data_title}} </h3> <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular>
           </v-flex>
           <v-flex xs12>
-            <span class="subtitle-2 text--grey" v-if="!loading">No hay registros inválidos</span>
+            <span class="subtitle-2 grey--text" v-if="!loading">No hay registros inválidos</span>
           </v-flex>
           <v-flex xs12>
             <v-carousel show-arrows-on-hover>

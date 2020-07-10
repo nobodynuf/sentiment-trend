@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
-import { RedditUser, DataTable } from '@/types'
+import { RedditUser, DataTable, Subreddit } from '@/types'
 
 @Component({
     components:{

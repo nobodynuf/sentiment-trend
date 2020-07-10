@@ -36,7 +36,7 @@ export default class Rtab extends Vue {
             {
                 text: "Descripción",
                 value: "description",
-                align:"center"
+                align:"left"
             },
             {
                 text: "",

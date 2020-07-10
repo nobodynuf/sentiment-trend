@@ -4,7 +4,7 @@
         <v-navigation-drawer v-model="drawer" clipped app>
             <v-list shaped nav dense >
                 <v-list-item
-                    color="teal darken-4"
+                    color="primary darken-1"
                     flat
                     v-for="link in mainLinks"
                     :key="link.route"

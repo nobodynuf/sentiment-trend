@@ -21,11 +21,12 @@
           :no-data-text="subTable.noDataText"
       >
         <template  v-slot:item._actions="{item}">
-          <v-btn outlined color="indigo" small @click="checkDetail(item.id)">revisar</v-btn>
+          <v-btn outlined color="primary" small @click="checkDetail(item.id)">revisar</v-btn>
         </template>
       </v-data-table>
-    <v-container v-if="toggle_exclusive == 1">
-    <v-row >
+    </v-flex>
+    <v-container v-if="toggle_exclusive == 1" class="px-0">
+      <v-row class="px-0">
         <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
           :key="index" cols="4">
           <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
@@ -75,7 +76,6 @@
         </v-col>
       </v-row>
     </v-container>
-    </v-flex>
       <v-dialog v-model="detail_modal" width="1140px">
         <v-layout wrap v-if="detail_modal">
           <v-flex xs12>
@@ -95,6 +95,7 @@
                           fab
                           v-bind="attrs"
                           v-on="on"
+                          class="ml-3"
                         >
                           <v-icon small>translate</v-icon>
                         </v-btn>
@@ -107,9 +108,6 @@
                   <v-flex xs12>
                     <v-chip label small color="primary" class="mr-3">ID: {{submission.id}}</v-chip>
                     <v-chip label small color="primary">Comentarios: {{submission.n_comments}}</v-chip>
-                    <v-chip label color="white">
-                      <v-img width="30px" :src="emoji"></v-img>
-                    </v-chip>
                   </v-flex>
                 </v-layout>
               </v-card-title>
@@ -119,6 +117,8 @@
                     <v-flex xs7>
                       <v-card outlined>
                         <v-card-text>
+                          
+                          <v-markdown v-if="submission.text">{{submission.text}}</v-markdown>
                           <v-menu
                             v-if="submission.text"
                             v-model="menu_body"
@@ -141,7 +141,6 @@
                               <v-card-text>{{translated_body}}</v-card-text>
                             </v-card>
                           </v-menu>
-                          <v-markdown v-if="submission.text">{{submission.text}}</v-markdown>
                           <span class="body-1 font-italic" v-else>Entrada sin cuerpo</span>
                         </v-card-text>
                       </v-card>

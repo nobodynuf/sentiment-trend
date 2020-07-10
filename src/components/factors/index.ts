@@ -1,6 +1,6 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
-import { DataTable } from '@/types';
+import { DataTable, tfactor } from '@/types';
 
 @Component
 export default class FactorEmo extends Vue {
@@ -29,7 +29,7 @@ export default class FactorEmo extends Vue {
         this.table.data = []
         this.$set(this.table, 'data', Object.keys(this.analysis).map(key => {
             return {
-                factor: key.replace(/[_]/gi," "),
+                factor: tfactor[key],
                 value: this.analysis[key]
             }
         }))
@@ -37,17 +37,17 @@ export default class FactorEmo extends Vue {
     }
 
     getColor (value: number) {
-        if (value > 75) return 'green'
-        else if (value > 50) return 'green'
-        else if (value > 25) return 'green'
-        else return 'green'
+        if (value > 75) return '#50b480'
+        else if (value > 50) return '#68c3a0'
+        else if (value > 25) return '#7fd0b2'
+        else return '#b3e3d6'
       }
     @Watch("analysis", {deep: true})
     async onChange(){
         this.table.data = []
         this.$set(this.table, 'data', Object.keys(this.analysis).map(key => {
             return {
-                factor: key.replace(/[_]/gi," "),
+                factor: tfactor[key],
                 value: this.analysis[key]
             }
         }))

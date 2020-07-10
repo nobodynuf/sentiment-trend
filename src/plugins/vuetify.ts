@@ -7,8 +7,10 @@ export default new Vuetify({
     theme : {
         themes : {
             light : {
-                primary : colors.teal.darken2,
-                secondary : colors.purple.darken3
+                primary : "#28383c",
+                secondary : colors.purple.darken3,
+                reddit: "#ff7f0e",
+                twitter: "#01b8aa"
             }
         }
     }

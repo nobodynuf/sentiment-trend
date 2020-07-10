@@ -18,9 +18,9 @@
                   <line-chart></line-chart>
                 </v-card>
               </v-col > 
-              <v-col cols="12">
-                <v-card outlined>
-                  <column-chart></column-chart>
+              <v-col cols="6">
+                <v-card class="elevation-5">
+                  <factor-chart></factor-chart>
                 </v-card>
               </v-col> 
             </v-row>

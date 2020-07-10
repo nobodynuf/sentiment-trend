@@ -20,30 +20,31 @@
           :no-data-text="subTable.noDataText"
       >
           <template  v-slot:item._actions="{item}">
-            <v-btn outlined color="indigo" small @click="checkDetail(item.id)">revisar</v-btn>
+            <v-btn outlined color="primary" small @click="checkDetail(item.id)">revisar</v-btn>
           </template>
       </v-data-table>
-      <v-container v-if="toggle_exclusive == 1">
-        <v-row>
+      <v-container v-if="toggle_exclusive == 1" class="px-0">
+        <v-row class="px-0">
           <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
           :key="index" cols="12">
             <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
                 class="pt-0 pb-3 px-2">
               <v-hover v-slot:default="{ hover }">
-                <v-card class="pa-1 pb-0" outlined
+                <v-card
+                  outlined
                   @click="checkDetail(item.id)"
                   :class="{ 'on-hover': hover }"
                 >
-                  <h4 class="px-2 pt-2 pb-0">{{item.name}}</h4>  
-                  <v-card-text class="caption py-0 px-2">{{item.description}}</v-card-text>      
+                  <h4 class="text-start pl-3 pt-2 pb-0">{{item.name}}</h4>  
+                  <v-card-text class="caption pl-3 py-0 px-2">{{item.description}}</v-card-text>      
                   <v-fade-transition>
                     <v-overlay
-                      opacity="0.7"
+                      opacity="0.5"
                       v-if="hover"
                       absolute
                       color="primary"
                     >
-                      <v-card-title> Ver más información</v-card-title>
+                      <v-card-title>Ver más información</v-card-title>
                     </v-overlay>
                   </v-fade-transition>
                 </v-card>
@@ -103,9 +104,6 @@
                     <v-chip label small color="primary" class="mr-3">ID: {{submission.id}}</v-chip>
                     <v-chip label small color="primary" class="mr-3">suscriptores: {{submission.subscribers}}</v-chip>
                     <v-chip label small color="primary">Publicaciones: {{submission.n_entries}}</v-chip>
-                    <v-chip label color="white">
-                      <v-img width="30px" :src="emoji"></v-img>
-                    </v-chip>
                   </v-flex>
                 </v-layout>
               </v-card-title>

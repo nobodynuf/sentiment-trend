@@ -1,16 +1,16 @@
 <template>
- <v-container class="twitter" >
+ <v-container >
     <v-layout wrap>
       <v-flex xs12>
         <v-card elevation="4">
           <v-layout wrap pa-3 justify-center> 
             <v-flex xs12>
               <h1 class="text-center">
-                <img src="@/assets/twitterIcon.png" width="182">  
+                <v-icon color="twitter" size="55px">mdi-twitter</v-icon> Twitter
               </h1>
             </v-flex>
             <v-flex xs12>
-              <v-tabs background-color="#00acee" grow dark>
+              <v-tabs background-color="twitter" grow dark>
                 <v-tab href="#tab-1">Análisis total</v-tab>
                 <v-tab-item value="tab-1">
                   <t-hasht></t-hasht>

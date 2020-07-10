@@ -1,76 +1,71 @@
-import { Component, Vue, Watch } from 'vue-property-decorator'
-import { Chart } from 'highcharts-vue'
-import { Options, SeriesColumnOptions} from 'highcharts'
+import {Component, Vue, Watch, Prop} from "vue-property-decorator"
+import {Chart} from "highcharts-vue"
+import {Options, SeriesColumnOptions} from "highcharts"
+import {$debug} from "@/utils"
+
+const colors = ["#233142", "#4f9da6", "#facf5a", "#ff5959"]
 
 @Component({
     components: {
-        'hc-chart': Chart
-    }
+        "hc-chart": Chart,
+    },
 })
 export default class ColumnChart extends Vue {
     options: Options = {
         chart: {
-            type: 'column',
+            type: "bar",
         },
         title: {
-            text: 'Solar Employment Growth by Sector, 2010-2016'
-        },    
+            text: "Manifestación Emocional por Hashtag",
+        },
         tooltip: {
-            valueSuffix: ' m/s'
+            valueSuffix: "",
         },
         accessibility: {
             point: {
-                valueDescriptionFormat: "%"
-            }
+                valueDescriptionFormat: "%",
+            },
         },
         legend: {
-            enabled: true,
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle'
-        },    
+            layout: "vertical",
+            align: "right",
+            verticalAlign: "middle",
+            itemMarginTop: 10,
+            itemMarginBottom: 10,
+        },
         plotOptions: {
-            column: {
+            bar: {
                 dataLabels: {
-                    enabled: false
+                    enabled: true,
                 },
-                enableMouseTracking: true
             },
-            series: {
-                label: {
-                    connectorAllowed: false
-                },
-                pointStart: 2010
-            }
         },
-        credits: {
-            enabled: false
-        },   
-        xAxis: {
-            accessibility: {
-                rangeDescription: 'Range: 2010 to 2017'
-            }
-        },
+        colors: colors,
         yAxis: {
             title: {
-                text: 'Number of Employees'
-            }
+                text: "Manifestación emocional",
+            },
         },
-        series: [{
-            name: 'Installation',
-            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-        }, {
-            name: 'Manufacturing',
-            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-        }, {
-            name: 'Sales & Distribution',
-            data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-        }, {
-            name: 'Project Development',
-            data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-        }, {
-            name: 'Other',
-            data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-        }] as Array<SeriesColumnOptions>
+        xAxis: {
+            categories: [""],
+            title: {
+                text: "Factor emocional",
+            },
+        },
+        series: [
+            {
+                name: "",
+                data: [{}],
+            },
+        ] as Array<SeriesColumnOptions>,
+    }
+
+    @Prop({default: () => []})
+    data!: {name: string; data: number}[]
+
+    @Watch("data")
+    onChangeData() {
+        $debug("log", this.data)
+        this.$set(this.options, "series", this.data)
     }
 }

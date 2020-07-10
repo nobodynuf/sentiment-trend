@@ -9,7 +9,7 @@
             </h1>
           </v-flex>
           <v-flex xs12>
-            <v-tabs background-color="teal" dark>
+            <v-tabs background-color="primary">
               <v-tab href="#tab-1">Análisis total</v-tab>
               <v-tab-item value="tab-1">
                 <v-layout wrap>
@@ -18,7 +18,7 @@
                       <v-layout wrap pa-2>
                         <v-flex xs12>
                           <h3>123 Registros</h3>
-                          <span class="subtitle-2 text--grey">No hay registros inválidos</span>
+                          <span class="subtitle-2 grey--text text--lighten-3">No hay registros inválidos</span>
                         </v-flex>
                         <v-flex xs12>
                           <v-carousel cycle :show-arrows="false">
@@ -66,7 +66,7 @@
                       <v-layout wrap pa-2>
                         <v-flex xs12>
                           <h3>0 Registros</h3>
-                          <span class="subtitle-2 text--grey">No hay registros inválidos</span>
+                          <span class="subtitle-2 text--grey text--lighten-3">No hay registros inválidos</span>
                         </v-flex>
                         <v-flex xs12>
                           <v-carousel cycle :show-arrows="false">
@@ -111,7 +111,7 @@
                       <v-layout wrap pa-2>
                         <v-flex xs12>
                           <h3>123 Registros</h3>
-                          <span class="subtitle-2 text--grey">No hay registros inválidos</span>
+                          <span class="subtitle-2 text--grey text--lighten-3">No hay registros inválidos</span>
                         </v-flex>
                         <v-flex xs12>
                           <v-carousel cycle :show-arrows="false">

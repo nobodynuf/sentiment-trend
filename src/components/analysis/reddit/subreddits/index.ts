@@ -7,7 +7,7 @@ import RTable from '@/components/tables/reddit/RTable/index.vue'
 import FileInput from '@/components/fileInput/index.vue'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
-import { Subreddit, DataTable } from '@/types'
+import { Subreddit, DataTable, tfactor } from '@/types'
 
 @Component({
     components:{
@@ -34,7 +34,8 @@ export default class SubredditsAnalyzer extends Vue {
     async init(){
         this.loading = true;
         this.data_title = "Cargando registros por defecto..."
-        this.subreddits = await this.getSubreddits();
+        const {n_entries,subreddits} = await this.getSubreddits();
+        this.subreddits = subreddits;
         let total = 0
         Object.keys(this.subreddits[0].analysis).map(key => {
             this.$set(this.analysis, key, 0);
@@ -51,20 +52,20 @@ export default class SubredditsAnalyzer extends Vue {
             let div = this.analysis[key]/this.subreddits.length;
             this.$set(this.analysis, key, div);
             this.pie_analysis.push({
-                name: key.replace(/[_]/gi," "),
+                name: tfactor[key],
                 value: this.analysis[key],
                 y: this.analysis[key]*100/total,
                 type: "pie"
             })
         });
         this.$set(this.subreddits, "subreddit", this.subreddits)
-        this.data_title = "X Registros";
+        this.data_title = `${n_entries} Registros`;
         this.loading = false;
     }
 
     async getSubreddits(){
-        const res : AxiosResponse<{subreddits: Array<Subreddit>}> = await axios.get("/reddit/subreddit");
-        return res.data.subreddits;
+        const res : AxiosResponse<{subreddits: Array<Subreddit>, n_entries: number}> = await axios.get("/reddit/subreddit");
+        return res.data;
     }
 
 }

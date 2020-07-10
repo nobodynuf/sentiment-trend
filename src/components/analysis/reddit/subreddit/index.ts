@@ -4,7 +4,7 @@ import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
 import SubTable from '@/components/tables/reddit/SubTable/index.vue'
-import { Subreddit, RedditSub, DataTable, factor_emoji } from '@/types';
+import { Subreddit, RedditSub, DataTable, factor_emoji, tfactor } from '@/types';
 import { AxiosResponse } from 'axios';
 import VMarkdown from 'vue-markdown'
 import axios from '@/axios'
@@ -85,7 +85,7 @@ export default class SubredditAnalyzer extends Vue {
         Object.keys(this.subreddit.analysis).map(key => {
             if(this.subreddit){
                 this.pie_analysis.push({
-                    name:key.replace(/[_]/gi," "),
+                    name:tfactor[key],
                     y: this.subreddit.analysis[key]
                 })
             }

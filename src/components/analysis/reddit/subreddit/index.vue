@@ -2,8 +2,7 @@
   <v-layout wrap elevation="4">
     <v-flex xs12>
       <v-layout wrap align-center>
-        <v-flex xs1></v-flex>
-        <v-flex xs3>
+        <v-flex xs4>
           <v-text-field
             prepend-icon="search"
             v-model="search_input"
@@ -33,7 +32,7 @@
         <v-layout wrap pa-2>
           <v-flex xs12>
             <h3>{{n_entries}} Registros</h3>
-            <span class="subtitle-2 text--grey">No hay registros inválidos</span>
+            <span class="subtitle-2 grey--text">No hay registros inválidos</span>
           </v-flex>
           <v-flex xs12>
             <v-carousel show-arrows-on-hover>

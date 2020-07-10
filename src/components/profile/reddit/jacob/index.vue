@@ -108,7 +108,7 @@
                     <v-flex xs8 mt-2>
                       <v-progress-linear
                         rounded
-                        color="indigo"
+                        color="primary"
                         v-model="profile.factors.emotional_regulation.object_index"
                         height="25"
                         reactive
