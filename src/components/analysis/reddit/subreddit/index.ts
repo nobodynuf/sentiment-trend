@@ -23,7 +23,7 @@ const neutral = require('@/assets/emojis/neutral.png')
     }
 })
 export default class SubredditAnalyzer extends Vue {
-    search_input = "golang";
+    search_input = "";
     voidTextFiel = false
     
     subreddit! : Subreddit
@@ -58,7 +58,7 @@ export default class SubredditAnalyzer extends Vue {
             Object.keys(this.subreddit.analysis).map(key => {
                 if(this.subreddit){
                     this.pie_analysis.push({
-                        name:key.replace(/[_]/gi," "),
+                        name: tfactor[key],
                         y: this.subreddit.analysis[key]
                     })
                 }

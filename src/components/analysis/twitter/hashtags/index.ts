@@ -5,7 +5,7 @@ import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
 import FileInput from '@/components/fileInput/index.vue'
 import HsTable from '@/components/tables/twitter/HsTable/index.vue'
-import { Hashtag } from '@/types';
+import { Hashtag, tfactor } from '@/types';
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
 @Component({
@@ -55,7 +55,7 @@ export default class HashtagsAnalyzer extends Vue {
             let div = this.analysis[key]/this.hashtags.length;
             this.$set(this.analysis, key, div);
             this.pie_analysis.push({
-                name: key.replace(/[_]/gi," "),
+                name: tfactor[key],
                 value: this.analysis[key],
                 y: this.analysis[key]*100/total,
                 type: "pie"

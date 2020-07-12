@@ -44,7 +44,7 @@ export default class UserAnalyzer extends Vue {
             Object.keys(this.user.analysis).map(key => {
                 if(this.user){
                     this.pie_analysis.push({
-                        name:key.replace(/[_]/gi," "),
+                        name: tfactor[key],
                         y: this.user.analysis[key]
                     })
                 }
@@ -62,6 +62,7 @@ export default class UserAnalyzer extends Vue {
         const {n_entries,user} = await this.getUser(name);
         this.n_entries = user.n_entries;
         this.user = user;
+        this.$store.commit("set_reddit_user", {n_entries, user});
         this.submissions = this.user.submissions
         this.analysis = this.user.analysis
         this.iconImg = this.user.icon_img

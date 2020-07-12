@@ -2,7 +2,6 @@
     <v-layout wrap=""> 
         <v-flex xs12>
         <v-layout wrap align-center>
-            <v-flex xs1></v-flex>
             <v-flex xs4>
               <v-text-field
                   prepend-icon="search"

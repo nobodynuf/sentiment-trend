@@ -6,7 +6,7 @@ import FactorEmo from '@/components/factors/index.vue'
 import TwTable from '@/components/tables/twitter/TwTable/index.vue'
 import TwUserProfile from '@/components/profile/twitter/user/index.vue'
 import axios from '@/axios'
-import { TwitterUser } from '@/types';
+import { TwitterUser, tfactor } from '@/types';
 import { AxiosResponse } from 'axios';
 
 @Component({
@@ -46,7 +46,7 @@ export default class UserAnalyzer extends Vue {
                 this.$set(this.analysis, key, this.user.analysis[key]);
                 if(this.user){
                     this.pie_analysis.push({
-                        name:key.replace(/[_]/gi," "),
+                        name:tfactor[key],
                         y: this.user.analysis[key]
                     })
                 }
@@ -64,7 +64,6 @@ export default class UserAnalyzer extends Vue {
         const res = await this.getUser(name);
         this.n_entries = res.n_entries
         this.user = res.user
-        console.log(this.user)
         const payload = {
             n_entries: this.n_entries,
             user: this.user
@@ -74,7 +73,7 @@ export default class UserAnalyzer extends Vue {
             this.$set(this.analysis, key, this.user.analysis[key]);
             if(this.user){
                 this.pie_analysis.push({
-                    name:key.replace(/[_]/gi," "),
+                    name:tfactor[key],
                     y: this.user.analysis[key]
                 })
             }

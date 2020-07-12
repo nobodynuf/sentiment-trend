@@ -15,4 +15,5 @@ import Users from '@/components/analysis/reddit/users/index.vue'
     }
 })
 export default class Reddit extends Vue {
+    tab = null
 }

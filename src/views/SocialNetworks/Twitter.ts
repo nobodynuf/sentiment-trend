@@ -13,4 +13,5 @@ import User from '@/components/analysis/twitter/user/index.vue'
     }
 })
 export default class Twitter extends Vue {
+    tab = null;
 }

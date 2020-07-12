@@ -2,7 +2,7 @@
   <v-layout wrap>
     <v-flex xs12>
       <v-layout wrap align-center>
-        <v-flex xs6>
+        <v-flex xs4>
           <v-text-field
             prepend-icon="search"
             v-model="search_input"
@@ -27,7 +27,7 @@
         </v-flex>
       </v-layout>
     </v-flex>
-    <v-flex xs6>
+    <v-flex xs7>
       <v-card outlined>
         <v-layout wrap pa-2>
           <v-flex xs12>
@@ -43,7 +43,7 @@
         </v-layout>
       </v-card>
     </v-flex>
-    <v-flex xs6>
+    <v-flex xs5>
       <v-card outlined v-if="user" class="mb-3">
         <div class="d-flex flex-no-wrap justify-space-between">
           <div>

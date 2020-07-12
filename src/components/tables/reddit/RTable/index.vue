@@ -20,7 +20,7 @@
           :no-data-text="subTable.noDataText"
       >
           <template  v-slot:item._actions="{item}">
-            <v-btn outlined color="primary" small @click="checkDetail(item.id)">revisar</v-btn>
+            <v-btn  color="primary" small @click="checkDetail(item.id)">revisar</v-btn>
           </template>
       </v-data-table>
       <v-container v-if="toggle_exclusive == 1" class="px-0">

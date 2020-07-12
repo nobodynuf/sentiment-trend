@@ -7,7 +7,7 @@ import TwTable from '@/components/tables/twitter/TwTable/index.vue'
 import TwHashtagProfile from '@/components/profile/twitter/hashtag/index.vue'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios';
-import { Hashtag } from '@/types';
+import { Hashtag, tfactor } from '@/types';
 
 @Component({
     components:{
@@ -50,7 +50,7 @@ export default class HashtagAnalyzer extends Vue {
                 this.$set(this.analysis, key, this.hashtag.analysis[key]);
                 if(this.hashtag){
                     this.pie_analysis.push({
-                        name:key.replace(/[_]/gi," "),
+                        name:tfactor[key],
                         y: this.hashtag.analysis[key]
                     })
                 }
@@ -77,7 +77,7 @@ export default class HashtagAnalyzer extends Vue {
             this.$set(this.analysis, key, this.hashtag.analysis[key]);
             if(this.hashtag){
                 this.pie_analysis.push({
-                    name:key.replace(/[_]/gi," "),
+                    name:tfactor[key],
                     y: this.hashtag.analysis[key]
                 })
             }
