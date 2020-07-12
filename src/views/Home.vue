@@ -5,7 +5,7 @@
         <v-card elevation="4">
           <v-layout wrap pa-4 justify-center>
             <v-flex xs12 >
-              <h1 class="text-center">Main Page</h1>
+              <h1 class="text-center">Panel de Análisis</h1>
             </v-flex>
             <v-row>
               <v-col cols="6">

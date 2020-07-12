@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <navBar />
-        <v-content class="grey lighten-3">
+        <v-content class="grey lighten-2">
             <v-container grid-list-md>
                 <v-btn
                     v-scroll="onScroll"

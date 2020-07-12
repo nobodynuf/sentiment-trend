@@ -11,13 +11,21 @@ const colors = ["#233142", "#4f9da6", "#facf5a", "#ff5959"]
     },
 })
 export default class ColumnChart extends Vue {
-    options: Options = {
+    options: any = {
         chart: {
             type: "bar",
         },
         title: {
             text: "Manifestación Emocional por Hashtag",
-        },
+
+        },    
+        colors: [
+            this.$vuetify.theme.themes.light.chart1,
+            this.$vuetify.theme.themes.light.chart2,
+            this.$vuetify.theme.themes.light.chart3,
+            this.$vuetify.theme.themes.light.chart4,
+            this.$vuetify.theme.themes.light.chart5
+        ],
         tooltip: {
             valueSuffix: "",
         },
@@ -40,7 +48,7 @@ export default class ColumnChart extends Vue {
                 },
             },
         },
-        colors: colors,
+        //colors: colors,
         yAxis: {
             title: {
                 text: "Manifestación emocional",

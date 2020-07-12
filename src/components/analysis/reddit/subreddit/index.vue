@@ -15,7 +15,7 @@
           <v-btn
             depressed
             small
-            color="primary"
+            outlined
             :disabled="voidTextFiel"
             :loading="loading"
             @click="findSubreddit"

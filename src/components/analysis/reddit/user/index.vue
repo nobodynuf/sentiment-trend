@@ -69,12 +69,12 @@
     </v-flex>
     <v-flex xs12>
       <v-card outlined>
-        <v-card-title>Publicaciones</v-card-title>
-        <v-card-text v-if="enabledSub">
-          <SubTable :submissions="user.submissions"></SubTable>
-        </v-card-text>
-      </v-card>
-    </v-flex>
+          <v-card-title>Publicaciones</v-card-title>
+          <v-card-text v-if="enabledSub">
+            <SubTable :submissions="user.submissions"></SubTable>
+          </v-card-text>
+        </v-card>
+      </v-flex>
   </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

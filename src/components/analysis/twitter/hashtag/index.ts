@@ -20,7 +20,7 @@ import { Hashtag } from '@/types';
 })
 
 export default class HashtagAnalyzer extends Vue {
-    search_input = "ChaoBlumel";
+    search_input = "chess";
     voidTextFiel = false
 
     n_entries : number = 0;

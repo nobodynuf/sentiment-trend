@@ -39,12 +39,11 @@
                   <v-card-text class="caption pl-3 py-0 px-2">{{item.description}}</v-card-text>      
                   <v-fade-transition>
                     <v-overlay
-                      opacity="0.5"
+                      opacity="0.08"
                       v-if="hover"
                       absolute
-                      color="primary"
+                      color="black"
                     >
-                      <v-card-title>Ver más información</v-card-title>
                     </v-overlay>
                   </v-fade-transition>
                 </v-card>

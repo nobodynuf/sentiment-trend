@@ -64,6 +64,7 @@ export default class UserAnalyzer extends Vue {
         const res = await this.getUser(name);
         this.n_entries = res.n_entries
         this.user = res.user
+        console.log(this.user)
         const payload = {
             n_entries: this.n_entries,
             user: this.user

@@ -27,7 +27,7 @@
     <v-container v-if="toggle_exclusive == 1">
       <v-row >
         <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
-          :key="index" cols="4">
+          :key="index" cols="2">
           <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
             class="pt-0 pb-3 px-2">
             <v-hover  v-slot:default="{ hover }">
@@ -35,15 +35,14 @@
                 @click="checkDetail(item.name)"
                 :class="{ 'on-hover': hover }"
               >
-                  <h4 class="text-center text--secondary">{{item.name}}</h4> 
+                  <h4 class="text-left text--secondary">{{item.name}}</h4> 
                     <v-fade-transition>
                       <v-overlay
-                        opacity="0.7"
+                        opacity="0.08"
                         v-if="hover"
                         absolute
-                        color="primary"
+                        color="black"
                       >
-                        <v-card-title>Ver más información</v-card-title>
                       </v-overlay>
                     </v-fade-transition>
                 </v-card>

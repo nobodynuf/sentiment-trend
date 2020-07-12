@@ -35,20 +35,19 @@
                 @click="checkDetail(item.id)"
                 :class="{ 'on-hover': hover }"
               >
-                  <h5 class="text-center text--secondary">{{item.text}}</h5> 
+                  <h5 class="text-left text--secondary">{{item.text}}</h5> 
                   <v-divider></v-divider>
-                  <div class="text-center pa-0">
+                  <div class="text-left pa-0">
                   <h5>{{item.retweet_count}} Retweets
                   </h5>
                 </div>
                     <v-fade-transition>
                       <v-overlay
-                        opacity="0.7"
+                        opacity="0.08"
                         v-if="hover"
                         absolute
-                        color="primary"
+                        color="black"
                       >
-                        <v-card-title> Ver más información</v-card-title>
                       </v-overlay>
                     </v-fade-transition>
                 </v-card>

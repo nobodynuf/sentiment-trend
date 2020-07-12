@@ -1,10 +1,10 @@
 <template>
   <v-layout wrap>
-    <v-flex class="text-center"> 
-      <v-chip class="mr-1" small tile label text-color="white" color="green lighten-2">0% - 25%</v-chip>
-      <v-chip class="mr-1" small tile label text-color="white" color="green lighten-1">26% - 50%</v-chip>
-      <v-chip class="mr-1" small tile label text-color="white" color="green ">51% - 75%</v-chip>
-      <v-chip small tile label text-color="white" color="teal darken-4">76% - 100%</v-chip>
+    <v-flex v-if="table.data.length != 0" class="text-right pr-5"> 
+      <v-chip small tile label text-color="white" :color="color0_25">0% - 25%</v-chip>
+      <v-chip small tile label text-color="white" :color="color26_50">26% - 50%</v-chip>
+      <v-chip small tile label text-color="white" :color="color51_75">51% - 75%</v-chip>
+      <v-chip small tile label text-color="white" :color="color76_100">76% - 100%</v-chip>
       </v-flex>
     <v-flex xs12>      
       <v-data-table

@@ -21,6 +21,13 @@ export default class PieChart extends Vue {
         title: {
             text: 'Distribución de factores emocionales'
         },
+        colors: [
+            this.$vuetify.theme.themes.light.chart1,
+            this.$vuetify.theme.themes.light.chart2,
+            this.$vuetify.theme.themes.light.chart3,
+            this.$vuetify.theme.themes.light.chart4,
+            this.$vuetify.theme.themes.light.chart5
+        ],
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
             borderRadius: 18
@@ -30,7 +37,7 @@ export default class PieChart extends Vue {
                 valueSuffix: '%'
             }
         },
-        colors: colors,
+        //colors: colors,
         plotOptions: {
             pie: {
                 allowPointSelect: true,

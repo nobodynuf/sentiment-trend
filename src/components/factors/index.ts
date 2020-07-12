@@ -8,6 +8,10 @@ export default class FactorEmo extends Vue {
     @Prop({default : {}})
     analysis !: {[key: string] : number};
 
+    readonly color0_25 = "factor0_25";
+    readonly color26_50 = "factor26_50";
+    readonly color51_75 = "factor51_75";
+    readonly color76_100 = "factor76_100";
     table = new DataTable<{factor: string, value: number}>({
         headers: [
             {
@@ -18,7 +22,7 @@ export default class FactorEmo extends Vue {
             {
                 text: "",
                 value: "value",
-                align: "left"
+                align: "right"
             }
         ],
         rowsPerPageText: "Factores por página",
@@ -37,10 +41,10 @@ export default class FactorEmo extends Vue {
     }
 
     getColor (value: number) {
-        if (value > 75) return '#50b480'
-        else if (value > 50) return '#68c3a0'
-        else if (value > 25) return '#7fd0b2'
-        else return '#b3e3d6'
+        if (value > 75) return this.color76_100
+        else if (value > 50) return this.color51_75
+        else if (value > 25) return this.color26_50
+        else return this.color0_25
       }
     @Watch("analysis", {deep: true})
     async onChange(){

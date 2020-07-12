@@ -1,8 +1,7 @@
 <template>
-    <v-container class="navBar">   
-        
-        <v-navigation-drawer v-model="drawer" clipped app>
-            <v-list shaped nav dense >
+    <v-container class="navBar py-0 my-0">
+        <v-navigation-drawer v-model="drawer" app>
+            <v-list shaped nav dense>
                 <v-list-item
                     color="primary darken-1"
                     flat
@@ -37,14 +36,14 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-    <v-app-bar app dense >    
-        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>
-            Analizador de Factores Emocionales 
-        </v-toolbar-title>
-    </v-app-bar>
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-  </v-container>
+        <v-app-bar app dense color="indigo darken-2" class="white--text">
+            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-toolbar-title>
+                Analizador de Factores Emocionales
+            </v-toolbar-title>
+        </v-app-bar>
+        <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" />
+    </v-container>
 </template>
-<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>  
-<script src='./navBar.ts' lang='ts'/>
+<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+<script src="./navBar.ts" lang="ts" />
