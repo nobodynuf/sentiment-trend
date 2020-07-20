@@ -4,14 +4,10 @@ import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
 import SubTable from '@/components/tables/reddit/SubTable/index.vue'
-import { Subreddit, RedditSub, DataTable, factor_emoji, tfactor } from '@/types';
+import { Subreddit, RedditSub, tfactor } from '@/types';
 import { AxiosResponse } from 'axios';
 import VMarkdown from 'vue-markdown'
 import axios from '@/axios'
-
-const smile = require('@/assets/emojis/smile.png')
-const angry = require('@/assets/emojis/angry.png')
-const neutral = require('@/assets/emojis/neutral.png')
 
 @Component({
     components:{
@@ -31,9 +27,6 @@ export default class SubredditAnalyzer extends Vue {
     enabledSub = false
     sub_analysis : {[key: string] : number} = {}
 
-    emojis = factor_emoji
-    emoji = angry
-
     pie_analysis : {name: string, y: number}[] = []
     loading = false;
 
@@ -44,9 +37,12 @@ export default class SubredditAnalyzer extends Vue {
     menu_body = false;
     translated_body = "";
     
-    
     mounted() {
         this.loadSubreddit()
+        this.$vuetify.goTo(0,{
+            duration: 0,
+            offset: 0
+        })
     }
 
     loadSubreddit(){

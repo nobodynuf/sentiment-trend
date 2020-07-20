@@ -48,6 +48,16 @@
       </v-card>
     </v-flex>
     <v-flex xs5>
+      <v-card outlined v-if="enabledSub" class="mb-3">
+        <div class="d-flex flex-no-wrap justify-space-between">
+          <div>
+            <v-card-title class="headline">{{subreddit.name}}</v-card-title>
+            <v-card-subtitle class="mt-1">
+              <v-chip label class="mr-2 mt-2" >ID: {{subreddit.id}}</v-chip>
+            </v-card-subtitle>
+          </div>
+        </div>
+      </v-card>
       <v-card outlined>
         <v-card-title>Factores</v-card-title>
         <v-card-text v-if="enabledSub">

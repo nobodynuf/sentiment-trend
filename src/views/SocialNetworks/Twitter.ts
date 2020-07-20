@@ -13,5 +13,17 @@ import User from '@/components/analysis/twitter/user/index.vue'
     }
 })
 export default class Twitter extends Vue {
-    tab = null;
+    tab = null
+    updateTabHashtag : number = 0 
+    updateTabUser : number = 0 
+    
+    selectedHashtagEvent($event : any) {
+        this.updateTabHashtag++
+        this.tab = $event
+    }
+
+    selectedUserEvent($event : any) {
+        this.updateTabUser++
+        this.tab = $event
+    }
 }

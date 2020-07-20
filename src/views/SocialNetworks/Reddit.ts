@@ -16,4 +16,16 @@ import Users from '@/components/analysis/reddit/users/index.vue'
 })
 export default class Reddit extends Vue {
     tab = null
+    updateTabSubreddit : number = 0 
+    updateTabUser : number = 0 
+    
+    selectedSubredditEvent($event : any) {
+        this.updateTabSubreddit++
+        this.tab = $event
+    }
+
+    selectedUserEvent($event : any) {
+        this.updateTabUser++
+        this.tab = $event
+    }
 }

@@ -1,6 +1,6 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
-import { Subreddit, DataTable } from '@/types';
+import { TwitterUser, DataTable } from '@/types';
 
 @Component({
     components: {
@@ -9,17 +9,10 @@ import { Subreddit, DataTable } from '@/types';
 export default class Rtab extends Vue {
 
     @Prop({default : {}})
-    subreddits!: Subreddit
-
-    subreddit : Subreddit | undefined
+    users!: TwitterUser
+    user : TwitterUser | undefined
     
-    toggle_exclusive = 0
-    
-    page = 1
-    pageCount = 0
-    itemsPerPage = 12
-
-    subTable = new DataTable<Subreddit>({
+    subTable = new DataTable<TwitterUser>({
         headers: [
             {
                 text: "Nombre",
@@ -27,8 +20,7 @@ export default class Rtab extends Vue {
             },
             {
                 text: "Descripción",
-                value: "description",
-                align:"center"
+                value: "description"
             },
             {
                 text: "",
@@ -39,19 +31,26 @@ export default class Rtab extends Vue {
         noDataText: "Sin registro de entradas"
     });
 
+    toggle_exclusive = 0
+    
+    page = 1
+    pageCount = 0
+    itemsPerPage = 12
+
     mounted(){
         this.subTable.data = []
-        this.$set(this.subTable, "data", this.subreddits);
+        this.$set(this.subTable, "data", this.users);
         this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
     }
 
-    setSubreddit(id : string){   
-        const subreddit = this.subTable.data
-        .find((subreddit: { id: string }) => subreddit.id === id)
-        if(subreddit != undefined){
-            const n_entries = subreddit.n_entries
-            this.$store.commit("set_reddit_subreddit", {n_entries, subreddit});
-            this.$emit("selected-subreddit")
-        }   
+    setUser(id : string){   
+        const user = this.subTable.data
+        .find((user: { id: string }) => user.id === id)
+        if(user != undefined){
+            const n_entries = user.tweets_counts
+            this.$store.commit("set_twitter_user", {n_entries, user});
+            this.$emit("selected-user")
+        }
+        
     }
 }

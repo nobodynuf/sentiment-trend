@@ -31,6 +31,10 @@
         <v-card outlined>
             <v-layout wrap pa-2>
             <v-flex xs12>
+                <h3>{{n_entries}} Registros</h3>
+                <span class="subtitle-2 grey--text">No hay registros inválidos</span>
+            </v-flex>
+            <v-flex xs12>
                 <v-carousel show-arrows-on-hover>
                 <v-carousel-item>
                     <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
@@ -44,24 +48,22 @@
         </v-card>
     </v-flex>
     <v-flex xs5>
-        <v-layout wrap>
-            <v-flex v-if="enabledHashtag" xs12>
-            <v-card outlined>
-                <TwHashtagProfile :hashtag="hashtag" :nEntries="n_entries"></TwHashtagProfile>
-            </v-card>
-            </v-flex>
-            <v-flex xs12>
-            <v-card outlined>
-                <v-card-title>Factores
+        <v-card outlined v-if="enabledHashtag" class="mb-3">
+            <div class="d-flex flex-no-wrap justify-space-between">
+                <div>
+                    <v-card-title class="headline">{{hashtag.name}}</v-card-title>
+                </div>
+            </div>
+        </v-card>
+        <v-card outlined>
+            <v-card-title>Factores
                 <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
                 </v-progress-circular>
-                </v-card-title>
-                <v-card-text>
+            </v-card-title>
+            <v-card-text>
                 <factor-emo :analysis="analysis"></factor-emo>
-                </v-card-text>
-            </v-card>
-            </v-flex>
-        </v-layout>
+            </v-card-text>
+        </v-card>
     </v-flex>       
         <v-flex xs12>
             <v-card outlined>

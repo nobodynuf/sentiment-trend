@@ -80,13 +80,4 @@ export default class FileInput extends Vue {
             this.fileInputDisabled = true
         }
     }
-
-    deleteFile( file: File ){
-        let index = this.tableFileSet.indexOf( file );
-        index !== -1 && this.fileSet.splice( index, 1 );
-        index !== -1 && this.tableFileSet.splice( index, 1 );
-    }
-
-
-
 }

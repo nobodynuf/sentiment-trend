@@ -98,7 +98,7 @@ export default new Vuex.Store<IStore>({
       if(payload.social == "reddit"){
         let data : IStore["posted_data"]["reddit"] = payload.data as IStore["posted_data"]["reddit"]
         state.posted_data.reddit = data
-      } else {
+      } else if(payload.social == "twitter") {
         let data : IStore["posted_data"]["twitter"] = payload.data as IStore["posted_data"]["twitter"]
         state.posted_data.twitter = data;
       }

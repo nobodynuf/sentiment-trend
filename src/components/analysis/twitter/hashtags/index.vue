@@ -20,7 +20,7 @@
             <h3>{{data_title}} </h3> <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular>
           </v-flex>
           <v-flex xs12>
-            <span class="subtitle-2 text--grey" v-if="!loading">No hay registros inválidos</span>
+            <span class="subtitle-2 grey--text" v-if="!loading">No hay registros inválidos</span>
           </v-flex>
           <v-flex xs12>
             <v-carousel show-arrows-on-hover>
@@ -35,33 +35,22 @@
         </v-layout>
       </v-card>
     </v-flex>
-        <v-flex xs5>
-        <v-layout wrap>
-            <v-flex v-if="enabledHashtag" xs12>
-            <v-card outlined>
-                <v-card-text>
-                    <v-chip tile label>Hashtags analizados: {{n_entries}}</v-chip>
-                </v-card-text>
-            </v-card>
-            </v-flex>
-            <v-flex xs12>
-            <v-card outlined>
-                <v-card-title>Factores
-                <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
-                </v-progress-circular>
-                </v-card-title>
-                <v-card-text>
-                <factor-emo :analysis="analysis"></factor-emo>
-                </v-card-text>
-            </v-card>
-            </v-flex>
-        </v-layout>
-    </v-flex>   
+    <v-flex xs5>
+      <v-card outlined>
+        <v-card-title>Factores 
+          <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
+          </v-progress-circular>
+        </v-card-title> 
+        <v-card-text> 
+          <factor-emo :analysis="analysis"></factor-emo>
+        </v-card-text>
+      </v-card>
+    </v-flex> 
     <v-flex xs12>
        <v-card outlined>
         <v-card-title>Hashtags <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular></v-card-title>
-        <v-card-text v-if="enabledHashtag">
-           <hs-table :hashtags="hashtags"></hs-table>
+        <v-card-text :key="num" v-if="enabledHashtag">
+           <hs-table @selected-hashtag="selectEvent" :hashtags="hashtags"></hs-table>
         </v-card-text>
       </v-card>
     </v-flex>

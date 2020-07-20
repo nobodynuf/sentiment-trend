@@ -17,7 +17,7 @@ import axios from '@/axios'
     }
 })
 export default class UserAnalyzer extends Vue {
-    search_input = "natefinch";
+    search_input = "";
     voidTextFiel = false
 
     pie_analysis : {name: string, y: number}[] = []
@@ -31,6 +31,10 @@ export default class UserAnalyzer extends Vue {
 
     mounted() {
         this.loadUser()
+        this.$vuetify.goTo(0,{
+            duration: 0,
+            offset: 0
+        })
     }
 
     loadUser() {

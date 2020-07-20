@@ -4,7 +4,7 @@
       <v-card flat>
         <v-btn-toggle v-model="toggle_exclusive" mandatory>
           <v-btn>
-            <v-icon>mdi-table</v-icon>
+            <v-icon>mdi-view-list</v-icon>
           </v-btn>
           <v-btn>
             <v-icon>mdi-view-module</v-icon>
@@ -33,6 +33,7 @@
             class="pt-0 pb-3 px-2">
             <v-hover  v-slot:default="{ hover }">
               <v-card class="pa-1 pb-0" outlined 
+                :elevation="hover ? 3 : 0"
                 @click="checkDetail(item.id)"
                 :class="{ 'on-hover': hover }"
               >
@@ -44,10 +45,10 @@
                 </div>
                     <v-fade-transition>
                       <v-overlay
-                        opacity="0.08"
+                        opacity="0.09"
                         v-if="hover"
                         absolute
-                        color="black"
+                        color="primary"
                       >
                       </v-overlay>
                     </v-fade-transition>

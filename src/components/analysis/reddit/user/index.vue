@@ -44,7 +44,7 @@
       </v-card>
     </v-flex>
     <v-flex xs5>
-      <v-card outlined v-if="user" class="mb-3">
+      <v-card outlined v-if="enabledSub" class="mb-3">
         <div class="d-flex flex-no-wrap justify-space-between">
           <div>
             <v-card-title class="headline">Perfil de {{user.name}}</v-card-title>
