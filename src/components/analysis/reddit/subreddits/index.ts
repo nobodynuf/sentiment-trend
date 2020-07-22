@@ -21,6 +21,7 @@ import { SocialMedia, PostedSubreddits } from '@/store'
 })export default class SubredditsAnalyzer extends Vue {
     tab: string = "tab-2"
     socialMedia : SocialMedia = "reddit"
+    fileInputType : String =  "PostedSubreddits"
     subredditsData! : PostedSubreddits
     subreddits: Array<Subreddit> = []
 
@@ -109,6 +110,13 @@ import { SocialMedia, PostedSubreddits } from '@/store'
 
     selectEvent() {
         this.$emit("selected-subreddit",this.tab)
+    }
+
+    receivedSubredditsEvent($event : PostedSubreddits) {
+        this.subredditsData.n_entries = $event.n_entries
+        this.subredditsData.subreddits = $event.subreddits
+        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedSubreddits : this.subredditsData} )
+        this.init()
     }
 
 }

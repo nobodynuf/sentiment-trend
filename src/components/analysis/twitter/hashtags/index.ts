@@ -21,6 +21,7 @@ import { AxiosResponse } from 'axios'
 export default class HashtagsAnalyzer extends Vue {
     tab: string = "tab-2"
     socialMedia : SocialMedia = "twitter"
+    fileInputType : String =  "PostedHashtags"
     hashtagsData! : PostedHashtags
     hashtags: Array<Hashtag> = []
 
@@ -39,7 +40,7 @@ export default class HashtagsAnalyzer extends Vue {
     async init(){
         this.loading = true;
         this.hashtagsData = this.$store.state.posted_data.twitter.hashtags_data
-        if( this.hashtagsData.hashtags.length != 0){
+        if( this.hashtagsData.n_entries != 0){
             this.hashtags = this.hashtagsData.hashtags;
             let total = 0
             Object.keys(this.hashtags[0].analysis).map(key => {
@@ -97,7 +98,7 @@ export default class HashtagsAnalyzer extends Vue {
                 })
             });
 
-            this.data_title = `${n_entries} Registros`;
+            this.data_title = `${this.hashtagsData.n_entries} Registros`;
         }
         
         this.loading = false;
@@ -111,6 +112,13 @@ export default class HashtagsAnalyzer extends Vue {
 
     selectEvent() {
         this.$emit("selected-hashtag",this.tab)
+    }
+
+    receivedHashtagsEvent($event :PostedHashtags) {
+        this.hashtagsData.n_entries = $event.n_entries
+        this.hashtagsData.hashtags = $event.hashtags
+        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedHashtags : this.hashtagsData} )
+        this.init()
     }
 
 }

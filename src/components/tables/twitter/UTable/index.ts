@@ -31,7 +31,7 @@ export default class Rtab extends Vue {
         noDataText: "Sin registro de entradas"
     });
 
-    toggle_exclusive = 0
+    toggle_exclusive = 1
     
     page = 1
     pageCount = 0
@@ -47,7 +47,8 @@ export default class Rtab extends Vue {
         const user = this.subTable.data
         .find((user: { id: string }) => user.id === id)
         if(user != undefined){
-            const n_entries = user.tweets_counts
+            const n_entries = user.tweets.length
+            console.log("entradas en tabla: ", n_entries)
             this.$store.commit("set_twitter_user", {n_entries, user});
             this.$emit("selected-user")
         }

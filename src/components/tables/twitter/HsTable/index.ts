@@ -14,7 +14,7 @@ export default class HsTable extends Vue {
     hashtag : Hashtag | undefined
     
 
-    toggle_exclusive = 0
+    toggle_exclusive = 1
 
     page = 1
     pageCount = 0

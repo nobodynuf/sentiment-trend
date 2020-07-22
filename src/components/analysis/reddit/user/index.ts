@@ -18,7 +18,7 @@ import axios from '@/axios'
 })
 export default class UserAnalyzer extends Vue {
     search_input = "";
-    voidTextFiel = false
+    voidTextFiel = true
 
     pie_analysis : {name: string, y: number}[] = []
     iconImg :string = ""

@@ -5,7 +5,7 @@
         <v-flex xs12>   
           <v-layout wrap align-center>
             <v-flex xs7>
-              <file-input></file-input>
+              <file-input :datatype="fileInputType" @reddit-user="receivedUsersEvent($event)"></file-input>
             </v-flex>
             <v-flex xs5>
             </v-flex>
@@ -50,7 +50,7 @@
        <v-card outlined>
         <v-card-title>Usuarios <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular></v-card-title>
         <v-card-text :key="num" v-if="!loading">
-           <u-table @selected-user="selectEvent" :users="users"></u-table>
+           <u-table @selected-user="selectedUserEvent" :users="users"></u-table>
         </v-card-text>
       </v-card>
     </v-flex>

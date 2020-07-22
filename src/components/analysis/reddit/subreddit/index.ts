@@ -20,7 +20,7 @@ import axios from '@/axios'
 })
 export default class SubredditAnalyzer extends Vue {
     search_input = "";
-    voidTextFiel = false
+    voidTextFiel = true
     
     subreddit! : Subreddit
     n_entries : number = 0;

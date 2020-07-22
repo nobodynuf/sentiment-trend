@@ -32,7 +32,7 @@
             class="pt-0 pb-3 px-2">
             <v-hover  v-slot:default="{ hover }">
               <v-card class="pa-1 pb-0"
-                :elevation="hover ? 3 : 0" 
+                :elevation="hover ? 5 : 0" 
                 outlined 
                 @click="setHashtag(item.name)"
                 :class="{ 'on-hover': hover }"
@@ -40,10 +40,10 @@
                   <h4 class="text-left text--secondary">{{item.name}}</h4> 
                     <v-fade-transition>
                       <v-overlay
-                        opacity="0.09"
+                        opacity="0.055"
                         v-if="hover"
                         absolute
-                        color="primary"
+                        color="black"
                       >
                       </v-overlay>
                     </v-fade-transition>
@@ -59,15 +59,15 @@
             <v-pagination  v-model="page" :length="pageCount" :total-visible="7"></v-pagination>
         </v-col>
         <v-col cols="4">
-          <v-list-item class="text-right">
-            <v-list-item-subtitle>{{itemsPerPage}} Hashtags por página</v-list-item-subtitle>
-          <v-list-item-subtitle
-            v-if="page != pageCount"
-          >{{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}</v-list-item-subtitle>
-          <v-list-item-subtitle
-            v-else
-          >{{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}</v-list-item-subtitle>
-          </v-list-item>
+          <v-list-item class="pt-1">
+              <p  class="pl-0 caption">{{itemsPerPage}} Entradas por página</p >
+              <p  class="pl-5 caption" v-if="page != pageCount">
+                {{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}
+              </p >
+              <p  class="pl-5 caption"  v-else>
+                {{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}
+              </p>
+            </v-list-item>
         </v-col>
       </v-row>
     </v-container>

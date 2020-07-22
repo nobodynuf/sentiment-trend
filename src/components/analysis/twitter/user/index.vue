@@ -6,16 +6,18 @@
               <v-text-field
                   prepend-icon="search"
                   v-model="search_input"
-                  label="Ingrese nombre de Usuario: "
+                  label="Ingrese nombre de Usuario"
                   :disabled="loading"
                   @keyup="onSearchChange"
               ></v-text-field>
             </v-flex>
-            <v-flex xs2>
+            <v-flex xs2 pb-2>
             <v-btn
-                depressed
+            
+                depressed 
+                rounded
                 small
-                color="primary"
+                color="secondary"
                 :disabled="voidTextFiel"
                 :loading="loading"
                 @click="findUser"

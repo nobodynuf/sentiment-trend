@@ -20,7 +20,7 @@ import { Hashtag, tfactor } from '@/types';
 
 export default class HashtagAnalyzer extends Vue {
     search_input = "";
-    voidTextFiel = false
+    voidTextFiel = true
 
     n_entries : number = 0;
     hashtag! : Hashtag

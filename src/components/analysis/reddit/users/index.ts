@@ -22,7 +22,9 @@ import { AxiosResponse } from 'axios'
 export default class UsersAnalyzer extends Vue {
     tab: string = "tab-4"
     socialMedia : SocialMedia = "reddit"
+    fileInputType : String =  "PostedRedditUsers"
     usersData! : PostedRedditUsers
+
     loading = false;
     data_title = "Sin datos...";
     users : Array<RedditUser> = []
@@ -105,7 +107,14 @@ export default class UsersAnalyzer extends Vue {
         return res.data;
     }
 
-    selectEvent() {
+    selectedUserEvent() {
         this.$emit("selected-user",this.tab)
+    }
+
+    receivedUsersEvent($event : PostedRedditUsers) {
+        this.usersData.n_entries = $event.n_entries
+        this.usersData.users = $event.users
+        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedRedditUsers : this.usersData} )
+        this.init()
     }
 }

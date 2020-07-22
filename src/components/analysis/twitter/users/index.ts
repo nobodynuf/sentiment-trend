@@ -21,6 +21,7 @@ import { SocialMedia, PostedTwitterUsers } from '@/store'
 export default class UsersAnalyzer extends Vue {
     tab: string = "tab-4"
     socialMedia : SocialMedia = "twitter"
+    fileInputType : String =  "PostedTwitterUsers"
     usersData! : PostedTwitterUsers
     loading = false;
     data_title = "Sin datos...";
@@ -63,7 +64,6 @@ export default class UsersAnalyzer extends Vue {
             });
             this.$set(this.users, "users", this.users)
             this.data_title = `${ this.usersData.n_entries} Registros`;
-            this.num++
         }else{
             this.data_title = "Cargando registros por defecto..."
             const {n_entries, users} = await this.getUsers()
@@ -96,6 +96,7 @@ export default class UsersAnalyzer extends Vue {
             this.$set(this.users, "users", this.users)
             this.data_title = `${n_entries} Registros`;
         }
+        this.num++
         this.loading = false;
     }
 
@@ -107,6 +108,13 @@ export default class UsersAnalyzer extends Vue {
 
     selectEvent() {
         this.$emit("selected-user",this.tab)
+    }
+
+    receivedUsersEvent($event : PostedTwitterUsers) {
+        this.usersData.n_entries = $event.n_entries
+        this.usersData.users = $event.users
+        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedTwitterUsers : this.usersData} )
+        this.init()
     }
 
 }

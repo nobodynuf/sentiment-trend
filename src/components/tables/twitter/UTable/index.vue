@@ -20,7 +20,7 @@
           :no-data-text="subTable.noDataText"
       >
           <template  v-slot:item._actions="{item}">
-            <v-btn  color="primary" small @click="setUser(item.id)">revisar</v-btn>
+            <v-btn  color="primary" small outlined @click="setUser(item.id)">revisar</v-btn>
           </template>
       </v-data-table>
       <v-container v-if="toggle_exclusive == 1" class="px-0">
@@ -31,7 +31,7 @@
                 class="pt-0 pb-3 px-2">
               <v-hover v-slot:default="{ hover }">
                 <v-card
-                  :elevation="hover ? 3 : 0"
+                  :elevation="hover ? 5 : 0"
                   outlined
                   @click="setUser(item.id)"
                   :class="{ 'on-hover': hover }"
@@ -40,10 +40,10 @@
                   <v-card-text class="caption pl-3 py-0 px-2">{{item.description}}</v-card-text>      
                   <v-fade-transition>
                     <v-overlay
-                      opacity="0.09"
-                      v-if="hover"
-                      absolute
-                      color="primary"
+                        opacity="0.055"
+                        v-if="hover"
+                        absolute
+                        color="black"
                     >
                     </v-overlay>
                   </v-fade-transition>
@@ -59,14 +59,14 @@
             <v-pagination  v-model="page" :length="pageCount" :total-visible="7"></v-pagination>
           </v-col>
           <v-col cols="4">
-            <v-list-item class="text-right">
-              <v-list-item-subtitle>{{itemsPerPage}} Entradas por página</v-list-item-subtitle>
-              <v-list-item-subtitle v-if="page != pageCount">
+            <v-list-item class="pt-1">
+              <p  class="pl-0 caption">{{itemsPerPage}} Entradas por página</p >
+              <p  class="pl-5 caption" v-if="page != pageCount">
                 {{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}
-              </v-list-item-subtitle>
-              <v-list-item-subtitle v-else>
+              </p >
+              <p  class="pl-5 caption"  v-else>
                 {{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}
-              </v-list-item-subtitle>
+              </p>
             </v-list-item>
           </v-col>
         </v-row>

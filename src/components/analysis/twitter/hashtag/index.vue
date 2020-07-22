@@ -4,18 +4,20 @@
             <v-layout wrap align-center>
                 <v-flex xs4>
                     <v-text-field
+                        prefix="#"
                         prepend-icon="search"
                         v-model="search_input"
-                        label="Ingrese nombre de Hashtag: "
+                        label="Ingrese nombre de Hashtag"
                         :disabled="loading"
                         @keyup="onSearchChange"
                     ></v-text-field>
                 </v-flex>
-                <v-flex xs2>
-                <v-btn
-                    depressed
+                <v-flex xs2 pb-2>
+                <v-btn 
+                    depressed 
+                    rounded
                     small
-                    color="primary"
+                    color="secondary"
                     :disabled="voidTextFiel"
                     :loading="loading"
                     @click="findHashtag"
@@ -30,20 +32,16 @@
         <v-flex xs7>
         <v-card outlined>
             <v-layout wrap pa-2>
-            <v-flex xs12>
-                <h3>{{n_entries}} Registros</h3>
-                <span class="subtitle-2 grey--text">No hay registros inválidos</span>
-            </v-flex>
-            <v-flex xs12>
-                <v-carousel show-arrows-on-hover>
-                <v-carousel-item>
-                    <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
-                </v-carousel-item>
-                <v-carousel-item>
-                    <line-chart></line-chart>
-                </v-carousel-item>
-                </v-carousel>
-            </v-flex>
+                <v-flex xs12>
+                    <v-carousel show-arrows-on-hover>
+                    <v-carousel-item>
+                        <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
+                    </v-carousel-item>
+                    <v-carousel-item>
+                        <line-chart></line-chart>
+                    </v-carousel-item>
+                    </v-carousel>
+                </v-flex>
             </v-layout>
         </v-card>
     </v-flex>
@@ -52,6 +50,9 @@
             <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
                     <v-card-title class="headline">{{hashtag.name}}</v-card-title>
+                    <v-card-subtitle class="mt-1">
+                        <v-chip label class="mt-2">Entradas analizadas: {{n_entries}}</v-chip>
+                    </v-card-subtitle>
                 </div>
             </div>
         </v-card>

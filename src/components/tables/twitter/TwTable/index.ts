@@ -30,7 +30,7 @@ export default class TwTable extends Vue {
     emojis = factor_emoji
     emoji = angry
 
-    toggle_exclusive = 0
+    toggle_exclusive = 1
     detail_modal = false;
     subTable = new DataTable<Tweet>({
         headers: [
