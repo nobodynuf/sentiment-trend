@@ -112,7 +112,7 @@ import { SocialMedia, PostedSubreddits } from '@/store'
         this.$emit("selected-subreddit",this.tab)
     }
 
-    receivedSubredditsEvent($event : PostedSubreddits) {
+    receivedSubredditsEvent($event : { subreddits : Array<Subreddit>, n_entries : number }) {
         this.subredditsData.n_entries = $event.n_entries
         this.subredditsData.subreddits = $event.subreddits
         this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedSubreddits : this.subredditsData} )

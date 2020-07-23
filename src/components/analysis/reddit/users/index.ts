@@ -111,7 +111,7 @@ export default class UsersAnalyzer extends Vue {
         this.$emit("selected-user",this.tab)
     }
 
-    receivedUsersEvent($event : PostedRedditUsers) {
+    receivedUsersEvent($event : { users : Array<RedditUser>, n_entries : number }) {
         this.usersData.n_entries = $event.n_entries
         this.usersData.users = $event.users
         this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedRedditUsers : this.usersData} )

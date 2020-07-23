@@ -15,7 +15,7 @@
             </v-layout>
         </v-flex>
         <v-flex xs12>
-            <v-snackbar color="primary" v-model="snackbar">
+            <v-snackbar :timeout="snackbarTime" color="primary" v-model="snackbar">
                {{ text }}
             </v-snackbar>
         </v-flex>

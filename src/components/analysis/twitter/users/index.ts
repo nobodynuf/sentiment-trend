@@ -69,7 +69,7 @@ export default class UsersAnalyzer extends Vue {
             const {n_entries, users} = await this.getUsers()
             this.usersData.n_entries = n_entries
             this.usersData.users = users
-            this.$store.commit("set_posted_data", { SocialMedia: this.socialMedia,PostedTwitterUsers : this.usersData} )
+            this.$store.commit("set_posted_data", { SocialMedia: this.socialMedia, PostedTwitterUsers : this.usersData} )
             let total = 0
             this.users = users
             Object.keys(users[0].analysis).map(key => {
@@ -110,11 +110,10 @@ export default class UsersAnalyzer extends Vue {
         this.$emit("selected-user",this.tab)
     }
 
-    receivedUsersEvent($event : PostedTwitterUsers) {
+    receivedUsersEvent($event : { users : Array<TwitterUser>, n_entries : number }) {
         this.usersData.n_entries = $event.n_entries
         this.usersData.users = $event.users
         this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedTwitterUsers : this.usersData} )
         this.init()
     }
-
 }

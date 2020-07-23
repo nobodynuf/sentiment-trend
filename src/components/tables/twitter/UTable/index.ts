@@ -48,7 +48,6 @@ export default class Rtab extends Vue {
         .find((user: { id: string }) => user.id === id)
         if(user != undefined){
             const n_entries = user.tweets.length
-            console.log("entradas en tabla: ", n_entries)
             this.$store.commit("set_twitter_user", {n_entries, user});
             this.$emit("selected-user")
         }

@@ -42,7 +42,6 @@ export default class UserAnalyzer extends Vue {
         let dataUser = this.$store.state.twitter.fetched_user
         if(dataUser.user != undefined){
             this.n_entries = dataUser.n_entries
-            console.log("entries load: ", dataUser.n_entries)
             this.user = dataUser.user
             this.pie_analysis = [];
             Object.keys(this.user.analysis).map(key => {
@@ -66,7 +65,6 @@ export default class UserAnalyzer extends Vue {
         const name = this.search_input;
         const res = await this.getUser(name);
         this.n_entries = res.n_entries
-        console.log("entries find: ", res.n_entries)
         this.user = res.user
         const payload = {
             n_entries: this.n_entries,

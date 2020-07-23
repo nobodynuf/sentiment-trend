@@ -114,7 +114,7 @@ export default class HashtagsAnalyzer extends Vue {
         this.$emit("selected-hashtag",this.tab)
     }
 
-    receivedHashtagsEvent($event :PostedHashtags) {
+    receivedHashtagsEvent($event :{ hashtags : Array<Hashtag>, n_entries : number }) {
         this.hashtagsData.n_entries = $event.n_entries
         this.hashtagsData.hashtags = $event.hashtags
         this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedHashtags : this.hashtagsData} )
