@@ -7,7 +7,7 @@
             <v-icon>mdi-view-list</v-icon>
           </v-btn>
           <v-btn>
-            <v-icon>mdi-view-headline</v-icon>
+            <v-icon>mdi-view-module</v-icon>
           </v-btn>
         </v-btn-toggle>
       </v-card>
@@ -20,24 +20,23 @@
           :no-data-text="subTable.noDataText"
       >
           <template  v-slot:item._actions="{item}">
-            <v-btn color="primary" small outlined @click="setSubreddit(item.id)">revisar</v-btn>
+            <v-btn color="primary" small outlined @click="setUser(item.id)">revisar</v-btn>
           </template>
       </v-data-table>
       <v-container v-if="toggle_exclusive == 1" class="px-0">
         <v-row class="px-0">
           <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
-          :key="index" cols="12">
+          :key="index" cols="3">
             <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
                 class="pt-0 pb-3 px-2">
               <v-hover v-slot:default="{ hover }">
                 <v-card
                   :elevation="hover ? 5 : 0"
                   outlined
-                  @click="setSubreddit(item.id)"
+                  @click="setUser(item.id)"
                   :class="{ 'on-hover': hover }"
                 >
                   <h4 class="text-start pl-3 pt-2 pb-0">{{item.name}}</h4>  
-                  <v-card-text class="caption pl-3 py-0 px-2">{{item.description}}</v-card-text>      
                   <v-fade-transition>
                     <v-overlay
                         opacity="0.055"

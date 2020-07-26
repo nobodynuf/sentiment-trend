@@ -5,7 +5,7 @@
         <v-flex xs12>   
           <v-layout wrap align-center>
             <v-flex xs7>
-              <file-input></file-input>
+              <file-input :datatype="fileInputType" @reddit-sub="receivedSubredditsEvent($event)"></file-input>
             </v-flex>
             <v-flex xs5>
             </v-flex>
@@ -49,8 +49,8 @@
     <v-flex xs12>
        <v-card outlined>
         <v-card-title>Subreddits <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular></v-card-title>
-        <v-card-text v-if="!loading">
-           <r-table :subreddits="subreddits"></r-table>
+        <v-card-text :key="num" v-if="!loading">
+           <r-table @selected-subreddit="selectEvent" :subreddits="subreddits"></r-table>
         </v-card-text>
       </v-card>
     </v-flex>

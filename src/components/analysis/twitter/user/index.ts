@@ -4,7 +4,6 @@ import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
 import TwTable from '@/components/tables/twitter/TwTable/index.vue'
-import TwUserProfile from '@/components/profile/twitter/user/index.vue'
 import axios from '@/axios'
 import { TwitterUser, tfactor } from '@/types';
 import { AxiosResponse } from 'axios';
@@ -14,14 +13,13 @@ import { AxiosResponse } from 'axios';
         PieChart,
         LineChart,
         FactorEmo,
-        TwTable,
-        TwUserProfile
+        TwTable
     }
 })
 export default class UserAnalyzer extends Vue {
     
-    search_input = "elonmusk";
-    voidTextFiel = false
+    search_input = "";
+    voidTextFiel = true
 
     loading = false;
     enabledUser = false
@@ -34,6 +32,10 @@ export default class UserAnalyzer extends Vue {
 
     mounted() {
         this.loadUser()
+        this.$vuetify.goTo(0,{
+            duration: 0,
+            offset: 0
+        })
     }
 
     loadUser(){

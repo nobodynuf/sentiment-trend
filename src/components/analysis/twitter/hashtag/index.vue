@@ -4,18 +4,20 @@
             <v-layout wrap align-center>
                 <v-flex xs4>
                     <v-text-field
+                        prefix="#"
                         prepend-icon="search"
                         v-model="search_input"
-                        label="Ingrese nombre de Hashtag: "
+                        label="Ingrese nombre de Hashtag"
                         :disabled="loading"
                         @keyup="onSearchChange"
                     ></v-text-field>
                 </v-flex>
-                <v-flex xs2>
-                <v-btn
-                    depressed
+                <v-flex xs2 pb-2>
+                <v-btn 
+                    depressed 
+                    rounded
                     small
-                    color="primary"
+                    color="secondary"
                     :disabled="voidTextFiel"
                     :loading="loading"
                     @click="findHashtag"
@@ -30,38 +32,39 @@
         <v-flex xs7>
         <v-card outlined>
             <v-layout wrap pa-2>
-            <v-flex xs12>
-                <v-carousel show-arrows-on-hover>
-                <v-carousel-item>
-                    <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
-                </v-carousel-item>
-                <v-carousel-item>
-                    <line-chart></line-chart>
-                </v-carousel-item>
-                </v-carousel>
-            </v-flex>
+                <v-flex xs12>
+                    <v-carousel show-arrows-on-hover>
+                    <v-carousel-item>
+                        <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
+                    </v-carousel-item>
+                    <v-carousel-item>
+                        <line-chart></line-chart>
+                    </v-carousel-item>
+                    </v-carousel>
+                </v-flex>
             </v-layout>
         </v-card>
     </v-flex>
     <v-flex xs5>
-        <v-layout wrap>
-            <v-flex v-if="enabledHashtag" xs12>
-            <v-card outlined>
-                <TwHashtagProfile :hashtag="hashtag" :nEntries="n_entries"></TwHashtagProfile>
-            </v-card>
-            </v-flex>
-            <v-flex xs12>
-            <v-card outlined>
-                <v-card-title>Factores
+        <v-card outlined v-if="enabledHashtag" class="mb-3">
+            <div class="d-flex flex-no-wrap justify-space-between">
+                <div>
+                    <v-card-title class="headline">{{hashtag.name}}</v-card-title>
+                    <v-card-subtitle class="mt-1">
+                        <v-chip label class="mt-2">Entradas analizadas: {{n_entries}}</v-chip>
+                    </v-card-subtitle>
+                </div>
+            </div>
+        </v-card>
+        <v-card outlined>
+            <v-card-title>Factores
                 <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
                 </v-progress-circular>
-                </v-card-title>
-                <v-card-text>
+            </v-card-title>
+            <v-card-text>
                 <factor-emo :analysis="analysis"></factor-emo>
-                </v-card-text>
-            </v-card>
-            </v-flex>
-        </v-layout>
+            </v-card-text>
+        </v-card>
     </v-flex>       
         <v-flex xs12>
             <v-card outlined>

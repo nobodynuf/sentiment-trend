@@ -6,16 +6,18 @@
               <v-text-field
                   prepend-icon="search"
                   v-model="search_input"
-                  label="Ingrese nombre de Usuario: "
+                  label="Ingrese nombre de Usuario"
                   :disabled="loading"
                   @keyup="onSearchChange"
               ></v-text-field>
             </v-flex>
-            <v-flex xs2>
+            <v-flex xs2 pb-2>
             <v-btn
-                depressed
+            
+                depressed 
+                rounded
                 small
-                color="primary"
+                color="secondary"
                 :disabled="voidTextFiel"
                 :loading="loading"
                 @click="findUser"
@@ -43,24 +45,29 @@
       </v-card>
     </v-flex>
     <v-flex xs5>
-      <v-layout wrap>
-        <v-flex v-if="enabledUser" xs12>
-          <v-card outlined>
-            <TwUserProfile :twitterUser="user" :nEntries="n_entries"></TwUserProfile>
-          </v-card>
-        </v-flex>
-        <v-flex xs12>
-          <v-card outlined>
-            <v-card-title>Factores
-              <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
-              </v-progress-circular>
-            </v-card-title>
-            <v-card-text>
-              <factor-emo :analysis="analysis"></factor-emo>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
+      <v-card outlined v-if="enabledUser" class="mb-3">
+        <div class="d-flex flex-no-wrap justify-space-between">
+          <div>
+            <v-card-title class="headline">Perfil de {{user.name}}</v-card-title>
+            <v-card-subtitle class="mt-1">
+              <v-chip label class="mr-2 mt-2" >ID: {{user.id}}</v-chip>
+              <v-chip label class="mt-2">Entradas analizadas: {{n_entries}}</v-chip>
+            </v-card-subtitle>
+          </div>
+          <v-avatar class="ma-5" size="75">
+            <v-img v-if="user.icon_img" :src="user.icon_img"></v-img>
+          </v-avatar>
+        </div>
+      </v-card>
+      <v-card outlined>
+        <v-card-title>Factores
+          <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate>
+          </v-progress-circular>
+        </v-card-title>
+        <v-card-text>
+          <factor-emo :analysis="analysis"></factor-emo>
+        </v-card-text>
+      </v-card>
     </v-flex>       
     <v-flex xs12>
      <v-card  outlined>

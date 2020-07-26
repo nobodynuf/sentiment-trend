@@ -4,7 +4,7 @@
       <v-card flat>
         <v-btn-toggle v-model="toggle_exclusive" mandatory>
           <v-btn>
-            <v-icon>mdi-table</v-icon>
+            <v-icon>mdi-view-list</v-icon>
           </v-btn>
           <v-btn>
             <v-icon>mdi-view-module</v-icon>
@@ -31,7 +31,8 @@
           <v-col v-if="((index + 1)  > ((page*itemsPerPage) - itemsPerPage)) && ((index + 1) <= (page*itemsPerPage))"
             class="pt-0 pb-3 px-2">
             <v-hover  v-slot:default="{ hover }">
-              <v-card class="pa-1 pb-0" outlined 
+              <v-card class="pa-1 pb-0" outlined
+                :elevation="hover ? 5 : 0" 
                 @click="checkDetail(item.id)"
                 :class="{ 'on-hover': hover }"
               >
@@ -43,7 +44,7 @@
                 </div>
                     <v-fade-transition>
                       <v-overlay
-                        opacity="0.08"
+                        opacity="0.055"
                         v-if="hover"
                         absolute
                         color="black"
@@ -62,15 +63,15 @@
             <v-pagination  v-model="page" :length="pageCount" :total-visible="7"></v-pagination>
         </v-col>
         <v-col cols="4">
-          <v-list-item class="text-right">
-            <v-list-item-subtitle>{{itemsPerPage}} Tweets por página</v-list-item-subtitle>
-          <v-list-item-subtitle
-            v-if="page != pageCount"
-          >{{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}</v-list-item-subtitle>
-          <v-list-item-subtitle
-            v-else
-          >{{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}</v-list-item-subtitle>
-          </v-list-item>
+            <v-list-item class="pt-1">
+              <p  class="pl-0 caption">{{itemsPerPage}} Entradas por página</p >
+              <p  class="pl-5 caption" v-if="page != pageCount">
+                {{page*itemsPerPage - itemsPerPage+1}}-{{page*itemsPerPage}} de {{subTable.data.length}}
+              </p >
+              <p  class="pl-5 caption"  v-else>
+                {{page*itemsPerPage - itemsPerPage+1}}-{{subTable.data.length}} de {{subTable.data.length}}
+              </p>
+            </v-list-item>
         </v-col>
       </v-row>
     </v-container>
@@ -88,9 +89,6 @@
                   <v-flex xs12>
                     <v-chip label small color="primary" class="mr-3">ID: {{tweet.id}}</v-chip>
                     <v-chip label small color="primary">Retweets: {{tweet.retweet_count}}</v-chip>
-                    <v-chip label color="white">
-                      <v-img width="30px" :src="emoji"></v-img>
-                    </v-chip>
                   </v-flex>
                 </v-layout>
               </v-card-title>

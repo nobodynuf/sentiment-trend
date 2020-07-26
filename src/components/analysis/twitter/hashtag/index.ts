@@ -14,14 +14,13 @@ import { Hashtag, tfactor } from '@/types';
         PieChart,
         LineChart,
         FactorEmo,
-        TwTable,
-        TwHashtagProfile
+        TwTable
     }
 })
 
 export default class HashtagAnalyzer extends Vue {
-    search_input = "chess";
-    voidTextFiel = false
+    search_input = "";
+    voidTextFiel = true
 
     n_entries : number = 0;
     hashtag! : Hashtag
@@ -38,6 +37,10 @@ export default class HashtagAnalyzer extends Vue {
 
     mounted() {
         this.loadHashtag()  
+        this.$vuetify.goTo(0,{
+            duration: 0,
+            offset: 0
+        })
     }
 
     loadHashtag(){

@@ -6,18 +6,19 @@
           <v-text-field
             prepend-icon="search"
             v-model="search_input"
-            label="Ingrese nombre de Usuario: "
+            label="Ingrese nombre de Usuario"
             :disabled="loading"
             @keyup="onSearchChange"
           ></v-text-field>
         </v-flex>
-        <v-flex xs2>
+        <v-flex xs2 pb-2>
           <v-btn
-            depressed
+            depressed 
+            rounded
             small
-            color="primary"
+            color="secondary"
             class="white--text"
-            :disabled="loading"
+            :disabled="voidTextFiel"
             :loading="loading"
             @click="findUser"
           >
@@ -44,7 +45,7 @@
       </v-card>
     </v-flex>
     <v-flex xs5>
-      <v-card outlined v-if="user" class="mb-3">
+      <v-card outlined v-if="enabledSub" class="mb-3">
         <div class="d-flex flex-no-wrap justify-space-between">
           <div>
             <v-card-title class="headline">Perfil de {{user.name}}</v-card-title>
@@ -52,7 +53,7 @@
               <v-chip label class="mr-2 mt-2" >ID: {{user.id}}</v-chip>
               <v-chip label v-if="user.is_gold" class="mr-2 mt-2" color="amber" >Gold</v-chip>
               <v-chip label v-if="user.is_mod" class="mr-2 mt-2" color="blue lighten-2">Moderador</v-chip>
-              <v-chip label class="mt-2">Entradas analizadas: {{n_entries}}</v-chip>
+              <v-chip label class="mt-2">Entradas analizadas: {{user.n_entries}}</v-chip>
             </v-card-subtitle>
           </div>
           <v-avatar class="ma-5" size="75">
