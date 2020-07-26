@@ -10,7 +10,10 @@
                         return-object
                         item-text="val"
                     ></v-select>
-                    <column-chart :data="chartdata"></column-chart>
+                    <column-chart :title="title" :data="chartdata"></column-chart>
+                </v-card-text>
+                <v-card-text class="text-end">
+                    {{n_entries}} Registros
                 </v-card-text>
             </v-card>
         </v-flex>

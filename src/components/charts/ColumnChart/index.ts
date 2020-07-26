@@ -11,13 +11,16 @@ const colors = ["#233142", "#4f9da6", "#facf5a", "#ff5959"]
     },
 })
 export default class ColumnChart extends Vue {
+
+    @Prop({default: ''})
+    title !: string
+
     options: any = {
         chart: {
             type: "bar",
         },
         title: {
-            text: "Manifestación Emocional por Hashtag",
-
+            text: this.title
         },    
         colors: [
             this.$vuetify.theme.themes.light.chart1,

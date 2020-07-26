@@ -12,6 +12,9 @@ import axios from '@/axios'
 })
 export default class FactorBar extends Vue {
 
+    @Prop({default: 'Manifestación Emocional'})
+    title !: string
+
     label = "Seleccionar factor emocional:"
 
     factors = Object.keys(tfactor).map(key => {
@@ -20,34 +23,27 @@ export default class FactorBar extends Vue {
 
     selected : {key: string, val: string} = {key: '',val: ''}
 
-    //@Prop({default: {}})
-    data : {[key: string] : Analysis} = {}
+    @Prop({default: {}})
+    data !: {[key: string] : Analysis}
 
-    mounted() {
-        this.init();
-    }
+    @Prop({default: 0})
+    n_entries !: number
 
-    async init(){
-        const hashtags = ["dogs", "cats", "turtles", "bunny", "golang", "nodejs", "python"];
-        await hashtags.map(async hashtag => {
-            const data = await this.getTweets(hashtag);
-            this.$set(this.data, hashtag, data.hashtag.analysis);
-        })
+    @Watch('data')
+    onDataChanged(){
         $debug('log', this.data);
     }
 
-    async getTweets(hashtag: string){
-        const res : AxiosResponse<{n_entries: number,
-            hashtag: Hashtag}> = await axios.get("/twitter/hashtags/"+hashtag);
-        return res.data
+    mounted() {
+
     }
 
     get chartdata(){
         if(this.selected.key){
             return Object.keys(this.data).map(key => {
                 return {
-                    name: "#" + key,
-                    data: [this.data[key][this.selected.key]],
+                    name: key,
+                    data: [Math.round(this.data[key][this.selected.key])],
                     //drilldown: "#" + key
                 }
             })

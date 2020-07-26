@@ -24,6 +24,8 @@ export default class HashtagsAnalyzer extends Vue {
 
     analysis : {[key: string] : number} = {}
     pie_analysis : {name: string, y: number, value: number, type: string}[] = []
+
+    file_endpoint = "/twitter/hashtags";
     
     loading = false;
     enabledHashtag = false

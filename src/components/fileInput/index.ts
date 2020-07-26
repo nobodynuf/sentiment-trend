@@ -1,4 +1,4 @@
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
@@ -10,8 +10,11 @@ import { RedditUser, DataTable, Subreddit } from '@/types'
 })
 export default class FileInput extends Vue {
 
+    @Prop()
+    endpoint!: string
+
     file : File | null = null
-    fileSet : File[] =[]
+    fileSet : File[] = []
 
     fileInputDisabled : boolean = true
 
@@ -51,15 +54,12 @@ export default class FileInput extends Vue {
         if(this.file){
             formData.append('plantilla', this.file);
         }
-        let res = await axios.post('/reddit/user',
-        formData,  {
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
+        let res = await axios.post(this.endpoint, formData,  {
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
-        )
+        })
         this.onUpload()
-        console.log(res.data)
     }
 
     onFileChange() {

@@ -20,7 +20,12 @@
               </v-col > 
               <v-col cols="6">
                 <v-card class="elevation-5">
-                  <factor-chart></factor-chart>
+                  <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_splited_data" :n_entries="entries.default.reddit.subreddit"></factor-chart>
+                </v-card>
+              </v-col>
+              <v-col cols="6">
+                <v-card class="elevation-5">
+                  <factor-chart :title="'Manifestación Emocional por Redditors'" :data="rusers_splited_data" :n_entries="entries.default.reddit.users"></factor-chart>
                 </v-card>
               </v-col> 
             </v-row>
