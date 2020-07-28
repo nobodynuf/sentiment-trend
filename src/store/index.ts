@@ -1,11 +1,12 @@
 import Vue from "vue"
 import Vuex, {Payload} from "vuex"
-import {RedditUser, Subreddit, TwitterUser, Hashtag} from "@/types"
+import {RedditUser, Subreddit, TwitterUser, Hashtag, Analysis} from "@/types"
 
 Vue.use(Vuex)
 
 export interface IterativeEntity {
-    n_entries: number
+    n_entries: number,
+    analysis: Analysis
 }
 
 export type PostedRedditUsers = IterativeEntity & {users: RedditUser[]}
@@ -63,22 +64,26 @@ export default new Vuex.Store<IStore>({
         posted_data: {
             reddit: {
                 subreddits_data: {
+                    analysis: {},
                     n_entries: 0,
                     subreddits: [],
                 },
                 users_data: {
                     n_entries: 0,
                     users: [],
+                    analysis: {}
                 },
             },
             twitter: {
                 hashtags_data: {
                     hashtags: [],
                     n_entries: 0,
+                    analysis: {}
                 },
                 users_data: {
                     n_entries: 0,
                     users: [],
+                    analysis: {}
                 },
             },
         },
@@ -106,21 +111,25 @@ export default new Vuex.Store<IStore>({
             reddit: {
                 subreddits_data: {
                     n_entries: 0,
+                    analysis: {},
                     subreddits: [],
                 },
                 users_data: {
                     n_entries: 0,
                     users: [],
+                    analysis: {}
                 },
             },
             twitter: {
                 hashtags_data: {
                     hashtags: [],
                     n_entries: 0,
+                    analysis: {}
                 },
                 users_data: {
                     n_entries: 0,
                     users: [],
+                    analysis: {}
                 },
             },
         },

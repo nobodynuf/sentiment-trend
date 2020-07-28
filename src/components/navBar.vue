@@ -38,7 +38,10 @@
         </v-navigation-drawer>
         <v-app-bar app dense color="indigo darken-2" class="white--text">
             <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>
+            <v-toolbar-title class="pr-2">
+                <v-img width="30" :src="logo"/>
+            </v-toolbar-title>
+            <v-toolbar-title class="h2">
                 Analizador de Factores Emocionales
             </v-toolbar-title>
         </v-app-bar>
