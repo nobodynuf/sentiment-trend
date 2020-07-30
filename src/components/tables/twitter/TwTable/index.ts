@@ -67,9 +67,12 @@ export default class TwTable extends Vue {
     }
 
     async checkDetail(tw_id : string){   
-        const sub = this.subTable.data.find(val=> val.id===tw_id);
-        this.tweet = sub;
+        const res = await this.getTweet(tw_id);
+        this.tw_analysis = res.analysis
+        const twData = this.subTable.data.find(val=> val.id===tw_id);
+        this.tweet = twData;
         this.$set(this, "tweet", this.tweet);
+        this.$set(this, "tw_analysis", this.tw_analysis);
         const positivismo: number = this.tw_analysis["empatia"]
         if(positivismo > 15 && positivismo < 26){
             this.emoji = neutral
@@ -79,6 +82,11 @@ export default class TwTable extends Vue {
             this.emoji = angry
         }
         this.detail_modal = true;
+    }
+
+    async getTweet(tw_id : string){
+        const res: AxiosResponse<{analysis: Analysis}> = await axios.post("/twitter/analyze-tweet", {tw_id});
+        return res.data
     }
 
     async translate_title(text: string){
@@ -95,5 +103,12 @@ export default class TwTable extends Vue {
     async getTranslation(text: string){
         const res: AxiosResponse<{translation: string}> = await axios.post("/translate", {text});
         return res.data.translation
+    }
+
+    @Watch("tweets", {deep: true})
+    async onChange(){
+        this.subTable.data = []
+        this.$set(this.subTable, "data", this.tweets);
+        this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
     }
 }

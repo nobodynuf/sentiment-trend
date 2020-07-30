@@ -51,6 +51,13 @@ export default class Rtab extends Vue {
             this.$store.commit("set_twitter_user", {n_entries, user});
             this.$emit("selected-user")
         }
-        
     }
+
+    @Watch("users", {deep: true})
+    async onChange(){
+        this.subTable.data = []
+        this.$set(this.subTable, "data", this.users);
+        this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
+    }
+
 }

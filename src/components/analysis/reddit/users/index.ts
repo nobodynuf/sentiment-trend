@@ -1,7 +1,7 @@
 import {Component, Vue, Watch} from "vue-property-decorator"
 import {$debug} from "@/utils"
 import PieChart from "@/components/charts/PieChart/index.vue"
-import LineChart from "@/components/charts/LineChart/index.vue"
+import FactorPie from "@/components/charts/FactorPie/index.vue"
 import FactorEmo from "@/components/factors/index.vue"
 import UTable from "@/components/tables/reddit/UTable/index.vue"
 import FileInput from "@/components/fileInput/index.vue"
@@ -13,7 +13,7 @@ import {AxiosResponse} from "axios"
 @Component({
     components: {
         PieChart,
-        LineChart,
+        FactorPie,
         FactorEmo,
         UTable,
         FileInput,
@@ -28,6 +28,10 @@ export default class UsersAnalyzer extends Vue {
     loading = false
     data_title = "Sin datos..."
     users: Array<RedditUser> = []
+
+    risersSplittedData : {[key: string] : Analysis} = {}
+    titleOfEmotionalManifestation = "manifestación emocional por redditors"
+
     analysis: {[key: string]: number} = {}
     pie_analysis: {name: string; y: number; value: number; type: string}[] = []
 
@@ -40,67 +44,56 @@ export default class UsersAnalyzer extends Vue {
     async init() {
         this.loading = true
         this.usersData = this.$store.state.posted_data.reddit.users_data
+
+        //loading data from store
         if (this.usersData.n_entries != 0) {
+            this.data_title = "Cargando plantilla de datos..."
             this.users = this.usersData.users
-            let total = 0
-            Object.keys(this.users[0].analysis).map(key => {
-                this.$set(this.analysis, key, 0)
-            })
-            this.users.map(user => {
-                Object.keys(user.analysis).map(key => {
-                    let sum = this.analysis[key] + user.analysis[key]
-                    this.$set(this.analysis, key, sum)
-                    total += user.analysis[key]
-                })
-            })
+            this.analysis = this.usersData.analysis
             Object.keys(this.analysis).map(key => {
-                let div = this.analysis[key] / this.users.length
-                this.$set(this.analysis, key, div)
                 this.pie_analysis.push({
                     name: tfactor[key],
                     value: this.analysis[key],
-                    y: (this.analysis[key] * 100) / total,
+                    y: this.analysis[key],
                     type: "pie",
                 })
             })
-            this.$set(this.users, "users", this.users)
+            this.risersSplittedData = {}
+            this.users.map((user : RedditUser) =>{
+                this.risersSplittedData[user.name] = user.analysis
+            })
             this.data_title = `${this.usersData.n_entries} Registros`
             this.num++
+
+        
+        //loading data by default
         } else {
             this.data_title = "Cargando registros por defecto..."
             const {n_entries, users, analysis} = await this.getUsers()
+            this.analysis = analysis
+            this.users = users
+            this.$set(this.users, "users", this.users)
+            this.risersSplittedData = {}
+            this.users.map((user : RedditUser) => {
+                this.risersSplittedData[user.name] = user.analysis
+            })
+            Object.keys(this.analysis).map(key => {
+                this.pie_analysis.push({
+                    name: tfactor[key],
+                    value: this.analysis[key],
+                    y: this.analysis[key],
+                    type: "pie",
+                })
+            })
+
+            this.data_title = `${n_entries} Registros`
+            this.usersData.analysis = this.analysis
             this.usersData.n_entries = n_entries
             this.usersData.users = users
             this.$store.commit("set_posted_data", {
                 SocialMedia: this.socialMedia,
                 PostedRedditUsers: this.usersData,
             })
-            let total = 0
-            this.users = users
-            Object.keys(analysis).map(key => {
-                this.analysis = analysis
-                //this.$set(this.analysis, key, 0);
-            })
-            /* users.map(user => {
-                Object.keys(user.analysis).map(key => {
-                    let sum = this.analysis[key] + user.analysis[key];
-                    this.$set(this.analysis, key, sum);
-                    total += user.analysis[key];
-                });
-            }) */
-            Object.keys(this.analysis).map(key => {
-                //let div = this.analysis[key]/this.users.length;
-                //this.$set(this.analysis, key, div);
-                this.pie_analysis.push({
-                    name: tfactor[key],
-                    value: this.analysis[key],
-                    y: (this.analysis[key] * 100) / total,
-                    type: "pie",
-                })
-            })
-            this.users = users
-            this.$set(this.users, "users", this.users)
-            this.data_title = `${n_entries} Registros`
         }
         this.loading = false
     }
@@ -118,13 +111,11 @@ export default class UsersAnalyzer extends Vue {
         this.$emit("selected-user", this.tab)
     }
 
-    receivedUsersEvent($event: {users: Array<RedditUser>; n_entries: number}) {
+    receivedUsersEvent($event: {users: Array<RedditUser>; n_entries: number, analysis: Analysis}) {
         this.usersData.n_entries = $event.n_entries
         this.usersData.users = $event.users
-        this.$store.commit("set_posted_data", {
-            SocialMedia: this.socialMedia,
-            PostedRedditUsers: this.usersData,
-        })
+        this.usersData.analysis = $event.analysis
+        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedRedditUsers : this.usersData} )
         this.init()
     }
 }

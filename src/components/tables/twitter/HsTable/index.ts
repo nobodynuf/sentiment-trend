@@ -49,4 +49,11 @@ export default class HsTable extends Vue {
             this.$emit("selected-hashtag")
         }   
     }
+
+    @Watch("hashtags", {deep: true})
+    async onChange(){
+        this.subTable.data = []
+        this.$set(this.subTable, "data", this.hashtags);
+        this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
+    }
 }

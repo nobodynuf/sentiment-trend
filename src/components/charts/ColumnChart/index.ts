@@ -51,7 +51,9 @@ export default class ColumnChart extends Vue {
                 },
             },
         },
-        //colors: colors,
+        credits: {
+            enabled: false
+        },
         yAxis: {
             title: {
                 text: "Manifestación emocional",
@@ -76,7 +78,6 @@ export default class ColumnChart extends Vue {
 
     @Watch("data")
     onChangeData() {
-        $debug("log", this.data)
         this.$set(this.options, "series", this.data)
     }
 }

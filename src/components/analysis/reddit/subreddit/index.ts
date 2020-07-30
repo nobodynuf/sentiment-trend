@@ -1,8 +1,9 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import PieChart from '@/components/charts/PieChart/index.vue'
-import LineChart from '@/components/charts/LineChart/index.vue'
+import ColumnChart from "@/components/charts/ColumnChart/index.vue"
 import FactorEmo from '@/components/factors/index.vue'
+import Snackbar from '@/components/Snackbar/index.vue'
 import SubTable from '@/components/tables/reddit/SubTable/index.vue'
 import { Subreddit, RedditSub, tfactor } from '@/types';
 import { AxiosResponse } from 'axios';
@@ -12,10 +13,11 @@ import axios from '@/axios'
 @Component({
     components:{
         PieChart,
-        LineChart,
+        ColumnChart,
         VMarkdown,
         FactorEmo,
-        SubTable
+        SubTable,
+        Snackbar
     }
 })
 export default class SubredditAnalyzer extends Vue {
@@ -25,8 +27,16 @@ export default class SubredditAnalyzer extends Vue {
     subreddit! : Subreddit
     n_entries : number = 0;
     enabledSub = false
-    sub_analysis : {[key: string] : number} = {}
 
+    changeKey : number = 0 
+    snackbar: boolean | null = null
+
+    topFiveAnalysis : {name:string; data: number[] }[] = []
+    titleTop5 = "5 factores emocionales más representativos" 
+    titleTop1= ""
+
+    submissionsTable : RedditSub[] = []
+    sub_analysis : {[key: string] : number} = {}
     pie_analysis : {name: string, y: number}[] = []
     loading = false;
 
@@ -36,6 +46,8 @@ export default class SubredditAnalyzer extends Vue {
 
     menu_body = false;
     translated_body = "";
+    
+    data_title = "Sin datos";
     
     mounted() {
         this.loadSubreddit()
@@ -57,11 +69,19 @@ export default class SubredditAnalyzer extends Vue {
                         name: tfactor[key],
                         y: this.subreddit.analysis[key]
                     })
+                    this.topFiveAnalysis.push({
+                        name: tfactor[key],
+                        data: [Math.ceil(this.subreddit.analysis[key])]
+                    })
+                    this.topFiveAnalysis = this.topFiveAnalysis.sort(((a, b) =>  b.data[0] - a.data[0])).slice(0,5)
+                    var top1 = this.topFiveAnalysis[0].name
+                    this.titleTop1 = ` '${top1}" es el factor con mayor manifestación emocional`
                 }
             })
-            this.$set(this.subreddit, "analysis", this.subreddit.analysis);
-            this.$set(this.subreddit, "submissions", this.subreddit.submissions);
+            this.sub_analysis =  this.subreddit.analysis
+            this.submissionsTable = this.subreddit.submissions
             this.enabledSub = true
+            this.data_title = `${ this.n_entries} Registros`;
         }
     }
 
@@ -70,32 +90,43 @@ export default class SubredditAnalyzer extends Vue {
         this.loading = true;
         const name = this.search_input;
         const res = await this.getSubreddit(name);
-        this.subreddit = res;
-        const payload = {
-            n_entries: res.n_entries,
-            subreddit: res
-        }
-        this.$store.commit("set_reddit_subreddit" ,payload)
-        this.n_entries = res.n_entries;
-        this.pie_analysis = [];
-        Object.keys(this.subreddit.analysis).map(key => {
-            if(this.subreddit){
-                this.pie_analysis.push({
-                    name:tfactor[key],
-                    y: this.subreddit.analysis[key]
-                })
+        if(res != null){
+            this.subreddit = res;
+            const payload = {
+                n_entries: res.n_entries,
+                subreddit: res
             }
-        })
-        this.$set(this.subreddit, "analysis", this.subreddit.analysis);
-        this.$set(this.subreddit, "submissions", this.subreddit.submissions);
+            this.$store.commit("set_reddit_subreddit" ,payload)
+            this.n_entries = res.n_entries;
+            this.pie_analysis = [];
+            Object.keys(this.subreddit.analysis).map(key => {
+                if(this.subreddit){
+                    this.pie_analysis.push({
+                        name:tfactor[key],
+                        y: this.subreddit.analysis[key]
+                    })
+                }
+            })
+            this.sub_analysis =  this.subreddit.analysis
+            this.submissionsTable = this.subreddit.submissions
+            this.enabledSub = true
+        }
         this.loading = false;
-        this.enabledSub = true
         this.search_input = ""
     }
 
     async getSubreddit(name: string){
+        try {
         const res : AxiosResponse<{subreddit: Subreddit}> = await axios.get("/reddit/subreddit/" + name);
+        this.changeKey ++
+        this.snackbar = true
         return res.data.subreddit;
+        } catch{
+            this.changeKey ++
+            this.snackbar = false
+            return null 
+
+        }
     }
 
     async translate_title(text: string){
@@ -118,6 +149,7 @@ export default class SubredditAnalyzer extends Vue {
             this.voidTextFiel = true
         }else{
             this.voidTextFiel = false
+            this.$set(this.topFiveAnalysis, 'topFiveAnalysis', this.topFiveAnalysis)
         }
     }
 }

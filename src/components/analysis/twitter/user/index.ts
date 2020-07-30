@@ -3,9 +3,10 @@ import { $debug } from '@/utils'
 import PieChart from '@/components/charts/PieChart/index.vue'
 import LineChart from '@/components/charts/LineChart/index.vue'
 import FactorEmo from '@/components/factors/index.vue'
+import Snackbar from '@/components/Snackbar/index.vue'
 import TwTable from '@/components/tables/twitter/TwTable/index.vue'
 import axios from '@/axios'
-import { TwitterUser, tfactor } from '@/types';
+import { TwitterUser, tfactor, Tweet } from '@/types';
 import { AxiosResponse } from 'axios';
 
 @Component({
@@ -13,7 +14,8 @@ import { AxiosResponse } from 'axios';
         PieChart,
         LineChart,
         FactorEmo,
-        TwTable
+        TwTable,
+        Snackbar
     }
 })
 export default class UserAnalyzer extends Vue {
@@ -27,8 +29,18 @@ export default class UserAnalyzer extends Vue {
     n_entries : number = 0;
     user! : TwitterUser
 
+    twTable : Tweet[] = []
     analysis : {[key: string] : number} = {}
     pie_analysis : {name: string, y: number}[] = []
+
+    topFiveAnalysis : {name:string; data: number[] }[] = []
+    titleTop5 = "5 factores emocionales más representativos" 
+    titleTop1= ""
+
+    changeKey : number = 0 
+    snackbar: boolean | null = null
+
+    data_title = "Sin datos ";
 
     mounted() {
         this.loadUser()
@@ -51,11 +63,19 @@ export default class UserAnalyzer extends Vue {
                         name:tfactor[key],
                         y: this.user.analysis[key]
                     })
+                    this.topFiveAnalysis.push({
+                        name: tfactor[key],
+                        data: [Math.ceil(this.analysis[key])]
+                    })
+                    this.topFiveAnalysis = this.topFiveAnalysis.sort(((a, b) =>  b.data[0] - a.data[0])).slice(0,5)
+                    var top1 = this.topFiveAnalysis[0].name
+                    this.titleTop1 = ` '${top1}" es el factor con mayor manifestación emocional`
                 }
             })
-            this.$set(this.user, "tweets", this.user.tweets);
+            this.twTable = this.user.tweets
             this.loading = false;
             this.enabledUser = true
+            this.data_title = `${ this.n_entries} Registros`;
         }
     }
 
@@ -64,31 +84,42 @@ export default class UserAnalyzer extends Vue {
         this.loading = true;
         const name = this.search_input;
         const res = await this.getUser(name);
-        this.n_entries = res.n_entries
-        this.user = res.user
-        const payload = {
-            n_entries: this.n_entries,
-            user: this.user
-        }
-        this.$store.commit("set_twitter_user" ,payload)
-        Object.keys(this.user.analysis).map(key => {
-            this.$set(this.analysis, key, this.user.analysis[key]);
-            if(this.user){
-                this.pie_analysis.push({
-                    name:tfactor[key],
-                    y: this.user.analysis[key]
-                })
+        if( res != null){
+            this.n_entries = res.n_entries
+            this.user = res.user
+            const payload = {
+                n_entries: this.n_entries,
+                user: this.user
             }
-        })
-        this.$set(this.user, "tweets", this.user.tweets);
+            this.$store.commit("set_twitter_user" ,payload)
+            Object.keys(this.user.analysis).map(key => {
+                this.$set(this.analysis, key, this.user.analysis[key]);
+                if(this.user){
+                    this.pie_analysis.push({
+                        name:tfactor[key],
+                        y: this.user.analysis[key]
+                    })
+                }
+            })
+            this.twTable = this.user.tweets
+            this.enabledUser = true    
+        }
         this.loading = false;
-        this.enabledUser = true
         this.search_input = ""
+       
     }
 
     async getUser(name: string){
-        const res :AxiosResponse<{n_entries:number, user: TwitterUser}> = await axios.get("/twitter/user/" + name);
-        return res.data;
+        try {
+            const res :AxiosResponse<{n_entries:number, user: TwitterUser}> = await axios.get("/twitter/user/" + name);
+            this.changeKey ++
+            this.snackbar = true
+            return res.data;
+        } catch{
+            this.changeKey ++
+            this.snackbar = false
+            return null 
+        }
     }
 
     onSearchChange() {

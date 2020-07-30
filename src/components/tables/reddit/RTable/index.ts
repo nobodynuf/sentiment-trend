@@ -54,4 +54,11 @@ export default class Rtab extends Vue {
             this.$emit("selected-subreddit")
         }   
     }
+
+    @Watch("subreddits", {deep: true})
+    async onChange(){
+        this.subTable.data = []
+        this.$set(this.subTable, "data", this.subreddits);
+        this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
+    }
 }

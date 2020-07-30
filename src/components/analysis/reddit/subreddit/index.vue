@@ -31,7 +31,11 @@
     <v-flex xs7>
       <v-card outlined>
         <v-layout wrap pa-2>
+          <v-flex xs12 class="d-flex align-center">
+            <h3>{{data_title}} </h3> <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular>
+          </v-flex>
           <v-flex xs12>
+            <span class="subtitle-2 grey--text" v-if="enabledSub">No hay registros inválidos</span>
           </v-flex>
           <v-flex xs12>
             <v-carousel show-arrows-on-hover>
@@ -39,7 +43,10 @@
                 <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
               </v-carousel-item>
               <v-carousel-item>
-                <line-chart></line-chart>
+                <v-card-text>
+                  <column-chart :title="titleTop5" :data="topFiveAnalysis"></column-chart>
+                  <h3>{{titleTop1}}</h3>
+                </v-card-text>
               </v-carousel-item>
             </v-carousel>
           </v-flex>
@@ -60,19 +67,20 @@
       </v-card>
       <v-card outlined>
         <v-card-title>Factores</v-card-title>
-        <v-card-text v-if="enabledSub">
-          <factor-emo :analysis="subreddit.analysis"></factor-emo>
+        <v-card-text>
+          <factor-emo :analysis="sub_analysis"></factor-emo>
         </v-card-text>
       </v-card>
     </v-flex>
     <v-flex xs12>
      <v-card outlined>
         <v-card-title>Publicaciones</v-card-title>
-        <v-card-text v-if="enabledSub">
-           <sub-table :submissions="subreddit.submissions"></sub-table>
+        <v-card-text>
+           <sub-table :submissions="submissionsTable"></sub-table>
         </v-card-text>
       </v-card>
     </v-flex>
+    <Snackbar :key="changeKey" :state="snackbar"></Snackbar>
   </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

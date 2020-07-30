@@ -28,7 +28,7 @@
                 <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
               </v-carousel-item>
               <v-carousel-item>
-                <line-chart></line-chart>
+                <factor-pie title="Manifestación Emocional" :data="risersSplittedData" ></factor-pie>
               </v-carousel-item>
             </v-carousel>
           </v-flex>
@@ -49,7 +49,7 @@
     <v-flex xs12>
        <v-card outlined>
         <v-card-title>Usuarios <v-progress-circular v-if="loading" class="ml-3" size="30" width="2" indeterminate></v-progress-circular></v-card-title>
-        <v-card-text :key="num" v-if="!loading">
+        <v-card-text>
            <u-table @selected-user="selectedUserEvent" :users="users"></u-table>
         </v-card-text>
       </v-card>

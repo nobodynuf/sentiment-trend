@@ -66,6 +66,13 @@ export default class SubTable extends Vue {
         this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
     }
 
+    @Watch("submissions", {deep: true})
+    async onChange(){
+        this.subTable.data = []
+        this.$set(this.subTable, "data", this.submissions);
+        this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
+    }
+
     async checkDetail(sub_id : string){   
 
         const res = await this.getRedditSub(sub_id);
@@ -99,8 +106,6 @@ export default class SubTable extends Vue {
         this.menu_body = true;
         this.translated_body = await this.getTranslation(text)
     }
-
-    
 
     async getTranslation(text: string){
         const res: AxiosResponse<{translation: string}> = await axios.post("/translate", {text});

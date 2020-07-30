@@ -39,6 +39,13 @@ export default class Rtab extends Vue {
         this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
     }
 
+    @Watch("users", {deep: true})
+    async onChange(){
+        this.subTable.data = []
+        this.$set(this.subTable, "data", this.users);
+        this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
+    }
+
     setUser(id : string){   
         const user = this.subTable.data
         .find((user: { id: string }) => user.id === id)
