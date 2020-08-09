@@ -17,16 +17,16 @@ import {AxiosResponse} from "axios"
         FactorEmo,
         UTable,
         FileInput,
-    },
+    }
 })
 export default class UsersAnalyzer extends Vue {
     tab: string = "tab-4"
     socialMedia: SocialMedia = "reddit"
     fileInputType: String = "PostedRedditUsers"
-    usersData!: PostedRedditUsers
-
+    data_title = "Sin datos "
     loading = false
-    data_title = "Sin datos..."
+    
+    usersData!: PostedRedditUsers
     users: Array<RedditUser> = []
 
     risersSplittedData : {[key: string] : Analysis} = {}
@@ -35,21 +35,29 @@ export default class UsersAnalyzer extends Vue {
     analysis: {[key: string]: number} = {}
     pie_analysis: {name: string; y: number; value: number; type: string}[] = []
 
-    num: number = 0
-
     mounted() {
         this.init()
     }
 
     async init() {
         this.loading = true
+        this.pie_analysis = []
+        this.risersSplittedData = {}
+
+        //getting data from store
         this.usersData = this.$store.state.posted_data.reddit.users_data
 
         //loading data from store
         if (this.usersData.n_entries != 0) {
-            this.data_title = "Cargando plantilla de datos..."
-            this.users = this.usersData.users
+            this.data_title = "Cargando plantilla de datos "
+
+            //used in emo-factor
             this.analysis = this.usersData.analysis
+
+            //used in table
+            this.users = this.usersData.users
+
+            //loading data for the first chart
             Object.keys(this.analysis).map(key => {
                 this.pie_analysis.push({
                     name: tfactor[key],
@@ -58,35 +66,24 @@ export default class UsersAnalyzer extends Vue {
                     type: "pie",
                 })
             })
-            this.risersSplittedData = {}
+
+            //loading data for second chart
             this.users.map((user : RedditUser) =>{
                 this.risersSplittedData[user.name] = user.analysis
             })
+
             this.data_title = `${this.usersData.n_entries} Registros`
-            this.num++
 
         
         //loading data by default
         } else {
-            this.data_title = "Cargando registros por defecto..."
-            const {n_entries, users, analysis} = await this.getUsers()
-            this.analysis = analysis
-            this.users = users
-            this.$set(this.users, "users", this.users)
-            this.risersSplittedData = {}
-            this.users.map((user : RedditUser) => {
-                this.risersSplittedData[user.name] = user.analysis
-            })
-            Object.keys(this.analysis).map(key => {
-                this.pie_analysis.push({
-                    name: tfactor[key],
-                    value: this.analysis[key],
-                    y: this.analysis[key],
-                    type: "pie",
-                })
-            })
 
-            this.data_title = `${n_entries} Registros`
+            this.data_title = "Cargando registros por defecto "
+
+            //getting data by default
+            const {n_entries, users, analysis} = await this.getUsers()
+
+            //updating data in store
             this.usersData.analysis = this.analysis
             this.usersData.n_entries = n_entries
             this.usersData.users = users
@@ -94,6 +91,31 @@ export default class UsersAnalyzer extends Vue {
                 SocialMedia: this.socialMedia,
                 PostedRedditUsers: this.usersData,
             })
+
+            //used in emo-factor
+            this.analysis = analysis
+
+            //used in table
+            this.users = users
+
+
+            //loading data for the first chart
+            Object.keys(this.analysis).map(key => {
+                this.pie_analysis.push({
+                    name: tfactor[key],
+                    value: this.analysis[key],
+                    y: this.analysis[key],
+                    type: "pie",
+                })
+            })
+
+            //loading data for second chart
+            this.users.map((user : RedditUser) => {
+                this.risersSplittedData[user.name] = user.analysis
+            })
+        
+            this.data_title = `${n_entries} Registros`
+
         }
         this.loading = false
     }
@@ -112,10 +134,14 @@ export default class UsersAnalyzer extends Vue {
     }
 
     receivedUsersEvent($event: {users: Array<RedditUser>; n_entries: number, analysis: Analysis}) {
+        
+        //updating data in store
         this.usersData.n_entries = $event.n_entries
         this.usersData.users = $event.users
         this.usersData.analysis = $event.analysis
         this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedRedditUsers : this.usersData} )
+        
         this.init()
+
     }
 }

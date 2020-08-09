@@ -1,6 +1,6 @@
 
 export interface Subreddit {
-    analysis: {[key: string] : number}
+    analysis: Analysis
     id: string
     description: string
     name: string
@@ -18,7 +18,7 @@ export interface RedditSub {
 }
 
 export interface RedditUser {
-    analysis: {[key: string] : number}
+    analysis: Analysis
     id: string
     name: string
     icon_img: string
@@ -35,12 +35,14 @@ export interface TwitterUser {
     verified: string
     tweets_counts: number
     tweets: Tweet[]
+    n_entries: number
     analysis: Analysis
 }
 
 export interface Hashtag {
     name: string
     tweets: Tweet[]
+    n_entries: number
     analysis: Analysis
 }
 
@@ -55,6 +57,7 @@ export interface Tweet {
 export interface Analysis {
     [key:string]: number
 }
+
 export interface DataTableHeader<T> {
     text: string,
     align?: 'left' | 'center' | 'right',

@@ -19,63 +19,76 @@ import { AxiosResponse } from 'axios';
     }
 })
 export default class UserAnalyzer extends Vue {
-    
     search_input = "";
     voidTextFiel = true
 
+    data_title = "Sin datos ";
     loading = false;
     enabledUser = false
 
-    n_entries : number = 0;
+    userData! :  {user: TwitterUser, n_entries: number}
     user! : TwitterUser
-
     twTable : Tweet[] = []
+
     analysis : {[key: string] : number} = {}
+
     pie_analysis : {name: string, y: number}[] = []
 
     topFiveAnalysis : {name:string; data: number[] }[] = []
     titleTop5 = "5 factores emocionales más representativos" 
     titleTop1= ""
 
-    changeKey : number = 0 
+    changingKeySnackbar : number = 0 
     snackbar: boolean | null = null
 
-    data_title = "Sin datos ";
-
     mounted() {
-        this.loadUser()
         this.$vuetify.goTo(0,{
             duration: 0,
             offset: 0
         })
+
+        this.loadUser()
     }
 
     loadUser(){
-        let dataUser = this.$store.state.twitter.fetched_user
-        if(dataUser.user != undefined){
-            this.n_entries = dataUser.n_entries
-            this.user = dataUser.user
+
+        //getting data from store
+        this.userData = this.$store.state.twitter.fetched_user
+
+        //loading data from store
+        if(this.userData.user != undefined){
+
+            //used in profile
+            this.user = this.userData.user
+
+            //used in emo-factor
+            this.analysis = this.userData.user.analysis
+            
+            //used in table
+            this.twTable = this.userData.user.tweets
+
             this.pie_analysis = [];
-            Object.keys(this.user.analysis).map(key => {
-                this.$set(this.analysis, key, this.user.analysis[key]);
-                if(this.user){
-                    this.pie_analysis.push({
-                        name:tfactor[key],
-                        y: this.user.analysis[key]
-                    })
-                    this.topFiveAnalysis.push({
-                        name: tfactor[key],
-                        data: [Math.ceil(this.analysis[key])]
-                    })
-                    this.topFiveAnalysis = this.topFiveAnalysis.sort(((a, b) =>  b.data[0] - a.data[0])).slice(0,5)
-                    var top1 = this.topFiveAnalysis[0].name
-                    this.titleTop1 = ` '${top1}" es el factor con mayor manifestación emocional`
-                }
+            this.topFiveAnalysis = []
+            Object.keys(this.analysis).map(key => {
+
+                //loading data for the first chart
+                this.pie_analysis.push({
+                    name:tfactor[key],
+                    y: this.analysis[key]
+                })
+
+                //loading data for second chart
+                this.topFiveAnalysis.push({
+                    name: tfactor[key],
+                    data: [Math.ceil(this.analysis[key])]
+                })
+                this.topFiveAnalysis = this.topFiveAnalysis.sort(((a, b) =>  b.data[0] - a.data[0])).slice(0,5)
+                var top1 = this.topFiveAnalysis[0].name
+                this.titleTop1 = ` '${top1}" es el factor con mayor manifestación emocional`
             })
-            this.twTable = this.user.tweets
-            this.loading = false;
+            
             this.enabledUser = true
-            this.data_title = `${ this.n_entries} Registros`;
+            this.data_title = `${this.userData.user.n_entries} Registros`;
         }
     }
 
@@ -83,27 +96,20 @@ export default class UserAnalyzer extends Vue {
         this.voidTextFiel = true
         this.loading = true;
         const name = this.search_input;
-        const res = await this.getUser(name);
-        if( res != null){
-            this.n_entries = res.n_entries
-            this.user = res.user
-            const payload = {
-                n_entries: this.n_entries,
-                user: this.user
-            }
-            this.$store.commit("set_twitter_user" ,payload)
-            Object.keys(this.user.analysis).map(key => {
-                this.$set(this.analysis, key, this.user.analysis[key]);
-                if(this.user){
-                    this.pie_analysis.push({
-                        name:tfactor[key],
-                        y: this.user.analysis[key]
-                    })
-                }
-            })
-            this.twTable = this.user.tweets
-            this.enabledUser = true    
+
+        //getting data
+        const userData = await this.getUser(name);
+
+        if( userData != null){
+
+            //updating data in store
+            this.userData.user = userData
+            this.userData.n_entries = userData.n_entries
+            this.$store.commit("set_twitter_user", this.userData);
+
+            this.loadUser()
         }
+
         this.loading = false;
         this.search_input = ""
        
@@ -111,12 +117,13 @@ export default class UserAnalyzer extends Vue {
 
     async getUser(name: string){
         try {
-            const res :AxiosResponse<{n_entries:number, user: TwitterUser}> = await axios.get("/twitter/user/" + name);
-            this.changeKey ++
+            const res :AxiosResponse<TwitterUser> = await axios.get("/twitter/user/" + name);
+            res.data.tweets.map(tw => console.log("id", tw))
+            this.changingKeySnackbar ++
             this.snackbar = true
             return res.data;
         } catch{
-            this.changeKey ++
+            this.changingKeySnackbar ++
             this.snackbar = false
             return null 
         }

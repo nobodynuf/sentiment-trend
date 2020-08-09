@@ -60,7 +60,7 @@
             <v-card-title class="headline">{{subreddit.name}}</v-card-title>
             <v-card-subtitle class="mt-1">
               <v-chip label class="mr-2 mt-2" >ID: {{subreddit.id}}</v-chip>
-              <v-chip label class="mr-2 mt-2" >Entradas analizadas: {{n_entries}}</v-chip>
+              <v-chip label class="mr-2 mt-2" >Entradas analizadas: {{subreddit.n_entries}}</v-chip>
             </v-card-subtitle>
           </div>
         </div>
@@ -80,7 +80,7 @@
         </v-card-text>
       </v-card>
     </v-flex>
-    <Snackbar :key="changeKey" :state="snackbar"></Snackbar>
+    <Snackbar :key="changingKeySnackbar" :state="snackbar"></Snackbar>
   </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

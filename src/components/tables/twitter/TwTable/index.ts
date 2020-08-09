@@ -69,7 +69,7 @@ export default class TwTable extends Vue {
     async checkDetail(tw_id : string){   
         const res = await this.getTweet(tw_id);
         this.tw_analysis = res.analysis
-        const twData = this.subTable.data.find(val=> val.id===tw_id);
+        const twData = this.subTable.data.find(val=> val.id === tw_id);
         this.tweet = twData;
         this.$set(this, "tweet", this.tweet);
         this.$set(this, "tw_analysis", this.tw_analysis);
@@ -84,8 +84,8 @@ export default class TwTable extends Vue {
         this.detail_modal = true;
     }
 
-    async getTweet(tw_id : string){
-        const res: AxiosResponse<{analysis: Analysis}> = await axios.post("/twitter/analyze-tweet", {tw_id});
+    async getTweet(tweet_id  : string){
+        const res: AxiosResponse<{analysis: Analysis}> = await axios.post("/twitter/analyze-tweet", { tweet_id});
         return res.data
     }
 

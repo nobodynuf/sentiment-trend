@@ -23,50 +23,62 @@ export default class UserAnalyzer extends Vue {
     search_input = "";
     voidTextFiel = true
 
-    pie_analysis : {name: string, y: number}[] = []
+    data_title = "Sin datos";
+    loading = false;
+    enabledUser = false
     
+    userData! :  {user: RedditUser, n_entries: number}
+    user! :RedditUser
+    submissionsTable : RedditSub[] = []
+
+    analysis : {[key: string] : number} = {}
+
+    pie_analysis : {name: string, y: number}[] = []
+
     topFiveAnalysis : {name:string; data: number[] }[] = []
     titleTop5 = "5 factores emocionales más representativos" 
     titleTop1= ""
 
-    iconImg :string = ""
-    n_entries : number = 0
-    loading = false;
-    user! :RedditUser
-    
-    analysis : {[key: string] : number} = {}
-    submissions:RedditSub[] | undefined
-    submissionsTable : RedditSub[] = []
-    enabledUser = false
-    
-    changeKey : number = 0 
+    changingKeySnackbar : number = 0 
     snackbar: boolean | null = null
 
-    data_title = "Sin datos";
-
     mounted() {
-        this.loadUser()
         this.$vuetify.goTo(0,{
             duration: 0,
             offset: 0
         })
+
+        this.loadUser()
     }
 
-   
-//factor emocional con mayor manifestacion es
     loadUser() {
-        let dataUser = this.$store.state.reddit.fetched_user.user
-        if(dataUser != undefined){
-            this.user = dataUser
-            this.submissionsTable = this.user.submissions
-            this.analysis = this.user.analysis
-            this.iconImg = this.user.icon_img
+
+        //getting data from store
+        this.userData = this.$store.state.reddit.fetched_user
+
+        //loading data from store
+        if(this.userData.user != undefined){
+
+            //used in profile
+            this.user = this.userData.user
+            
+            //used in emo-factor
+            this.analysis = this.userData.user.analysis
+
+            //used in table
+            this.submissionsTable = this.userData.user.submissions
+
             this.pie_analysis = [];
+            this.topFiveAnalysis = []
             Object.keys(this.analysis).map(key => {
+
+                    //loading data for the first chart
                     this.pie_analysis.push({
                         name: tfactor[key],
                         y: this.analysis[key]
                     })
+
+                    //loading data for second chart
                     this.topFiveAnalysis.push({
                         name: tfactor[key],
                         data: [Math.ceil(this.analysis[key])]
@@ -75,8 +87,9 @@ export default class UserAnalyzer extends Vue {
                     var top1 = this.topFiveAnalysis[0].name
                     this.titleTop1 = ` '${top1}" es el factor con mayor manifestación emocional`
             })
+
             this.enabledUser = true
-            this.data_title = `${ this.user.n_entries} Registros`;
+            this.data_title = `${this.userData.n_entries} Registros`;
         }
     }
 
@@ -84,26 +97,18 @@ export default class UserAnalyzer extends Vue {
         this.voidTextFiel = true
         this.loading = true;
         const name = this.search_input;
+
+        //getting data
         const userData = await this.getUser(name);
+
         if(userData != null){
-            this.n_entries = userData.user.n_entries;
-            this.user = userData.user;
+
+            //updating data in store
             this.$store.commit("set_reddit_user", userData);
 
-            this.submissionsTable = this.user.submissions
-            this.analysis = this.user.analysis
-            this.iconImg = this.user.icon_img
-            this.pie_analysis = [];
-            Object.keys(this.user.analysis).map(key => {
-                if(this.user){
-                    this.pie_analysis.push({
-                        name:tfactor[key],
-                        y: this.user.analysis[key]
-                    })
-                }
-            })
-            this.enabledUser = true
+            this.loadUser()
         }
+
         this.loading = false;
         this.search_input = "" 
     }
@@ -111,11 +116,11 @@ export default class UserAnalyzer extends Vue {
     async getUser(name: string){
         try {
             const res : AxiosResponse<{user: RedditUser, n_entries: number}>= await axios.get("/reddit/user/" + name);
-            this.changeKey ++
+            this.changingKeySnackbar ++
             this.snackbar = true
             return res.data;   
         } catch{
-            this.changeKey ++
+            this.changingKeySnackbar ++
             this.snackbar = false
             return null 
         }

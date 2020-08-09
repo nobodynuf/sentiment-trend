@@ -20,7 +20,7 @@
           }"
           :no-data-text="subTable.noDataText"
       >
-        <template  v-slot:item._actions="{item}">
+        <template v-slot:[`item._actions`]="{item}">
           <v-btn color="primary" small outlined @click="checkDetail(item.id)">revisar</v-btn>
         </template>
       </v-data-table>

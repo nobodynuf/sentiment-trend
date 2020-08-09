@@ -85,7 +85,7 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <Snackbar :key="changeKey" :state="snackbar"></Snackbar>
+      <Snackbar :key="changingKeySnackbar" :state="snackbar"></Snackbar>
   </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

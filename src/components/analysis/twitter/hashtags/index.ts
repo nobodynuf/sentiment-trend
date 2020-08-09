@@ -22,7 +22,9 @@ export default class HashtagsAnalyzer extends Vue {
     tab: string = "tab-2"
     socialMedia : SocialMedia = "twitter"
     fileInputType : String =  "PostedHashtags"
-
+    data_title = "Sin datos ";
+    loading = false;
+    
     hashtagsData! : PostedHashtags
     hashtags: Array<Hashtag> = []
 
@@ -32,21 +34,29 @@ export default class HashtagsAnalyzer extends Vue {
     analysis : {[key: string] : number} = {}
     pie_analysis : {name: string, y: number, value: number, type: string}[] = []
     
-    loading = false;
-    data_title = "Sin datos...";
-
     mounted() {
         this.init()
     }
 
     async init(){
         this.loading = true;
-        this.hashtagsData = this.$store.state.posted_data.twitter.hashtags_data
+        this.pie_analysis = []
+        this.risersSplittedData = {}
 
+        //getting data from store
+        this.hashtagsData = this.$store.state.posted_data.twitter.hashtags_data
 
         //loading hashtags from store
         if( this.hashtagsData.n_entries != 0){
-            this.hashtags = this.hashtagsData.hashtags;
+            this.data_title = "Cargando plantilla de datos "
+
+            //used in emo-factor
+            this.analysis = this.hashtagsData.analysis
+
+            //used in table
+            this.hashtags = this.hashtagsData.hashtags
+
+             //loading data for the first chart
             Object.keys(this.analysis).map(key => {
                 this.pie_analysis.push({
                     name: tfactor[key],
@@ -55,33 +65,39 @@ export default class HashtagsAnalyzer extends Vue {
                     type: "pie"
                 })
             });
-            this.risersSplittedData = {}
+            
+            //loading data for second chart
             this.hashtags.map((hash : Hashtag) =>{
                 this.risersSplittedData[hash.name] = hash.analysis
             })
-            this.$set(this.hashtags, "hashtags", this.hashtags)
+
             this.data_title = `${this.hashtagsData.n_entries} Registros`;
 
 
         //loading hashtags by default
         }else{
-            this.data_title = "Cargando registros por defecto..."
+            this.data_title = "Cargando registros por defecto "
+
+            //getting data
             const {n_entries, hashtags, analysis} = await this.getHashtags()
-            this.hashtagsData.hashtags = hashtags
+
+            //updating data in store
             this.hashtagsData.n_entries = n_entries
+            this.hashtagsData.hashtags = hashtags
             this.hashtagsData.analysis = analysis
-            this.hashtags = hashtags;
-            this.risersSplittedData = {}
-            this.hashtags.map((hash : Hashtag) =>{
-                this.risersSplittedData[hash.name] = hash.analysis
-            })
-            Object.keys(this.hashtags[0].analysis).map(key => {
-                this.$set(this.analysis, key, 0);
+            this.$store.commit("set_posted_data", { 
+                SocialMedia : this.socialMedia, 
+                PostedHashtags : this.hashtagsData
             })
 
+            //used in emo-factor
+            this.analysis = analysis
+
+            //used in table
+            this.hashtags = this.hashtagsData.hashtags
+            
+            //loading data for the first chart
             Object.keys(this.analysis).map(key => {
-                let div = this.analysis[key]/this.hashtags.length;
-                this.$set(this.analysis, key, div);
                 this.pie_analysis.push({
                     name: tfactor[key],
                     value: this.analysis[key],
@@ -89,16 +105,22 @@ export default class HashtagsAnalyzer extends Vue {
                     type: "pie"
                 })
             });
-            this.data_title = `${this.hashtagsData.n_entries} Registros`;
+
+            //loading data for second chart
+            this.hashtags.map((hash : Hashtag) =>{
+                this.risersSplittedData[hash.name] = hash.analysis
+            })
+
+            this.data_title = `${n_entries} Registros`;
+
         }
-        
         this.loading = false;
     }
 
     //default hashtags
     async getHashtags(){
-            const res :AxiosResponse<{n_entries:number, hashtags: Array<Hashtag>, analysis: Analysis}> = await axios.get("/twitter/hashtags");
-            return res.data;
+        const res : AxiosResponse<{n_entries:number, hashtags: Array<Hashtag>, analysis: Analysis}> = await axios.get("/twitter/hashtags");
+        return res.data;
     }
 
     selectEvent() {
@@ -106,11 +128,17 @@ export default class HashtagsAnalyzer extends Vue {
     }
 
     //template hashtags loaded
-    receivedHashtagsEvent($event :{ hashtags : Array<Hashtag>, n_entries : number, analysis: Analysis }) {
+    receivedHashtagsEvent($event :{ hashtags: Array<Hashtag>, n_entries : number, analysis: Analysis }) {
+        
+        //updating data in store
         this.hashtagsData.n_entries = $event.n_entries
         this.hashtagsData.hashtags = $event.hashtags
         this.hashtagsData.analysis = $event.analysis
-        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedHashtags : this.hashtagsData} )
+        this.$store.commit("set_posted_data", { 
+            SocialMedia : this.socialMedia, 
+            PostedHashtags : this.hashtagsData
+        })
+        
         this.init()
     }
 

@@ -22,6 +22,8 @@ export default class UsersAnalyzer extends Vue {
     tab: string = "tab-4"
     socialMedia : SocialMedia = "twitter"
     fileInputType : String =  "PostedTwitterUsers"
+    data_title = "Sin datos ";
+    loading = false;
 
     usersData! : PostedTwitterUsers
     users : Array<TwitterUser> = []
@@ -32,22 +34,30 @@ export default class UsersAnalyzer extends Vue {
     analysis : {[key: string] : number} = {}
     pie_analysis : {name: string, y: number, value: number, type: string}[] = []
     
-    loading = false;
-    enabledHashtag = false
-    data_title = "Sin datos...";
-
     mounted() {
         this.init()   
     }
 
     async init(){
         this.loading = true
+        this.pie_analysis = []
+        this.risersSplittedData = {}
+
+        //getting data from store
         this.usersData = this.$store.state.posted_data.twitter.users_data
         
+       
         //loading data from store
         if( this.usersData.n_entries != 0 ){
-            this.users = this.usersData.users;
+            this.data_title = "Cargando plantilla de datos "
+
+            //used in emo-factor
             this.analysis = this.usersData.analysis
+
+            //used in table
+            this.users = this.usersData.users;
+
+            //loading data for the first chart
             Object.keys(this.analysis).map(key => {
                 this.pie_analysis.push({
                     name: tfactor[key],
@@ -56,30 +66,37 @@ export default class UsersAnalyzer extends Vue {
                     type: "pie"
                 })
             });
-            this.risersSplittedData = {}
+
+            //loading data for second chart
             this.users.map((user : TwitterUser) =>{
                 this.risersSplittedData[user.name] = user.analysis
             })
-            this.$set(this.users, "users", this.users)
-            this.data_title = `${ this.usersData.n_entries} Registros`;
+            this.data_title = `${this.usersData.n_entries} Registros`;
         
         
         //loading data by default
         }else{
-            this.data_title = "Cargando registros por defecto..."
-            const {n_entries, users, analysis} = await this.getUsers()
+            this.data_title = "Cargando registros por defecto "
+
+            //getting data
+            const {n_entries, users , analysis} = await this.getUsers()
+            //updating data in store
             this.usersData.n_entries = n_entries
             this.usersData.users = users
             this.usersData.analysis = analysis
-            this.$store.commit("set_posted_data", { SocialMedia: this.socialMedia, usersData : this.usersData} )
-            this.users = users
-            this.risersSplittedData = {}
-            users.map((user : TwitterUser) => {
-                this.risersSplittedData[user.name] = user.analysis
+            this.$store.commit("set_posted_data", { 
+                SocialMedia: this.socialMedia, 
+                usersData : this.usersData
             })
+
+            //used in emo-factor
+            this.analysis = analysis
+
+            //used in table
+            this.users = this.usersData.users
+
+            //loading data for the first chart
             Object.keys(this.analysis).map(key => {
-                let div = this.analysis[key]/this.users.length;
-                this.$set(this.analysis, key, div);
                 this.pie_analysis.push({
                     name: tfactor[key],
                     value: this.analysis[key],
@@ -87,17 +104,22 @@ export default class UsersAnalyzer extends Vue {
                     type: "pie"
                 })
             });
-            this.users = users
-            this.$set(this.users, "users", this.users)
+
+            //loading data for second chart
+            users.map((user : TwitterUser) => {
+                this.risersSplittedData[user.name] = user.analysis
+            })
+            
             this.data_title = `${n_entries} Registros`;
+
         }
-        this.enabledHashtag = true
         this.loading = false;
     }
 
   //default users
     async getUsers(){
-        const res : AxiosResponse<{users: Array<TwitterUser>, n_entries: number, analysis : Analysis}> = await axios.get("/twitter/user");
+        const res : AxiosResponse<{users: Array<TwitterUser>, 
+            n_entries: number, analysis : Analysis}> = await axios.get("/twitter/user");
         return res.data;
     }
 
@@ -107,10 +129,16 @@ export default class UsersAnalyzer extends Vue {
 
     //template users loaded
     receivedUsersEvent($event : { users : Array<TwitterUser>, n_entries : number, analysis: Analysis }) {
+        
+        //updating data in store
         this.usersData.n_entries = $event.n_entries
         this.usersData.users = $event.users
         this.usersData.analysis = $event.analysis
-        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedTwitterUsers : this.usersData} )
+        this.$store.commit("set_posted_data", { 
+            SocialMedia : this.socialMedia, 
+            PostedTwitterUsers : this.usersData
+        })
+        
         this.init()
     }
 }

@@ -74,7 +74,7 @@ export default class SubTable extends Vue {
     }
 
     async checkDetail(sub_id : string){   
-
+        this.detail_modal = true;
         const res = await this.getRedditSub(sub_id);
         this.sub_analysis = res.analysis
         const sub = this.subTable.data.find(val=> val.id===sub_id);
