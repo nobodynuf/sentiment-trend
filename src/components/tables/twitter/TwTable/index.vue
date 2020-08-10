@@ -4,15 +4,15 @@
       <v-card flat>
         <v-btn-toggle v-model="toggle_exclusive" mandatory>
           <v-btn>
-            <v-icon>mdi-view-list</v-icon>
+            <v-icon>mdi-view-module</v-icon>
           </v-btn>
           <v-btn>
-            <v-icon>mdi-view-module</v-icon>
+            <v-icon>mdi-view-list</v-icon>
           </v-btn>
         </v-btn-toggle>
       </v-card>
       <v-data-table 
-          v-if="toggle_exclusive == 0"
+          v-if="toggle_exclusive == 1"
           :items="subTable.data"
           :headers="subTable.headers"
           :footer-props="{
@@ -24,7 +24,7 @@
           <v-btn outlined color="primary" small @click="checkDetail(item.id)">revisar</v-btn>
         </template>
       </v-data-table>
-    <v-container v-if="toggle_exclusive == 1">
+    <v-container v-if="toggle_exclusive == 0">
       <v-row >
         <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
           :key="index" cols="4">
@@ -140,6 +140,9 @@
           </v-flex>
         </v-layout>
       </v-dialog>
+      <v-snackbar :timeout="snackbarTime" :color="snackbarColor" v-model="snackbar">
+              {{ snackbarText }}
+      </v-snackbar>
     </v-layout>
 </template>
 <script src='./index.ts' lang='ts'/>

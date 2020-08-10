@@ -116,10 +116,10 @@ export default class SubredditAnalyzer extends Vue {
 
     async getSubreddit(name: string){
         try {
-        const res : AxiosResponse<{subreddit: Subreddit, n_entries: number}> = await axios.get("/reddit/subreddit/" + name);
-        this.changingKeySnackbar ++
-        this.snackbar = true
-        return res.data.subreddit;
+            const res : AxiosResponse<{subreddit: Subreddit, n_entries: number}> = await axios.get("/reddit/subreddit/" + name);
+            this.changingKeySnackbar ++
+            this.snackbar = true
+            return res.data;
         } catch{
             this.changingKeySnackbar ++
             this.snackbar = false

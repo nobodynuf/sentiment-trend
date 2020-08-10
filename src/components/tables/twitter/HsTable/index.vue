@@ -4,15 +4,15 @@
       <v-card flat>
         <v-btn-toggle v-model="toggle_exclusive" mandatory>
           <v-btn>
-            <v-icon>mdi-view-list</v-icon>
+            <v-icon>mdi-view-module</v-icon>  
           </v-btn>
           <v-btn>
-            <v-icon>mdi-view-module</v-icon>
+            <v-icon>mdi-view-list</v-icon>
           </v-btn>
         </v-btn-toggle>
       </v-card>
       <v-data-table 
-          v-if="toggle_exclusive == 0"
+          v-if="toggle_exclusive == 1"
           :items="subTable.data"
           :headers="subTable.headers"
           :footer-props="{
@@ -20,11 +20,11 @@
           }"
           :no-data-text="subTable.noDataText"
       >
-        <template  v-slot:item._actions="{item}">
+        <template  v-slot:[`item._actions`]="{item}">
           <v-btn outlined color="primary" small @click="setHashtag(item.name)">revisar</v-btn>
         </template>
       </v-data-table>
-    <v-container v-if="toggle_exclusive == 1">
+    <v-container v-if="toggle_exclusive == 0">
       <v-row >
         <v-col class="py-0 px-0" v-for="(item, index) in subTable.data"
           :key="index" cols="2">

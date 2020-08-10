@@ -118,7 +118,6 @@ export default class UserAnalyzer extends Vue {
     async getUser(name: string){
         try {
             const res :AxiosResponse<TwitterUser> = await axios.get("/twitter/user/" + name);
-            res.data.tweets.map(tw => console.log("id", tw))
             this.changingKeySnackbar ++
             this.snackbar = true
             return res.data;

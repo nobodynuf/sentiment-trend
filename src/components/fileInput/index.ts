@@ -3,6 +3,7 @@ import { $debug } from '@/utils'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
 import { Subreddit, RedditUser, Hashtag, TwitterUser, Analysis} from '@/types'
+import { error } from 'highcharts'
 @Component({
     components:{
     }
@@ -10,8 +11,6 @@ import { Subreddit, RedditUser, Hashtag, TwitterUser, Analysis} from '@/types'
 export default class FileInput extends Vue {
     @Prop({default : ""})
     datatype!: String //PostedSubreddits | PostedRedditUsers | PostedHashtags | PostedTwitterUsers
-    
-    
 
     file : File | null = null
 
@@ -19,10 +18,11 @@ export default class FileInput extends Vue {
     loading : boolean = false
     
     snackbar: boolean = false
-    snackbarTime: number = 5500
+    snackbarTime: number = 8000
     snackbarColor = ""
     text: string = ''
     
+    entries : number | undefined
     rules = [
         (value: { name: string }) => !value || value.name.split('.').pop() =="xlsx" || 'La extension del archivo deber ser .xlsx'
     ]
@@ -31,7 +31,7 @@ export default class FileInput extends Vue {
     async submitFile() {
         this.loading = true
         this.fileInputDisabled = true
-        let entries = undefined
+        this.entries = undefined
         let formData = new FormData();
         if(this.file){
             formData.append('plantilla', this.file);
@@ -44,14 +44,14 @@ export default class FileInput extends Vue {
             const data = await this.getRedditSubreddits(formData)
             if(data != null){
                 if(data.n_entries > 0){ this.$emit("reddit-sub",data) }
-                entries = data.n_entries
+                this.entries = data.n_entries
             }
         }
         else if(this.datatype == "PostedRedditUsers"){
             const data = await this.getRedditUsers(formData)
             if(data != null){
                 if(data.n_entries > 0){ this.$emit("reddit-user",data) }
-                entries = data.n_entries
+                this.entries = data.n_entries
             }
         }
 
@@ -60,14 +60,14 @@ export default class FileInput extends Vue {
             const data = await this.getTwitterHashtags(formData)
             if(data != null){
                 if(data.n_entries > 0){ this.$emit("twitter-hash", data) }
-                entries = data.n_entries
+                this.entries = data.n_entries
             }
         }
         else if(this.datatype == "PostedTwitterUsers"){
             const data = await this.getTwitterUsers(formData)
             if(data != null){
                 if(data.n_entries > 0){ this.$emit("twitter-user",  data) }
-                entries = data.n_entries
+                this.entries = data.n_entries
             }
         }
         
@@ -75,14 +75,17 @@ export default class FileInput extends Vue {
         this.loading = false
 
         //configuring message on screen
-        if(entries == undefined ){ 
-            this.text = "Ocurrio un Error, favor verificar datos ingresados en la plantilla"
+        if(this.entries == undefined ){ 
+            this.text = "Ocurrió un Error, por favor verifique los datos ingresados en la plantilla"
             this.snackbarColor = "error"
-        }else if(entries == 0){
+        }else if(this.entries == 0){
             this.text = "No se encontraron registros"
             this.snackbarColor = "success"
+        }else if(this.entries == -1){
+            this.text = "La plantilla está vacía"
+            this.snackbarColor = "success"
         }else{
-            this.text = `Se cargaron ${entries} registros`     
+            this.text = `Se cargaron ${this.entries} registros`     
             this.snackbarColor = "primary"
         }
 
@@ -94,34 +97,82 @@ export default class FileInput extends Vue {
         try {
             const res : AxiosResponse<{ subreddits : Array<Subreddit>, n_entries : number, analysis : Analysis }> = await axios.post('/reddit/subreddit',formData)
             return res.data;
-        } catch{
-            return null
+        } catch(e){
+            if( e.response){
+                if(e.response.status == 422){
+                    this.entries = -1
+                    return null
+                }
+                else{
+                    return null
+                } 
+            }else if(e.request){
+                return null
+            }else{
+                return null
+            }
         }
     }
     async getRedditUsers(formData: FormData){
         try {
             const res : AxiosResponse<{ redditUsers : Array<RedditUser>, n_entries : number, analysis : Analysis }> = await axios.post('/reddit/user',formData)
             return res.data;
-        } catch{
-            return null
+        } catch(e){
+            if( e.response){
+                if(e.response.status == 422){
+                    this.entries = -1
+                    return null
+                }
+                else{
+                    return null
+                } 
+            }else if(e.request){
+                return null
+            }else{
+                return null
+            }
         }
     }
 
     //twitter
     async getTwitterHashtags(formData: FormData){
         try {
-        const res : AxiosResponse<{ hashtags : Array<Hashtag>, n_entries : number, analysis : Analysis }> = await axios.post('/twitter/hashtags',formData)
-            return res.data;
-        } catch{
-            return null
+            const res : AxiosResponse<{ hashtags : Array<Hashtag>, n_entries : number, analysis : Analysis }> = await axios.post('/twitter/hashtags',formData)
+            return res.data
+        } catch(e){
+            if( e.response){
+                if(e.response.status == 422){
+                    this.entries = -1
+                    return null
+                }
+                else{
+                    return null
+                } 
+            }else if(e.request){
+                return null
+            }else{
+                return null
+            }
         }
     }
     async getTwitterUsers(formData: FormData){
         try {
             const res : AxiosResponse<{ twitterUsers : Array<TwitterUser>, n_entries : number, analysis : Analysis }> = await axios.post('/twitter/user',formData)
             return res.data;
-        } catch{
-            return null
+        } catch(e){
+            if( e.response){
+                if(e.response.status == 422){
+                    this.entries = -1
+                    return null
+                }
+                else{
+                    return null
+                } 
+            }else if(e.request){
+                return null
+            }else{
+                return null
+            }
         }
     }
 

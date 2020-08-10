@@ -31,7 +31,7 @@ export default class Rtab extends Vue {
         noDataText: "Sin registro de entradas"
     });
 
-    toggle_exclusive = 1
+    toggle_exclusive = 0
     
     page = 1
     pageCount = 0

@@ -30,7 +30,7 @@ export default class TwTable extends Vue {
     emojis = factor_emoji
     emoji = angry
 
-    toggle_exclusive = 1
+    toggle_exclusive = 0
     detail_modal = false;
     subTable = new DataTable<Tweet>({
         headers: [
@@ -59,6 +59,11 @@ export default class TwTable extends Vue {
     translated_body = "";
 
     loading = false;
+
+    snackbar: boolean = false
+    snackbarTime: number = 5500
+    snackbarText: string = ''
+    snackbarColor = ""
     
     mounted(){
         this.subTable.data = []
@@ -68,25 +73,43 @@ export default class TwTable extends Vue {
 
     async checkDetail(tw_id : string){   
         const res = await this.getTweet(tw_id);
-        this.tw_analysis = res.analysis
-        const twData = this.subTable.data.find(val=> val.id === tw_id);
-        this.tweet = twData;
-        this.$set(this, "tweet", this.tweet);
-        this.$set(this, "tw_analysis", this.tw_analysis);
-        const positivismo: number = this.tw_analysis["empatia"]
-        if(positivismo > 15 && positivismo < 26){
-            this.emoji = neutral
-        } else if(positivismo >=75){
-            this.emoji = smile
-        } else {
-            this.emoji = angry
+        if(res != undefined){
+            this.tw_analysis = res.analysis
+            const twData = this.subTable.data.find(val=> val.id === tw_id);
+            this.tweet = twData;
+            this.$set(this, "tweet", this.tweet);
+            this.$set(this, "tw_analysis", this.tw_analysis);
+            const positivismo: number = this.tw_analysis["empatia"]
+            if(positivismo > 15 && positivismo < 26){
+                this.emoji = neutral
+            } else if(positivismo >=75){
+                this.emoji = smile
+            } else {
+                this.emoji = angry
+            }
+            this.detail_modal = true;
         }
-        this.detail_modal = true;
+        
     }
 
-    async getTweet(tweet_id  : string){
-        const res: AxiosResponse<{analysis: Analysis}> = await axios.post("/twitter/analyze-tweet", { tweet_id});
-        return res.data
+    async getTweet(tweet_id : string){
+        try{
+            const res: AxiosResponse<{analysis: Analysis}> = await axios.post("/twitter/analyze-tweet", { tweet_id });
+            return res.data
+        } catch(e){
+            if(e.response){
+                this.snackbarText = "Registro del Tweet no encontrado"
+                this.snackbarColor = "success"
+            }else if(e.request){
+                this.snackbarText = "Ocurrió un error, no se puede ver detalle del Tweet"
+                this.snackbarColor = "error"
+            }else{
+                this.snackbarText = "Ocurrió un error, no se puede ver detalle del Tweet"
+                this.snackbarColor = "error"
+            }
+            this.snackbar = true
+        }
+        
     }
 
     async translate_title(text: string){
@@ -99,7 +122,6 @@ export default class TwTable extends Vue {
         this.translated_body = await this.getTranslation(text)
     }
 
-    
     async getTranslation(text: string){
         const res: AxiosResponse<{translation: string}> = await axios.post("/translate", {text});
         return res.data.translation

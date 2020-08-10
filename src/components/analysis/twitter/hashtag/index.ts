@@ -56,7 +56,7 @@ export default class HashtagAnalyzer extends Vue {
 
         //getting data from store
         this.hashtagData = this.$store.state.twitter.fetched_hashtag
-
+        
         //loading data from store
         if(this.hashtagData.hashtag != undefined){
 
@@ -119,6 +119,7 @@ export default class HashtagAnalyzer extends Vue {
     async getHashtag(name: string){
         try {
             const res :AxiosResponse<Hashtag> = await axios.get("/twitter/hashtags/" + name);
+            res.data.name = "#" + res.data.name
             this.changingKeySnackbar ++
             this.snackbar = true
             return res.data;
