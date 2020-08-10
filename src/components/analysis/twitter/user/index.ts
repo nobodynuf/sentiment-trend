@@ -1,7 +1,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import PieChart from '@/components/charts/PieChart/index.vue'
-import LineChart from '@/components/charts/LineChart/index.vue'
+import ColumnChart from "@/components/charts/ColumnChart/index.vue"
 import FactorEmo from '@/components/factors/index.vue'
 import Snackbar from '@/components/Snackbar/index.vue'
 import TwTable from '@/components/tables/twitter/TwTable/index.vue'
@@ -12,7 +12,7 @@ import { AxiosResponse } from 'axios';
 @Component({
     components:{
         PieChart,
-        LineChart,
+        ColumnChart,
         FactorEmo,
         TwTable,
         Snackbar
@@ -133,6 +133,7 @@ export default class UserAnalyzer extends Vue {
             this.voidTextFiel = true
         }else{
             this.voidTextFiel = false
+            this.$set(this.topFiveAnalysis, 'topFiveAnalysis', this.topFiveAnalysis)
         }
     }
 }
