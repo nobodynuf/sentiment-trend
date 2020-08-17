@@ -78,19 +78,28 @@ export default class UsersAnalyzer extends Vue {
         }else{
             this.data_title = "Cargando registros por defecto "
 
-            //getting data
-            const {n_entries, users , analysis} = await this.getUsers()
-            //updating data in store
-            this.usersData.n_entries = n_entries
-            this.usersData.users = users
-            this.usersData.analysis = analysis
-            this.$store.commit("set_posted_data", { 
-                SocialMedia: this.socialMedia, 
-                usersData : this.usersData
-            })
+            //getting data from store
+            this.usersData = this.$store.state.default_data.twitter.users_data
+
+            if( this.usersData.n_entries == 0 ){
+                //getting data
+                const {n_entries, users , analysis} = await this.getUsers()
+                
+                //updating data in store
+                this.usersData.n_entries = n_entries
+                this.usersData.users = users
+                this.usersData.analysis = analysis
+
+                this.$store.commit("set_default_data", { 
+                    SocialMedia: this.socialMedia, 
+                    grouped: 0,
+                    usersData : this.usersData
+                })
+            }
+            
 
             //used in emo-factor
-            this.analysis = analysis
+            this.analysis = this.usersData.analysis
 
             //used in table
             this.users = this.usersData.users
@@ -106,11 +115,11 @@ export default class UsersAnalyzer extends Vue {
             });
 
             //loading data for second chart
-            users.map((user : TwitterUser) => {
+            this.users.map((user : TwitterUser) => {
                 this.risersSplittedData[user.name] = user.analysis
             })
             
-            this.data_title = `${n_entries} Registros`;
+            this.data_title = `${this.usersData.n_entries} Registros`;
 
         }
         this.loading = false;
@@ -128,17 +137,7 @@ export default class UsersAnalyzer extends Vue {
     }
 
     //template users loaded
-    receivedUsersEvent($event : { users : Array<TwitterUser>, n_entries : number, analysis: Analysis }) {
-        
-        //updating data in store
-        this.usersData.n_entries = $event.n_entries
-        this.usersData.users = $event.users
-        this.usersData.analysis = $event.analysis
-        this.$store.commit("set_posted_data", { 
-            SocialMedia : this.socialMedia, 
-            PostedTwitterUsers : this.usersData
-        })
-        
+    receivedUsersEvent() {
         this.init()
     }
 }

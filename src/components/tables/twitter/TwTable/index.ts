@@ -72,24 +72,22 @@ export default class TwTable extends Vue {
     }
 
     async checkDetail(tw_id : string){   
+        const twData = this.subTable.data.find(val=> val.id === tw_id);
+        this.tweet = twData;
+        this.detail_modal = true;
+        this.loading = true
         const res = await this.getTweet(tw_id);
         if(res != undefined){
             this.tw_analysis = res.analysis
-            const twData = this.subTable.data.find(val=> val.id === tw_id);
-            this.tweet = twData;
-            this.$set(this, "tweet", this.tweet);
-            this.$set(this, "tw_analysis", this.tw_analysis);
-            const positivismo: number = this.tw_analysis["empatia"]
-            if(positivismo > 15 && positivismo < 26){
-                this.emoji = neutral
-            } else if(positivismo >=75){
-                this.emoji = smile
-            } else {
-                this.emoji = angry
-            }
-            this.detail_modal = true;
         }
-        
+        this.loading = false
+    }
+
+    closingDialogue(){
+        this.detail_modal = false;
+        this.menu_title = false
+        this.menu_body = false
+        this.tw_analysis = {}
     }
 
     async getTweet(tweet_id : string){

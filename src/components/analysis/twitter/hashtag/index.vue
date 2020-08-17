@@ -39,14 +39,16 @@
                     <span class="subtitle-2 grey--text" v-if="enabledHashtag">No hay registros inválidos</span>
                 </v-flex>
                 <v-flex xs12>
-                    <v-carousel show-arrows-on-hover>
+                    <v-carousel v-model="carouselItem" show-arrows-on-hover>
                     <v-carousel-item>
                         <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
                     </v-carousel-item>
                     <v-carousel-item>
-                        <v-card-text>
+                        <v-card-text class="text-center pt-2">
                             <column-chart :title="titleTop5" :data="topFiveAnalysis"></column-chart>
-                            <h3>{{titleTop1}}</h3>
+                           <v-chip v-if="enabledHashtag" outlined label color="chart1">
+                                <h4>{{titleTop1}}</h4>
+                            </v-chip>
                         </v-card-text>
                     </v-carousel-item>
                     </v-carousel>

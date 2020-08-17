@@ -8,10 +8,21 @@ export default class FactorEmo extends Vue {
     @Prop({default : {}})
     analysis !: {[key: string] : number};
 
-    readonly color0_25 = "factor0_25";
-    readonly color26_50 = "factor26_50";
-    readonly color51_75 = "factor51_75";
-    readonly color76_100 = "factor76_100";
+    readonly factor0_19 = "factor0_19";
+    readonly factor20_39 = "factor20_39";
+    readonly factor40_59 = "factor40_59";
+    readonly factor60_79 = "factor60_79";
+    readonly factor80_100 = "factor80_100";
+
+    criteriaTable = [
+        { percentage: "0% a 19%", criterion: "Crítico", color: "factor0_19" },
+        { percentage: "20% a 39%", criterion: "Insuficiente", color: "factor20_39" },
+        { percentage: "40% a 59%", criterion: "Regular", color: "factor40_59" },
+        { percentage: "60% a 79%", criterion: "Suficiente", color: "factor60_79" },
+        { percentage: "80% a 100%", criterion: "Excelente", color: "factor80_100" }
+    ]
+    
+
     table = new DataTable<{factor: string, value: number}>({
         headers: [
             {
@@ -22,7 +33,7 @@ export default class FactorEmo extends Vue {
             {
                 text: "",
                 value: "value",
-                align: "right"
+                align: "left"
             }
         ],
         rowsPerPageText: "Factores por página",
@@ -40,12 +51,22 @@ export default class FactorEmo extends Vue {
         this.$set(this.table, 'data', this.table.data)
     }
 
+    criterion(value : number){
+        if (value > 79) return "Excelente"
+        else if (value > 59) return "Suficiente"
+        else if (value > 39) return "Regular"
+        else if (value > 19) return "Insuficiente"
+        else return "Crítico"
+    }
+    
     getColor (value: number) {
-        if (value > 75) return this.color76_100
-        else if (value > 50) return this.color51_75
-        else if (value > 25) return this.color26_50
-        else return this.color0_25
+        if (value > 79) return this.factor80_100
+        else if (value > 59) return this.factor60_79
+        else if (value > 39) return this.factor40_59
+        else if (value > 19) return this.factor20_39
+        else return this.factor0_19
       }
+
     @Watch("analysis", {deep: true})
     async onChange(){
         this.table.data = []

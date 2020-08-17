@@ -20,39 +20,95 @@ import SubredditsAnalyzer from '@/components/analysis/reddit/subreddits'
 })
 export default class HomeView extends Vue {
 
-    mounted(){
-        this.init();
-    }
+    toggle_twitter = 0
+    toggle_reddit = 0
+
+    //default data
+    subredditsDefaultData! : PostedSubreddits
+    rUsersDefaultData!: PostedRedditUsers
+
+    //template data
+    subredditsTemplateData! : PostedSubreddits
+    rUsersTemplateData!: PostedRedditUsers
+
+    redditTemplateDataDisabled : boolean = true
 
     rusers_splited_data : {[key: string] : Analysis} = {}
-    subreddit_splited_data : {[key: string] : Analysis} = {}
+    subreddit_default_split_data : {[key: string] : Analysis} = {}
+    
     entries = {
         default: {
             reddit: {
                 subreddit: 0,
                 users: 0
+            },
+            twitter:{
+                hashtag:0,
+                users: 0
+            }
+        },
+        template: {
+            reddit: {
+                subreddit: 0,
+                users: 0
+            },
+            twitter: {
+                hashtag:0,
+                users: 0
             }
         }
     };
 
+    mounted(){
+        this.init();
+    }
+
     async init(){
-        const promises: Array<Promise<any>> = [
-            this.getRedditUsers(),
-            this.getSubreddits(),
-        ]
-        const data = await Promise.all(promises);
-        const reddit_users = data[0]
-        const subreddits = data[1]
-        this.$store.commit("set_default_data", {social: "reddit", grouped: 0, data: data[0]});
-        this.$store.state.default_data.reddit.users_data.users.map((user: RedditUser) => {
+        //getting data from store
+        this.subredditsTemplateData = this.$store.state.posted_data.reddit.subreddits_data
+        if(this.subredditsTemplateData.n_entries != 0  ){
+            this.redditTemplateDataDisabled = false
+        }
+
+        this.subredditsDefaultData = this.$store.state.default_data.reddit.subreddits_data
+        this.rUsersDefaultData = this.$store.state.default_data.reddit.users_data
+        
+        if(this.subredditsDefaultData.n_entries == 0){
+            const promises: Array<Promise<any>> = [
+                this.getRedditUsers(),
+                this.getSubreddits(),
+            ]
+
+            const data = await Promise.all(promises);
+            //const reddit_users = data[0]
+            //const subreddits = data[1]
+            
+            this.$store.commit("set_default_data", {social: "reddit", grouped: 0, data: data[0]});
+            
+            //this.entries.default.reddit.users = data[0].n_entries;
+            this.$store.commit("set_default_data", {social: "reddit", grouped: 1, data: data[1]});
+            
+            //this.entries.default.reddit.subreddit = data[1].n_entries;
+            this.subredditsDefaultData = this.$store.state.default_data.reddit.subreddits_data
+            this.rUsersDefaultData = this.$store.state.default_data.reddit.users_data
+        }
+        this.entries.default.reddit.subreddit = this.subredditsDefaultData.n_entries;
+        this.entries.default.reddit.users = this.rUsersDefaultData.n_entries;
+
+
+        this.subredditsDefaultData.subreddits.map((sub: Subreddit) => {
+            this.subreddit_default_split_data[sub.name] = sub.analysis;
+        })
+
+        this.rUsersDefaultData.users.map((user: RedditUser) => {
             this.rusers_splited_data[user.name] = user.analysis;
         })
-        this.entries.default.reddit.users = data[0].n_entries;
-        this.$store.commit("set_default_data", {social: "reddit", grouped: 1, data: data[1]});
-        this.$store.state.default_data.reddit.subreddits_data.subreddits.map((sub: Subreddit) => {
-            this.subreddit_splited_data[sub.name] = sub.analysis;
-        })
-        this.entries.default.reddit.subreddit = data[1].n_entries;
+        
+        
+        
+        
+        
+        
     }
 
     async getSubreddits(){

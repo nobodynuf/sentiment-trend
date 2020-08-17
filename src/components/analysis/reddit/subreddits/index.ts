@@ -46,7 +46,6 @@ export default class SubredditsAnalyzer extends Vue {
 
         //getting data from store
         this.subredditsData = this.$store.state.posted_data.reddit.subreddits_data
-
         //loading data from store
         if( this.subredditsData.n_entries != 0 ){
             this.data_title = "Cargando plantilla de datos "
@@ -79,23 +78,29 @@ export default class SubredditsAnalyzer extends Vue {
         }else{
             this.data_title = "Cargando registros por defecto "
 
-            //getting data
-            const {n_entries ,subreddits, analysis} = await this.getSubreddits();
-            
-            //updating data in store
-            this.subredditsData.n_entries = n_entries
-            this.subredditsData.subreddits = subreddits
-            this.subredditsData.analysis = analysis
-            this.$store.commit("set_posted_data", { 
-                SocialMedia : this.socialMedia, 
-                PostedSubreddits : this.subredditsData
-            });
+            this.subredditsData = this.$store.state.default_data.reddit.subreddits_data
+
+            if(this.subredditsData.n_entries == 0){
+                //getting data
+                const {n_entries ,subreddits, analysis} = await this.getSubreddits();
+                
+                //updating data in store
+                this.subredditsData.n_entries = n_entries
+                this.subredditsData.subreddits = subreddits
+                this.subredditsData.analysis = analysis
+
+                this.$store.commit("set_default_data", { 
+                    SocialMedia : this.socialMedia, 
+                    grouped: 1,
+                    PostedSubreddits : this.subredditsData
+                });
+            }
             
             //used in emo-factor
-            this.analysis = analysis
+            this.analysis = this.subredditsData.analysis
 
             //used in table
-            this.subreddits = subreddits
+            this.subreddits = this.subredditsData.subreddits
 
             //loading data for the first chart
             Object.keys(this.analysis).map(key => {
@@ -112,7 +117,7 @@ export default class SubredditsAnalyzer extends Vue {
                 this.risersSplittedData[subreddit.name] = subreddit.analysis
             })
             
-            this.data_title = `${n_entries} Registros`;
+            this.data_title = `${this.subredditsData.n_entries} Registros`;
             
         }
         this.loading = false;
@@ -129,17 +134,7 @@ export default class SubredditsAnalyzer extends Vue {
     }
 
     //template subreddits loaded
-    receivedSubredditsEvent($event : { subreddits : Array<Subreddit>, n_entries : number, analysis : Analysis }) {
-        
-        //updating data in store
-        this.subredditsData.n_entries = $event.n_entries
-        this.subredditsData.subreddits = $event.subreddits
-        this.subredditsData.analysis = $event.analysis
-        this.$store.commit("set_posted_data", { 
-            SocialMedia : this.socialMedia, 
-            PostedSubreddits : this.subredditsData
-        })
-        
+    receivedSubredditsEvent() {
         this.init()
     }
 

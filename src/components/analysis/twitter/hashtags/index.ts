@@ -78,20 +78,27 @@ export default class HashtagsAnalyzer extends Vue {
         }else{
             this.data_title = "Cargando registros por defecto "
 
-            //getting data
-            const {n_entries, hashtags, analysis} = await this.getHashtags()
+            //getting data from store
+            this.hashtagsData = this.$store.state.default_data.twitter.hashtags_data
 
-            //updating data in store
-            this.hashtagsData.n_entries = n_entries
-            this.hashtagsData.hashtags = hashtags
-            this.hashtagsData.analysis = analysis
-            this.$store.commit("set_posted_data", { 
-                SocialMedia : this.socialMedia, 
-                PostedHashtags : this.hashtagsData
-            })
+            if( this.hashtagsData.n_entries == 0){
+                //getting data
+                const {n_entries, hashtags, analysis} = await this.getHashtags()
 
+                //updating data in store
+                this.hashtagsData.n_entries = n_entries
+                this.hashtagsData.hashtags = hashtags
+                this.hashtagsData.analysis = analysis
+
+                this.$store.commit("set_default_data", { 
+                    SocialMedia : this.socialMedia, 
+                    grouped: 1,
+                    PostedHashtags : this.hashtagsData
+                })
+            }
+            
             //used in emo-factor
-            this.analysis = analysis
+            this.analysis = this.hashtagsData.analysis
 
             //used in table
             this.hashtags = this.hashtagsData.hashtags
@@ -111,7 +118,7 @@ export default class HashtagsAnalyzer extends Vue {
                 this.risersSplittedData[hash.name] = hash.analysis
             })
 
-            this.data_title = `${n_entries} Registros`;
+            this.data_title = `${this.hashtagsData.n_entries} Registros`;
 
         }
         this.loading = false;
@@ -128,17 +135,7 @@ export default class HashtagsAnalyzer extends Vue {
     }
 
     //template hashtags loaded
-    receivedHashtagsEvent($event :{ hashtags: Array<Hashtag>, n_entries : number, analysis: Analysis }) {
-        
-        //updating data in store
-        this.hashtagsData.n_entries = $event.n_entries
-        this.hashtagsData.hashtags = $event.hashtags
-        this.hashtagsData.analysis = $event.analysis
-        this.$store.commit("set_posted_data", { 
-            SocialMedia : this.socialMedia, 
-            PostedHashtags : this.hashtagsData
-        })
-        
+    receivedHashtagsEvent() {
         this.init()
     }
 

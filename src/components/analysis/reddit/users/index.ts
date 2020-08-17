@@ -80,23 +80,29 @@ export default class UsersAnalyzer extends Vue {
 
             this.data_title = "Cargando registros por defecto "
 
-            //getting data by default
-            const {n_entries, users, analysis} = await this.getUsers()
+            this.usersData = this.$store.state.default_data.reddit.users_data
 
-            //updating data in store
-            this.usersData.analysis = this.analysis
-            this.usersData.n_entries = n_entries
-            this.usersData.users = users
-            this.$store.commit("set_posted_data", {
-                SocialMedia: this.socialMedia,
-                PostedRedditUsers: this.usersData,
-            })
+            if (this.usersData.n_entries == 0) {
+                //getting data by default
+                const {n_entries, users, analysis} = await this.getUsers()
 
+                //updating data in store
+                this.usersData.analysis = analysis
+                this.usersData.n_entries = n_entries
+                this.usersData.users = users
+
+                this.$store.commit("set_default_data", {
+                    SocialMedia: this.socialMedia,
+                    grouped: 0,
+                    PostedRedditUsers: this.usersData,
+                })
+            }
+            
             //used in emo-factor
-            this.analysis = analysis
+            this.analysis = this.usersData.analysis
 
             //used in table
-            this.users = users
+            this.users = this.usersData.users
 
 
             //loading data for the first chart
@@ -114,7 +120,7 @@ export default class UsersAnalyzer extends Vue {
                 this.risersSplittedData[user.name] = user.analysis
             })
         
-            this.data_title = `${n_entries} Registros`
+            this.data_title = `${this.usersData.n_entries} Registros`
 
         }
         this.loading = false
@@ -133,15 +139,8 @@ export default class UsersAnalyzer extends Vue {
         this.$emit("selected-user", this.tab)
     }
 
-    receivedUsersEvent($event: {users: Array<RedditUser>; n_entries: number, analysis: Analysis}) {
-        
-        //updating data in store
-        this.usersData.n_entries = $event.n_entries
-        this.usersData.users = $event.users
-        this.usersData.analysis = $event.analysis
-        this.$store.commit("set_posted_data", { SocialMedia : this.socialMedia, PostedRedditUsers : this.usersData} )
-        
+    //template users loaded
+    receivedUsersEvent() {
         this.init()
-
     }
 }

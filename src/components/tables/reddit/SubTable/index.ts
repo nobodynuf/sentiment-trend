@@ -18,7 +18,7 @@ const neutral = require('@/assets/emojis/neutral.png')
 export default class SubTable extends Vue {
 
     @Prop({default : {}})
-     submissions!: RedditSub
+    submissions!: RedditSub
     
     submission : RedditSub | undefined
     sub_analysis : {[key: string] : number} = {}
@@ -32,6 +32,7 @@ export default class SubTable extends Vue {
     
     toggle_exclusive = 0
     detail_modal = false;
+
     subTable = new DataTable<RedditSub>({
         headers: [
             {
@@ -73,22 +74,21 @@ export default class SubTable extends Vue {
         this.pageCount = Math.ceil(this.subTable.data.length / this.itemsPerPage)
     }
 
-    async checkDetail(sub_id : string){   
-        const res = await this.getRedditSub(sub_id);
-        this.sub_analysis = res.analysis
+    closingDialogue(){
+        this.detail_modal = false;
+        this.menu_title = false
+        this.menu_body = false
+        this.sub_analysis = {}
+    }
+
+    async checkDetail(sub_id : string){  
         const sub = this.subTable.data.find(val=> val.id===sub_id);
         this.submission = sub;
-        this.$set(this, "submission", this.submission);
-        this.$set(this, "sub_analysis", this.sub_analysis);
-        const positivismo: number = this.sub_analysis["empatia"]
-        if(positivismo > 15 && positivismo < 26){
-            this.emoji = neutral
-        } else if(positivismo >=75){
-            this.emoji = smile
-        } else {
-            this.emoji = angry
-        }
         this.detail_modal = true;
+        this.loading = true
+        const res = await this.getRedditSub(sub_id);
+        this.sub_analysis = res.analysis
+        this.loading = false
     }
 
     async getRedditSub(sub_id : string){

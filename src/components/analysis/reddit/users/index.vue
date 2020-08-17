@@ -5,7 +5,7 @@
         <v-flex xs12>   
           <v-layout wrap align-center>
             <v-flex xs7>
-              <file-input :datatype="fileInputType" @reddit-user="receivedUsersEvent($event)"></file-input>
+              <file-input :datatype="fileInputType" @reddit-user="receivedUsersEvent"></file-input>
             </v-flex>
             <v-flex xs5>
             </v-flex>

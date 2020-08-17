@@ -2,7 +2,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
-import { Subreddit, RedditUser, Hashtag, TwitterUser, Analysis} from '@/types'
+import { PostedSubreddits, PostedRedditUsers, PostedHashtags, PostedTwitterUsers } from '@/store'
 import { error } from 'highcharts'
 @Component({
     components:{
@@ -43,7 +43,16 @@ export default class FileInput extends Vue {
         if(this.datatype == "PostedSubreddits"){
             const data = await this.getRedditSubreddits(formData)
             if(data != null){
-                if(data.n_entries > 0){ this.$emit("reddit-sub",data) }
+                
+                if(data.n_entries > 0){
+                    this.$store.commit("set_posted_data", { 
+                        SocialMedia : "reddit",
+                        grouped: 1,
+                        PostedSubreddits : data
+                    })
+                    this.$emit("reddit-sub") 
+                }
+
                 this.entries = data.n_entries
             }
         }
@@ -95,7 +104,7 @@ export default class FileInput extends Vue {
     //reddit
     async getRedditSubreddits(formData: FormData){
         try {
-            const res : AxiosResponse<{ subreddits : Array<Subreddit>, n_entries : number, analysis : Analysis }> = await axios.post('/reddit/subreddit',formData)
+            const res : AxiosResponse< PostedSubreddits > = await axios.post('/reddit/subreddit',formData)
             return res.data;
         } catch(e){
             if( e.response){
@@ -115,7 +124,7 @@ export default class FileInput extends Vue {
     }
     async getRedditUsers(formData: FormData){
         try {
-            const res : AxiosResponse<{ redditUsers : Array<RedditUser>, n_entries : number, analysis : Analysis }> = await axios.post('/reddit/user',formData)
+            const res : AxiosResponse< PostedRedditUsers > = await axios.post('/reddit/user',formData)
             return res.data;
         } catch(e){
             if( e.response){
@@ -137,7 +146,7 @@ export default class FileInput extends Vue {
     //twitter
     async getTwitterHashtags(formData: FormData){
         try {
-            const res : AxiosResponse<{ hashtags : Array<Hashtag>, n_entries : number, analysis : Analysis }> = await axios.post('/twitter/hashtags',formData)
+            const res : AxiosResponse< PostedHashtags > = await axios.post('/twitter/hashtags',formData)
             return res.data
         } catch(e){
             if( e.response){
@@ -157,7 +166,7 @@ export default class FileInput extends Vue {
     }
     async getTwitterUsers(formData: FormData){
         try {
-            const res : AxiosResponse<{ twitterUsers : Array<TwitterUser>, n_entries : number, analysis : Analysis }> = await axios.post('/twitter/user',formData)
+            const res : AxiosResponse< PostedTwitterUsers > = await axios.post('/twitter/user',formData)
             return res.data;
         } catch(e){
             if( e.response){

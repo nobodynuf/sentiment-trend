@@ -23,6 +23,7 @@ import axios from '@/axios'
 export default class SubredditAnalyzer extends Vue {
     search_input = "";
     voidTextFiel = true
+    carouselItem = 0
 
     data_title = "Sin datos";
     loading = false;
@@ -86,7 +87,7 @@ export default class SubredditAnalyzer extends Vue {
                 })
                 this.topFiveAnalysis = this.topFiveAnalysis.sort(((a, b) =>  b.data[0] - a.data[0])).slice(0,5)
                 var top1 = this.topFiveAnalysis[0].name
-                this.titleTop1 = ` '${top1}" es el factor con mayor manifestación emocional`
+                this.titleTop1 = `${top1} es el factor con mayor manifestación emocional`
             })
             
             this.enabledSub = true
@@ -134,5 +135,16 @@ export default class SubredditAnalyzer extends Vue {
             this.voidTextFiel = false
             this.$set(this.topFiveAnalysis, 'topFiveAnalysis', this.topFiveAnalysis)
         }
+    }
+
+    //chart data update Top Five
+    @Watch("carouselItem")
+    onChangeCarouselItem() {
+        if(this.carouselItem == 1){
+            setTimeout(this.updatingDataTopFive,1)
+        }
+    }
+    updatingDataTopFive() {
+        this.$set(this.topFiveAnalysis, 'topFiveAnalysis', this.topFiveAnalysis)
     }
 }
