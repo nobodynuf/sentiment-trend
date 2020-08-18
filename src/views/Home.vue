@@ -9,7 +9,7 @@
             </v-flex>
             <v-flex xs2>
             </v-flex>
-            <v-flex xs7>
+            <v-flex xs7 class="mt-3 mr-4">
               <file-input :datatype="fileInputType" @home="receivedHomeEvent"></file-input>
             </v-flex>
             <v-flex xs8 text-center mb-5>
@@ -60,20 +60,26 @@
             </v-flex>
             <v-flex xs12 text-center>
               <v-layout>
-                <v-flex xs6 class="mr-4 ml-0">
+                <v-flex xs6>
                   <v-card outlined>
-                    <factor-chart :title="'Manifestación Emocional por Hashtag'" :data="hashtag_split_data"></factor-chart>
+                    <factor-chart :title="'Manifestación Emocional por Hashtag'" :data="hashtag_split_data" :n_entries="twitterEntries"></factor-chart>
                   </v-card>
                   <v-card class="mt-2" outlined>
-                    <pie-chart :data="hashtag_pie_analysis"></pie-chart>
+                    <pie-chart :title="'Distribución de Factores Emocionales de Hashtags'" :data="hashtag_pie_analysis"></pie-chart>
+                    <v-card-text class="text-end">
+                      {{twitterEntries}} Registros
+                    </v-card-text>
                   </v-card>
                 </v-flex> 
-                <v-flex xs6 class="ml-4 mr-0">
+                <v-flex xs6>
                   <v-card outlined>
-                    <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_split_data"></factor-chart>
+                    <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_split_data" :n_entries="redditEntries"></factor-chart>
                   </v-card>
                   <v-card class="mt-2" outlined>
-                    <pie-chart :data="subreddit_pie_analysis"></pie-chart>
+                    <pie-chart :title="'Distribución de Factores Emocionales de Subreddits'" :data="subreddit_pie_analysis"></pie-chart>
+                    <v-card-text class="text-end">
+                      {{redditEntries}} Registros
+                    </v-card-text>
                   </v-card>
                 </v-flex> 
               </v-layout>

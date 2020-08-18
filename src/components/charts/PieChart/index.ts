@@ -11,6 +11,9 @@ const colors = ["#01b8aa", "#28383c", "#df625e", "#f2c80f", "#5f6b6d", "#8ad4eb"
     }
 })
 export default class PieChart extends Vue {
+    @Prop({default: "Distribución de factores emocionales"})
+    title !: string
+    
     options: any = {
         chart: {
             type: 'pie',
@@ -19,7 +22,7 @@ export default class PieChart extends Vue {
             plotShadow: false,
         },
         title: {
-            text: 'Distribución de factores emocionales'
+            text: this.title
         },
         colors: [
             this.$vuetify.theme.themes.light.chart1,
@@ -59,6 +62,8 @@ export default class PieChart extends Vue {
 
     @Prop({default: false})
     loading !: boolean;
+
+    
 
     @Watch('data')
     onChangeData() {
