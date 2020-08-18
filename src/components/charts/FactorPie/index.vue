@@ -1,10 +1,11 @@
 <template>
-    <v-layout  wrap>
+    <v-layout wrap>
         <v-flex xs12>
             <div>
-            <v-card class="elevation-5">
-                <v-card-title>
+            <v-card>
+                <v-card-title class="text--black">
                     <v-select
+                        class="text--black"
                         v-model="selected"
                         :label="label"
                         :items="factors"

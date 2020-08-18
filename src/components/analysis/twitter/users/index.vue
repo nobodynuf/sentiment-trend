@@ -23,7 +23,8 @@
             <span class="subtitle-2 grey--text" v-if="!loading">No hay registros inválidos</span>
           </v-flex>
           <v-flex xs12>
-            <v-carousel show-arrows-on-hover>
+            <v-carousel show-arrows-on-hover :dark="$vuetify.theme.dark"
+   :light="!$vuetify.theme.dark">
               <v-carousel-item>
                 <pie-chart :loading="loading" :data="pie_analysis"></pie-chart>
               </v-carousel-item>

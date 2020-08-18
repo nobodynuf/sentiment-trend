@@ -1,7 +1,7 @@
 <template>
   <v-layout wrap >
     <v-flex xs12 v-if="table.data.length != 0">
-      <v-layout >
+      <v-layout>
         <v-flex class="pr-1" xs3 v-for="(item, i) in criteriaTable" :key="i"> 
           <v-card class="text-center white--text font-weight-bold caption" :color="item.color">
             <p>{{item.percentage}}</p>
@@ -24,6 +24,9 @@
           <v-chip label :color="getColor(item.value)" text-color="white">{{Math.ceil(item.value)}}%</v-chip>
         </template>
       </v-data-table>
+    </v-flex>
+    <v-flex xs12>
+      <intel-chip :analysis="analysis"></intel-chip>
     </v-flex>
   </v-layout>
 </template>

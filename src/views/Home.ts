@@ -10,6 +10,7 @@ import { AxiosResponse } from 'axios'
 import { $debug } from '@/utils'
 import { PostedSubreddits, PostedHashtags } from '@/store'
 import SubredditsAnalyzer from '@/components/analysis/reddit/subreddits'
+import IntelChip from '@/components/intel-chip/index.vue'
 
 @Component({
     components: {
@@ -17,7 +18,8 @@ import SubredditsAnalyzer from '@/components/analysis/reddit/subreddits'
         LineChart,
         ColumnChart,
         FactorChart,
-        FileInput
+        FileInput,
+        IntelChip
     },
 })
 export default class HomeView extends Vue {
@@ -38,6 +40,9 @@ export default class HomeView extends Vue {
 
     redditTitle = ""
     twitterTitle = ""
+
+    twitter_analysis : Analysis = {}
+    reddit_analysis: Analysis = {}
 
     redditEntries = 0
     twitterEntries = 0
@@ -65,6 +70,7 @@ export default class HomeView extends Vue {
         this.changingDataOnReddit(subredditsData)
         this.redditEntries = subredditsData.n_entries;
         this.redditTitle = `${this.redditEntries} Registros`;
+        this.reddit_analysis = subredditsData.analysis
     }
 
     async reddit(){
@@ -98,6 +104,7 @@ export default class HomeView extends Vue {
 
         this.redditEntries = data.n_entries;
         this.redditTitle = `${this.redditEntries} Registros`;
+        this.reddit_analysis = data.analysis;
 
         data.subreddits.map((sub: Subreddit) => {
             this.subreddit_split_data[sub.name] = sub.analysis;
@@ -131,6 +138,7 @@ export default class HomeView extends Vue {
         this.changingDataOnTwitter(hashtagsData)
         this.twitterEntries = hashtagsData.n_entries;
         this.twitterTitle = `${this.twitterEntries} Registros`;
+        this.reddit_analysis = hashtagsData.analysis
     }
 
     async twitter(){
@@ -164,6 +172,7 @@ export default class HomeView extends Vue {
 
         this.twitterEntries = data.n_entries;
         this.twitterTitle = `${this.twitterEntries} Registros`;
+        this.twitter_analysis = data.analysis;
 
         data.hashtags.map((hash: Hashtag) => {
             this.hashtag_split_data[hash.name] = hash.analysis;

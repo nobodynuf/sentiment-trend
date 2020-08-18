@@ -1,8 +1,13 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import { DataTable, tfactor } from '@/types';
+import IntelChip from '@/components/intel-chip/index.vue'
 
-@Component
+@Component({
+    components:{
+        IntelChip
+    }
+})
 export default class FactorEmo extends Vue {
     
     @Prop({default : {}})

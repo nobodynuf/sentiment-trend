@@ -99,7 +99,7 @@
             </v-card-title>
           </v-flex>
           <v-flex xs1 mt-7>
-            <v-btn @click="closingDialogue" rounded :elevation="0" color="error"><v-icon>mdi-window-close</v-icon></v-btn>
+            <v-btn small @click="closingDialogue" fab :elevation="0" color="grey"><v-icon>mdi-window-close</v-icon></v-btn>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>

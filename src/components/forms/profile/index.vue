@@ -21,7 +21,8 @@
                           <span class="subtitle-2 grey--text text--lighten-3">No hay registros inválidos</span>
                         </v-flex>
                         <v-flex xs12>
-                          <v-carousel cycle :show-arrows="false">
+                          <v-carousel cycle :show-arrows="false" :dark="$vuetify.theme.dark"
+   :light="!$vuetify.theme.dark">
                             <v-carousel-item>
                               <pie-chart></pie-chart>
                             </v-carousel-item>
