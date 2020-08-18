@@ -18,13 +18,15 @@ export default class FactorEmo extends Vue {
     readonly factor40_59 = "factor40_59";
     readonly factor60_79 = "factor60_79";
     readonly factor80_100 = "factor80_100";
+    readonly factor_max = "teal lighten-1"
 
     criteriaTable = [
-        { percentage: "0% a 19%", criterion: "Crítico", color: "factor0_19" },
-        { percentage: "20% a 39%", criterion: "Insuficiente", color: "factor20_39" },
-        { percentage: "40% a 59%", criterion: "Regular", color: "factor40_59" },
-        { percentage: "60% a 79%", criterion: "Suficiente", color: "factor60_79" },
-        { percentage: "80% a 100%", criterion: "Excelente", color: "factor80_100" }
+        { percentage: "0-9%", criterion: "Crítico", color: "factor0_19" },
+        { percentage: "10-19%", criterion: "Insuficiente", color: "factor20_39" },
+        { percentage: "20-29%", criterion: "Regular", color: "factor40_59" },
+        { percentage: "30-39%", criterion: "Bueno", color: "factor60_79" },
+        { percentage: "40-49%", criterion: "Excelente", color: "factor80_100" },
+        { percentage: "50-100%", criterion: "Predominante", color: "teal lighten-1" },
     ]
     
 
@@ -57,18 +59,20 @@ export default class FactorEmo extends Vue {
     }
 
     criterion(value : number){
-        if (value > 79) return "Excelente"
-        else if (value > 59) return "Suficiente"
-        else if (value > 39) return "Regular"
-        else if (value > 19) return "Insuficiente"
+        if (value > 49) return "Predominante"
+        else if (value > 39) return "Excelente"
+        else if (value > 29) return "Bueno"
+        else if (value > 19) return "Regular"
+        else if (value > 9) return "Insuficiente"
         else return "Crítico"
     }
     
     getColor (value: number) {
-        if (value > 79) return this.factor80_100
-        else if (value > 59) return this.factor60_79
-        else if (value > 39) return this.factor40_59
-        else if (value > 19) return this.factor20_39
+        if (value > 49) return this.factor_max
+        else if (value > 39) return this.factor80_100
+        else if (value > 29) return this.factor60_79
+        else if (value > 19) return this.factor40_59
+        else if (value > 9) return this.factor20_39
         else return this.factor0_19
       }
 
