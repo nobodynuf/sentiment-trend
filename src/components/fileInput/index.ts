@@ -94,16 +94,16 @@ export default class FileInput extends Vue {
             if(data[1] != null){
                 if(data[1].n_entries > 0 ){
                     this.$store.commit("set_posted_data", {social: "twitter", grouped: 1, data: data[1]});
-                    this.text = `${data[1].n_entries} registros de hashtags cargados  ------  `  
+                    this.text = `${data[1].n_entries} registros de hashtags cargados  --------  `  
                 }else if(data[1].n_entries == 0 ){
                     this.$store.commit("set_posted_data", {social: "twitter", grouped: 1, data: data[1]});
-                    this.text = this.text + `No se encontraron registros de hashtags  ------  `  
+                    this.text = this.text + `No se encontraron registros de hashtags  --------  `  
                 }
             }else{
                 if(this.entries == -1){
-                    this.text = this.text+ `La columna hashtags está vacía  ------  `  
+                    this.text = this.text+ `La columna hashtags está vacía  --------  `  
                 }else{
-                    this.text = this.text + `Ocurrió un error con los hashtags ingresados  ------  `  
+                    this.text = this.text + `Ocurrió un error con los hashtags ingresados  --------  `  
                 }
             }
 
