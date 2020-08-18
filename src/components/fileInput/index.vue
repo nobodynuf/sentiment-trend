@@ -14,7 +14,7 @@
                 <div @click="getTemplate" class="body-2 underline">Descargar plantilla</div>
             </v-layout>
         </v-flex>
-        <v-flex xs12>
+        <v-flex class="text-center" xs12>
             <v-snackbar :timeout="snackbarTime" :color="snackbarColor" v-model="snackbar">
                {{ text }}
             </v-snackbar>

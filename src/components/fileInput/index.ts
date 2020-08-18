@@ -12,7 +12,7 @@ import { Subreddit, Analysis } from '@/types'
 })
 export default class FileInput extends Vue {
     @Prop({default : ""})
-    datatype!: String //PostedSubreddits | PostedRedditUsers | PostedHashtags | PostedTwitterUsers
+    datatype!: String //PostedSubreddits | PostedRedditUsers | PostedHashtags | PostedTwitterUsers | home
 
     file : File | null = null
     socialMedia : SocialMedia = "reddit"
@@ -69,7 +69,7 @@ export default class FileInput extends Vue {
             if(data != null){
                 if(data.n_entries > 0){
                     this.$store.commit("set_posted_data", {social: "twitter", grouped: 1, data: data});
-                    this.$emit("twitter-hash", data) 
+                    this.$emit("twitter-hash") 
                 }
                 this.entries = data.n_entries
             }
@@ -79,10 +79,53 @@ export default class FileInput extends Vue {
             if(data != null){
                 if(data.n_entries > 0){
                     this.$store.commit("set_posted_data", {social: "twitter", grouped: 0, data: data});
-                    this.$emit("twitter-user",  data)
+                    this.$emit("twitter-user")
                 }
                 this.entries = data.n_entries
             }
+        }
+        else if (this.datatype == "home"){
+            this.snackbarTime = 12000
+            const promises: Array<Promise<any>> = [
+                this.getRedditSubreddits(formData),
+                this.getTwitterHashtags(formData)
+            ]
+            const data = await Promise.all(promises);
+            if(data[1] != null){
+                if(data[1].n_entries > 0 ){
+                    this.$store.commit("set_posted_data", {social: "twitter", grouped: 1, data: data[1]});
+                    this.text = `${data[1].n_entries} registros de hashtags cargados  ------  `  
+                }else if(data[1].n_entries == 0 ){
+                    this.$store.commit("set_posted_data", {social: "twitter", grouped: 1, data: data[1]});
+                    this.text = this.text + `No se encontraron registros de hashtags  ------  `  
+                }
+            }else{
+                if(this.entries == -1){
+                    this.text = this.text+ `La columna hashtags está vacía  ------  `  
+                }else{
+                    this.text = this.text + `Ocurrió un error con los hashtags ingresados  ------  `  
+                }
+            }
+
+            if(data[0] != null){
+                if(data[0].n_entries > 0 ){
+                    this.$store.commit("set_posted_data", {social: "reddit", grouped: 1, data: data[0]});
+                    this.text = this.text + `${data[0].n_entries} registros de subreddits cargados`  
+                }else if(data[0].n_entries == 0 ){
+                    this.$store.commit("set_posted_data", {social: "reddit", grouped: 1, data: data[0]});
+                    this.text = this.text + `No se encontraron registros de subreddits`  
+                }
+            }else{
+                if(this.entries == -1){
+                    this.text = this.text + `La columna subreddits está vacía`  
+                }else{
+                    this.text = this.text + `Ocurrió un error con los subreddits ingresados`  
+                }
+            }
+            
+            this.$emit("home")
+            this.entries = -2
+
         }
         
         this.file = null
@@ -98,6 +141,8 @@ export default class FileInput extends Vue {
         }else if(this.entries == -1){
             this.text = "La plantilla está vacía"
             this.snackbarColor = "success"
+        }else if(this.entries == -2){
+            this.snackbarColor = "primary"
         }else{
             this.text = `Se cargaron ${this.entries} registros`     
             this.snackbarColor = "primary"

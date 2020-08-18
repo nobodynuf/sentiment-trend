@@ -10,10 +10,10 @@
             <v-flex xs2>
             </v-flex>
             <v-flex xs7>
-              <file-input :datatype="fileInputType" @reddit-sub="receivedSubredditsEvent"></file-input>
+              <file-input :datatype="fileInputType" @home="receivedHomeEvent"></file-input>
             </v-flex>
             <v-flex xs8 text-center mb-5>
-              <v-card class="elevation-5">
+              <v-card class="elevation-3">
                 <v-layout>
                   <v-flex xs6 mb-3>
                     <v-list-item-title class="align-items: center ">
@@ -28,8 +28,8 @@
                       </v-list-item-icon>
                     </v-list-item-title>
                     <v-btn-toggle v-model="toggle_twitter" color="twitter" mandatory rounded>
-                      <v-btn disabled small outlined>Datos por defecto</v-btn>
-                      <v-btn disabled small outlined>Datos de plantilla</v-btn>
+                      <v-btn small outlined>Datos por defecto</v-btn>
+                      <v-btn :disabled="twitterTemplateDataDisabled" small outlined>Datos de plantilla</v-btn>
                     </v-btn-toggle>
                     <h4 v-if="twitterTitle != ''" class="mt-4" color="grey" label outlined>
                       {{twitterTitle}}
@@ -60,17 +60,17 @@
             </v-flex>
             <v-flex xs12 text-center>
               <v-layout>
-                <v-flex xs6 class="ml-4 mr-0">
-                  <v-card disabled outlined>
-                    <factor-chart :title="'Manifestación Emocional por Hashtag'" :data="subreddit_split_data" :n_entries="redditEntries"></factor-chart>
+                <v-flex xs6 class="mr-4 ml-0">
+                  <v-card outlined>
+                    <factor-chart :title="'Manifestación Emocional por Hashtag'" :data="hashtag_split_data"></factor-chart>
                   </v-card>
-                  <v-card disabled class="mt-2" outlined>
+                  <v-card class="mt-2" outlined>
                     <pie-chart :data="hashtag_pie_analysis"></pie-chart>
                   </v-card>
                 </v-flex> 
                 <v-flex xs6 class="ml-4 mr-0">
                   <v-card outlined>
-                    <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_split_data" :n_entries="redditEntries"></factor-chart>
+                    <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_split_data"></factor-chart>
                   </v-card>
                   <v-card class="mt-2" outlined>
                     <pie-chart :data="subreddit_pie_analysis"></pie-chart>
