@@ -138,29 +138,40 @@ export default new Vuex.Store<IStore>({
         set_posted_data(
             state,
             payload: {
-                social: SocialMedia
-                data: IStore["posted_data"]["reddit"] | IStore["posted_data"]["twitter"]
+                social: SocialMedia;  grouped: boolean;
+                data: IStore["posted_data"]["reddit"]["subreddits_data"] | IStore["posted_data"]["reddit"]["users_data"] |
+                        IStore["posted_data"]["twitter"]["hashtags_data"] | IStore["posted_data"]["twitter"]["users_data"]
             },
         ) {
-            if (payload.social == "reddit") {
-                let data: IStore["posted_data"]["reddit"] = payload.data as IStore["posted_data"]["reddit"]
-                state.posted_data.reddit = data
-            } else if (payload.social == "twitter") {
-                let data: IStore["posted_data"]["twitter"] = payload.data as IStore["posted_data"]["twitter"]
-                state.posted_data.twitter = data
+            if (payload.grouped) {
+                if (payload.social == "reddit") {
+                    let data: IStore["posted_data"]["reddit"]["subreddits_data"] = payload.data as IStore["posted_data"]["reddit"]["subreddits_data"]
+                    state.posted_data.reddit.subreddits_data = data
+                } else if (payload.social == "twitter") {
+                    let data: IStore["posted_data"]["twitter"]["hashtags_data"] = payload.data as IStore["posted_data"]["twitter"]["hashtags_data"]
+                    state.posted_data.twitter.hashtags_data = data
+                }
+            } else{
+                if (payload.social == "reddit") {
+                    let data: IStore["posted_data"]["reddit"]["users_data"] = payload.data as IStore["posted_data"]["reddit"]["users_data"]
+                    state.posted_data.reddit.users_data = data
+                } else if (payload.social == "twitter") {
+                    let data: IStore["posted_data"]["twitter"]["users_data"] = payload.data as IStore["posted_data"]["twitter"]["users_data"]
+                    state.posted_data.twitter.users_data = data
+                }
             }
         },
         set_default_data(state, payload: {social: SocialMedia; grouped: boolean; data: any}) {
             if (payload.grouped) {
                 if (payload.social == "reddit") {
                     state.default_data.reddit.subreddits_data = payload.data
-                } else {
+                } else if (payload.social == "twitter") {
                     state.default_data.twitter.hashtags_data = payload.data
                 }
             } else {
                 if (payload.social == "reddit") {
                     state.default_data.reddit.users_data = payload.data
-                } else {
+                } else if (payload.social == "twitter") {
                     state.default_data.twitter.users_data = payload.data
                 }
             }

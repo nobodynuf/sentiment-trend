@@ -2,16 +2,20 @@
  <v-container class="home" >
     <v-layout wrap>
       <v-flex xs12>
-        {{redditTemplateDataDisabled}}
         <v-card elevation="4">
           <v-layout wrap pa-4 justify-center>
             <v-flex xs12 >
               <h1 class="text-center">Panel de Análisis</h1>
             </v-flex>
+            <v-flex xs2>
+            </v-flex>
+            <v-flex xs7>
+              <file-input :datatype="fileInputType" @reddit-sub="receivedSubredditsEvent"></file-input>
+            </v-flex>
             <v-flex xs8 text-center mb-5>
               <v-card class="elevation-5">
                 <v-layout>
-                  <v-flex xs6 mb-5>
+                  <v-flex xs6 mb-3>
                     <v-list-item-title class="align-items: center ">
                       <v-list-item-icon class="mr-0">
                         <v-icon color="twitter" size="30px">mdi-twitter</v-icon> 
@@ -27,8 +31,11 @@
                       <v-btn disabled small outlined>Datos por defecto</v-btn>
                       <v-btn disabled small outlined>Datos de plantilla</v-btn>
                     </v-btn-toggle>
+                    <h4 v-if="twitterTitle != ''" class="mt-4" color="grey" label outlined>
+                      {{twitterTitle}}
+                    </h4>
                   </v-flex>
-                  <v-flex xs6 mb-5> 
+                  <v-flex xs6 mb-3> 
                     <v-list-item-title class="align-items: center ">
                       <v-list-item-icon class="mr-0">
                         <v-icon color="reddit" size="30px">mdi-reddit</v-icon> 
@@ -44,27 +51,29 @@
                       <v-btn small outlined>Datos por defecto</v-btn>
                       <v-btn :disabled="redditTemplateDataDisabled" small outlined>Datos de plantilla</v-btn>
                     </v-btn-toggle>
+                    <h4 v-if="redditTitle != ''" class="mt-4" color="grey" label outlined>
+                      {{redditTitle}}
+                    </h4>
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
-            
             <v-flex xs12 text-center>
               <v-layout>
-                <v-flex xs6 class="mr-4 ml-0">
+                <v-flex xs6 class="ml-4 mr-0">
                   <v-card disabled outlined>
-                    <line-chart></line-chart>
+                    <factor-chart :title="'Manifestación Emocional por Hashtag'" :data="subreddit_split_data" :n_entries="redditEntries"></factor-chart>
                   </v-card>
                   <v-card disabled class="mt-2" outlined>
-                      <line-chart></line-chart>
-                    </v-card>
+                    <pie-chart :data="hashtag_pie_analysis"></pie-chart>
+                  </v-card>
                 </v-flex> 
                 <v-flex xs6 class="ml-4 mr-0">
                   <v-card outlined>
-                    <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_default_split_data" :n_entries="entries.default.reddit.subreddit"></factor-chart>
+                    <factor-chart :title="'Manifestación Emocional por Subreddit'" :data="subreddit_split_data" :n_entries="redditEntries"></factor-chart>
                   </v-card>
                   <v-card class="mt-2" outlined>
-                    <factor-chart :title="'Manifestación Emocional por Redditors'" :data="rusers_splited_data" :n_entries="entries.default.reddit.users"></factor-chart>
+                    <pie-chart :data="subreddit_pie_analysis"></pie-chart>
                   </v-card>
                 </v-flex> 
               </v-layout>

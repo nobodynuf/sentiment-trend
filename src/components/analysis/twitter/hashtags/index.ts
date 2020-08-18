@@ -93,7 +93,7 @@ export default class HashtagsAnalyzer extends Vue {
                 this.$store.commit("set_default_data", { 
                     SocialMedia : this.socialMedia, 
                     grouped: 1,
-                    PostedHashtags : this.hashtagsData
+                    data : this.hashtagsData
                 })
             }
             

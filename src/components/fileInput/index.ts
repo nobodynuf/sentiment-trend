@@ -2,8 +2,10 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { $debug } from '@/utils'
 import axios from '@/axios'
 import { AxiosResponse } from 'axios'
-import { PostedSubreddits, PostedRedditUsers, PostedHashtags, PostedTwitterUsers } from '@/store'
+import { PostedSubreddits, PostedRedditUsers, PostedHashtags, PostedTwitterUsers, SocialMedia } from '@/store'
 import { error } from 'highcharts'
+import { Subreddit, Analysis } from '@/types'
+
 @Component({
     components:{
     }
@@ -13,10 +15,10 @@ export default class FileInput extends Vue {
     datatype!: String //PostedSubreddits | PostedRedditUsers | PostedHashtags | PostedTwitterUsers
 
     file : File | null = null
-
+    socialMedia : SocialMedia = "reddit"
     fileInputDisabled : boolean = true
     loading : boolean = false
-    
+    subredditsData! : PostedSubreddits
     snackbar: boolean = false
     snackbarTime: number = 8000
     snackbarColor = ""
@@ -43,23 +45,20 @@ export default class FileInput extends Vue {
         if(this.datatype == "PostedSubreddits"){
             const data = await this.getRedditSubreddits(formData)
             if(data != null){
-                
                 if(data.n_entries > 0){
-                    this.$store.commit("set_posted_data", { 
-                        SocialMedia : "reddit",
-                        grouped: 1,
-                        PostedSubreddits : data
-                    })
+                    this.$store.commit("set_posted_data", {social: "reddit", grouped: 1, data: data});
                     this.$emit("reddit-sub") 
                 }
-
                 this.entries = data.n_entries
             }
         }
         else if(this.datatype == "PostedRedditUsers"){
             const data = await this.getRedditUsers(formData)
             if(data != null){
-                if(data.n_entries > 0){ this.$emit("reddit-user",data) }
+                if(data.n_entries > 0){
+                    this.$store.commit("set_posted_data", {social: "reddit", grouped: 0, data: data});
+                    this.$emit("reddit-user") 
+                }
                 this.entries = data.n_entries
             }
         }
@@ -68,14 +67,20 @@ export default class FileInput extends Vue {
         else if(this.datatype == "PostedHashtags"){
             const data = await this.getTwitterHashtags(formData)
             if(data != null){
-                if(data.n_entries > 0){ this.$emit("twitter-hash", data) }
+                if(data.n_entries > 0){
+                    this.$store.commit("set_posted_data", {social: "twitter", grouped: 1, data: data});
+                    this.$emit("twitter-hash", data) 
+                }
                 this.entries = data.n_entries
             }
         }
         else if(this.datatype == "PostedTwitterUsers"){
             const data = await this.getTwitterUsers(formData)
             if(data != null){
-                if(data.n_entries > 0){ this.$emit("twitter-user",  data) }
+                if(data.n_entries > 0){
+                    this.$store.commit("set_posted_data", {social: "twitter", grouped: 0, data: data});
+                    this.$emit("twitter-user",  data)
+                }
                 this.entries = data.n_entries
             }
         }
@@ -103,8 +108,8 @@ export default class FileInput extends Vue {
 
     //reddit
     async getRedditSubreddits(formData: FormData){
-        try {
-            const res : AxiosResponse< PostedSubreddits > = await axios.post('/reddit/subreddit',formData)
+        try {    
+            const res : AxiosResponse<PostedSubreddits> = await axios.post('/reddit/subreddit',formData)
             return res.data;
         } catch(e){
             if( e.response){

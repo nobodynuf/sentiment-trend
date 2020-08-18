@@ -92,7 +92,7 @@ export default class SubredditsAnalyzer extends Vue {
                 this.$store.commit("set_default_data", { 
                     SocialMedia : this.socialMedia, 
                     grouped: 1,
-                    PostedSubreddits : this.subredditsData
+                    data : {n_entries ,subreddits, analysis}
                 });
             }
             

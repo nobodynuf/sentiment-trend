@@ -93,7 +93,7 @@ export default class UsersAnalyzer extends Vue {
                 this.$store.commit("set_default_data", { 
                     SocialMedia: this.socialMedia, 
                     grouped: 0,
-                    usersData : this.usersData
+                    data : this.usersData
                 })
             }
             

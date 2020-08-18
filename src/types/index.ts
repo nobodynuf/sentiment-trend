@@ -7,6 +7,7 @@ export interface Subreddit {
     over18: boolean
     subscribers: number
     n_entries: number
+    intel: number
     submissions: RedditSub[]
 };
 
